@@ -1,8 +1,11 @@
 
 import overpy
 import pandas as pd
-
+import geopandas as gpd
 from osm_data_recieve import query_overpass, parse_osm_result
+from shapely.geometry import LineString, Point
+
+from config import street_types_list, city_name
 
 
 
@@ -16,7 +19,6 @@ def main():
     list_of_gdf = []
 
     for street_type in street_types_list:
-
         # Example query for highways in germany/dresden
 
         overpass_query = f"""
@@ -25,7 +27,7 @@ def main():
             way[highway={street_type}](area.city)(area.country);
             (._;>;);
             out body;
-    """
+        """
 
         result = query_overpass(api, overpass_query)
         gdf = parse_osm_result(result)
@@ -41,6 +43,7 @@ def main():
     # Save the GeoDataFrame as a GeoPackage
     output_geopackage = "network\output\dresden_netz.gpkg"
     gdf.to_file(output_geopackage, layer='data', driver='GPKG')
+
 
 
 
