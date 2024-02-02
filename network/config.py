@@ -5,3 +5,5 @@ city_name = "Dresden"
 test_package = r'C:\Users\Goerner\Desktop\pedestrian_network\network\output\test_network\dresden_netz.gpkg'
 
 safe_interim_results = True
+
+test ="test"
