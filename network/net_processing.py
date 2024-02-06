@@ -85,22 +85,29 @@ def buffer_points(support_points_gdf):
     return support_points_buffered_gdf
 
 def find_intersecting_lines(gdf_lines, gdf_buffers):
+    # Create spatial index for buffered support points
+    spatial_index = gdf_buffers.sindex
 
-
-    # # Create a GeoDataFrame for intersection results
-    # intersection_gdf = gpd.GeoDataFrame(columns=['line_id', 'buffer_id', 'Number_of_intersections'], geometry=[])
-    # # Iterate through each line and buffered support point to check for intersections
+    # creat column with number of lines that intersect with the buffered support points
     gdf_buffers['Number_of_intersections']= 0
 
-    for line_id, line in gdf_lines.iterrows():
-        for buffer_id, buffer_point in gdf_buffers.iterrows():
-            if line.geometry.intersects(buffer_point.geometry):
-                # Den Index der Zeile mit dem Wert 'Punkt2' in der Spalte 'Name' finden
-                row_index = gdf_buffers[gdf_buffers.index == buffer_id].index[0]
-                # Neuen Wert zuweisen
+    # Iterate through each line and buffered support point to check for intersections
+    # use geospatial indexing
 
-                gdf_buffers.at[row_index, 'Number_of_intersections'] +=1
-                print(gdf_buffers.at[row_index, "Number_of_intersections"])
+     # Iterate through each line and use spatial index for intersection check
+    for line_id, line in gdf_lines.iterrows():
+        possible_matches_index = list(spatial_index.intersection(line.geometry.bounds))
+        possible_matches = gdf_buffers.iloc[possible_matches_index]
+
+        for buffer_id, buffer_point in possible_matches.iterrows():
+            if line.geometry.intersects(buffer_point.geometry):
+                gdf_buffers.at[buffer_id, 'Number_of_intersections'] += 1
+                print(buffer_id,gdf_buffers.at[buffer_id, 'Number_of_intersections'])
+
+    # Save the result, overwrite existing buffert buffered_support_points gpkg
+    safe_gdf_as_gpkg(gdf_buffers, "buffered_support_points")
+
+    return gdf_buffers
                 
 
 def combined_function(test_gpkg):
@@ -109,7 +116,11 @@ def combined_function(test_gpkg):
         gdf = create_support_points(gdf_lines)
         gdf_buffer = buffer_points(gdf)
         print(gdf_buffer)
-        find_intersecting_lines(gdf_lines,gdf_buffer)
+        gdf_buffer = find_intersecting_lines(gdf_lines,gdf_buffer)
+        # filter buffer
+        #load bufferd support points with number of intersection
+        gdf_buffer = gdf_buffer[gdf_buffer["Number_of_intersections"] >= 3]
+        print(gdf_buffer)
 
 def main():
     #load existing GeoPackage with test_network from city
