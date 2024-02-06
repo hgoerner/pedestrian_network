@@ -48,13 +48,15 @@ def explode_network(gdf):
 
 def extract_support_points(line):
     # Function to extract support points from a LineString
-    return [Point(coord) for coord in line.coords]
+    return Point(line.centroid.x, line.centroid.y)
+
 
 def create_support_points(gdf):
 
     # Create an empty GeoDataFrame to store support points
     support_points_gdf = gpd.GeoDataFrame(geometry=[], crs=gdf.crs)
     # Apply the function to each geometry in the GeoDataFrame
+    print(type(support_points_gdf))
     support_points_gdf['geometry'] = gdf['geometry'].apply(extract_support_points)
 
     # Explode the GeoDataFrame to get individual support points
@@ -62,7 +64,7 @@ def create_support_points(gdf):
 
     # Reset index for the GeoDataFrame
     support_points_gdf.reset_index(drop=True, inplace=True)   
-
+    print(type(support_points_gdf))
     safe_gdf_as_gpkg(support_points_gdf, "support_points")
     
 
@@ -113,6 +115,8 @@ def find_intersecting_lines(gdf_lines, gdf_buffers):
 def combined_function(test_gpkg):
         gdf = combine_netelement(test_gpkg)
         gdf_lines = explode_network(gdf)
+        print(gdf_lines)
+        print(type(gdf_lines))
         gdf = create_support_points(gdf_lines)
         gdf_buffer = buffer_points(gdf)
         print(gdf_buffer)
