@@ -36,10 +36,14 @@ def combine_netelement(gdf):
 
 def explode_network(gdf):
 
+
     exploded_gdf = gdf.explode()
 
+    # Reset the index to remove the 'level_1' column
+    exploded_gdf = exploded_gdf.reset_index(drop=True)
+
     safe_gdf_as_gpkg(exploded_gdf, "exploded_network")
-    print(exploded_gdf)
+
     return exploded_gdf
 
 def extract_support_points(line):
@@ -66,18 +70,46 @@ def create_support_points(gdf):
 
 def buffer_points(support_points_gdf):
     # Buffer the support points by 0.5 meters
-    buffer_distance = 100
+    buffer_distance = 0.1
     support_points_gdf = support_points_gdf.explode()
-    support_points_buffered_gdf = support_points_gdf['geometry'].buffer(buffer_distance)
+    # Create a GeoDataFrame with buffered geometries
+    support_points_buffered_gdf = gpd.GeoDataFrame(
+        geometry=support_points_gdf['geometry'].buffer(buffer_distance),
+        crs=support_points_gdf.crs
+    )
+        # Reset the index to remove the 'level_1' column
+    support_points_buffered_gdf.reset_index(drop=True, inplace=True)
     # Explode the GeoDataFrame to get individual support points
     safe_gdf_as_gpkg(support_points_buffered_gdf, "buffered_support_points")
 
+    return support_points_buffered_gdf
+
+def find_intersecting_lines(gdf_lines, gdf_buffers):
+
+
+    # # Create a GeoDataFrame for intersection results
+    # intersection_gdf = gpd.GeoDataFrame(columns=['line_id', 'buffer_id', 'Number_of_intersections'], geometry=[])
+    # # Iterate through each line and buffered support point to check for intersections
+    gdf_buffers['Number_of_intersections']= 0
+
+    for line_id, line in gdf_lines.iterrows():
+        for buffer_id, buffer_point in gdf_buffers.iterrows():
+            if line.geometry.intersects(buffer_point.geometry):
+                # Den Index der Zeile mit dem Wert 'Punkt2' in der Spalte 'Name' finden
+                row_index = gdf_buffers[gdf_buffers.index == buffer_id].index[0]
+                # Neuen Wert zuweisen
+
+                gdf_buffers.at[row_index, 'Number_of_intersections'] +=1
+                print(gdf_buffers.at[row_index, "Number_of_intersections"])
+                
 
 def combined_function(test_gpkg):
         gdf = combine_netelement(test_gpkg)
-        gdf = explode_network(gdf)
-        gdf = create_support_points(gdf)
-        gdf = buffer_points(gdf)
+        gdf_lines = explode_network(gdf)
+        gdf = create_support_points(gdf_lines)
+        gdf_buffer = buffer_points(gdf)
+        print(gdf_buffer)
+        find_intersecting_lines(gdf_lines,gdf_buffer)
 
 def main():
     #load existing GeoPackage with test_network from city

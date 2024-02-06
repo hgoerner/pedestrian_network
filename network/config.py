@@ -7,3 +7,5 @@ test_package = r'C:\Users\Goerner\Desktop\pedestrian_network\network\output\test
 safe_interim_results = True
 
 test ="test2"
+
+buffer_size = 0.1
