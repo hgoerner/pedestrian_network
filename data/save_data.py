@@ -1,4 +1,4 @@
-from config_loader import config_data
+from utils.config_loader import config_data
 from typing import Tuple
 import geopandas as gpd
 
@@ -23,5 +23,5 @@ def safe_gdf_as_gpkg(*args: Tuple[gpd.GeoDataFrame, str, bool]):
         gdf, filename, interimresult = arg + (False,) if len(arg) == 2 else arg
         if interimresult and config_data["safe_interim_results"]:
             gdf.to_file(f'output\interim_result\{filename}.gpkg', driver='GPKG')
-        else:
+        elif not interimresult:
             gdf.to_file(f'output\{filename}.gpkg', driver='GPKG')

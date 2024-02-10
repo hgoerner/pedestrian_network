@@ -6,7 +6,7 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 from shapely.ops import linemerge
 from data.save_data import safe_gdf_as_gpkg
 from utils.helper import start_end_points
-from data.config_loader import config_data
+from utils.config_loader import config_data
 
 
 
@@ -51,7 +51,6 @@ def buffer_points(support_points_gdf):
 
     buffered_points_gdf = gpd.GeoDataFrame(geometry=support_points_gdf['geometry'].buffer(buffer_distance),crs=support_points_gdf.crs)
     buffered_points_gdf.reset_index(drop=True, inplace=True)
-    
 
     return buffered_points_gdf
 
@@ -109,7 +108,6 @@ def main():
     # function for testing
    
     test_gdf = gpd.read_file(config_data["test_package"])
-    print(type(test_gdf))
 
     create_street_net_and_intersection_gpkg(test_gdf)
 
