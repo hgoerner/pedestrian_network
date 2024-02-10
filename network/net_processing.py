@@ -7,7 +7,7 @@ from config import safe_interim_results
 import pandas as pd
 import math
 
-
+print("test")
 
 #first combine every netelement
 
