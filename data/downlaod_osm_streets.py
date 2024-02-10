@@ -3,8 +3,7 @@ import geopandas as gpd
 from shapely.geometry import LineString
 
 def query_overpass(api, query):
-    result = api.query(query)
-    return result
+    return api.query(query)
 
 def parse_osm_result(result):
     data = {'id': [], 'highway': [], 'name': [], 'geometry': []}
@@ -17,7 +16,7 @@ def parse_osm_result(result):
         data['name'].append(way.tags.get('name'))
         data['geometry'].append(line)
              # Capture all tags for each way as a dictionary
-            
+
             # Capture all tags for each way as a dictionary
             # there way more keys and values
             # its possible to catch all the keys and possible value
@@ -27,10 +26,5 @@ def parse_osm_result(result):
             #     if key not in data.keys():
             #        data[key] = []
 
-    print(type(data))
-
-
-    gdf = gpd.GeoDataFrame(data, crs="EPSG:4326")
-    gdf = gdf.to_crs("EPSG:31468")
-    return gdf
+    return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
 

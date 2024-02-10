@@ -1,0 +1,11 @@
+# config.yml
+
+street_types_list: ["primary", "secondary", "tertiary", "unclassified"]
+
+city_name: "Dresden"
+
+test_package: 'output\test_network\dresden_netz.gpkg'
+
+safe_interim_results: True
+
+buffer_size: 0.1
