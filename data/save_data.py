@@ -20,7 +20,7 @@ def safe_gdf_as_gpkg(*args: Tuple[gpd.GeoDataFrame, str, bool]):
     """
 
     for arg in args:
-        gdf, filename, interimresult = arg + (False,)
+        gdf, filename, interimresult = arg + (False,) if len(arg) == 2 else arg
         if interimresult and config_data["safe_interim_results"]:
             gdf.to_file(f'output\interim_result\{filename}.gpkg', driver='GPKG')
         else:

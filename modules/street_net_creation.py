@@ -1,11 +1,14 @@
 import geopandas as gpd
 
+import os
+import sys
+sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+
 from shapely.ops import linemerge
 from data.save_data import safe_gdf_as_gpkg
 from utils.helper import start_end_points
 from data.config_loader import config_data
 
-print(config_data)
 
 
 def create_streetnet(gdf_osm_net: gpd.GeoDataFrame):
@@ -20,15 +23,18 @@ def create_streetnet(gdf_osm_net: gpd.GeoDataFrame):
     # Merge the LineStrings into a single LineString
     # Use unary_union to merge the LineStrings into a single MultiLineString
     merged_multilinestring = gdf_osm_net["geometry"].unary_union
-
+    print(type(merged_multilinestring))
     # Merge every LineString that can be merged
     merged_linestring = linemerge(merged_multilinestring)
+    print(type(merged_linestring))  
 
-    return (
-        gpd.GeoDataFrame(geometry=[merged_linestring], crs=gdf_osm_net.crs)
-        .reset_index(drop=True, inplace=True)
-        .explode(index_parts=False)
-    )
+    street_net_gdf= gpd.GeoDataFrame(geometry=[merged_linestring], crs=gdf_osm_net.crs)
+    street_net_gdf.reset_index(drop=True, inplace=True)
+    print(type(street_net_gdf))
+    street_net_gdf = street_net_gdf.explode(index_parts=False)
+    print(type(street_net_gdf))
+
+    return street_net_gdf
 
 def create_support_points(gdf):
 
@@ -45,7 +51,6 @@ def create_support_points(gdf):
     support_points_gdf.reset_index(drop=True, inplace=True)   
     support_points_gdf = support_points_gdf.explode(index_parts=False)
 
-    safe_gdf_as_gpkg(support_points_gdf, "support_points")  
 
     return support_points_gdf
 
@@ -54,12 +59,25 @@ def buffer_points(support_points_gdf):
     buffer_distance = 0.5
     support_points_gdf = support_points_gdf.explode(index_parts=False)
 
-    return gpd.GeoDataFrame(
-        geometry=support_points_gdf['geometry'].buffer(buffer_distance),
-        crs=support_points_gdf.crs,
-    ).reset_index(drop=True, inplace=True)
+    buffered_points_gdf = gpd.GeoDataFrame(geometry=support_points_gdf['geometry'].buffer(buffer_distance),crs=support_points_gdf.crs)
+    buffered_points_gdf.reset_index(drop=True, inplace=True)
+    
+
+    return buffered_points_gdf
 
 def find_intersecting_lines(gdf_lines, gdf_buffers, gdf_support_points):
+    """
+    Finds the points that represents intersections 
+
+    Args:
+        gdf_lines: A GeoDataFrame representing the lines.
+        gdf_buffers: A GeoDataFrame representing the buffered support points.
+        gdf_support_points: A GeoDataFrame representing the support points.
+
+    Returns:
+        A GeoDataFrame containing the support points that intersect with at least 3 lines.
+    """
+
     # Create spatial index for buffered support points
     # NOTE:like a boundingbox around the point
     spatial_index = gdf_buffers.sindex
@@ -79,30 +97,31 @@ def find_intersecting_lines(gdf_lines, gdf_buffers, gdf_support_points):
                 gdf_support_points.at[buffer_id, 'Number_of_intersections'] += 1
                 #print(buffer_id,gdf_buffers.at[buffer_id, 'Number_of_intersections'])
 
-    # Save the result, overwrite existing buffert buffered_support_points gpkg
-    # filter geodataframe (more than 3 intersections with lines is considered as trafficintersection)
-    gdf__intersections_points = gdf_support_points[gdf_support_points["Number_of_intersections"] >= 3]
-                
-    return gdf_support_points, gdf__intersections_points
+    return gdf_support_points[gdf_support_points["Number_of_intersections"] >= 3]
 
-def combined_function(test_gpkg):
+def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
         # combine downloaded osm net
-        gdf_street_net = create_streetnet(gdf = test_gpkg)
+        gdf_street_net = create_streetnet(osm_street_net)
 
         #create gdf with support points
         gdf_support_points = create_support_points(gdf_street_net)
         
         #buffer support points
         gdf_bufferd_points = buffer_points(gdf_support_points)
-
         #count intersecting lines in buffered points and write to support point with same ID  
-        find_intersecting_lines(gdf_street_net,gdf_bufferd_points, gdf_support_points)
+        gdf__intersections_points = find_intersecting_lines(gdf_street_net,gdf_bufferd_points, gdf_support_points)
+
+        safe_gdf_as_gpkg((gdf_street_net,"street_net_"+config_data["city_name"]),(gdf__intersections_points,"node_points_"+config_data["city_name"]),(gdf_support_points,"support_points_"+config_data["city_name"],True), (gdf_bufferd_points,"buffer_points_"+config_data["city_name"],True    ))
+
+
 
 def main():
     #load existing GeoPackage with test_network from city
-    test_gdf = gpd.read_file(config.test_gpkg)
+    
+    test_gdf = gpd.read_file(config_data["test_package"])
+    print(type(test_gdf))
 
-    support_points = combined_function(test_gdf)
+    create_street_net_and_intersection_gpkg(test_gdf)
 
 
 if __name__ == "__main__":
