@@ -9,3 +9,11 @@ test_package: 'output\test_network\dresden_netz.gpkg'
 safe_interim_results: True
 
 buffer_size: 0.1
+
+query_streets: f"""
+  area["ISO3166-1"="DE"][admin_level=2]->.country;
+  area[name="{city_name}"]->.city;
+  way[highway={street_type}](area.city)(area.country);
+  (._;>;);
+  out body;
+  """

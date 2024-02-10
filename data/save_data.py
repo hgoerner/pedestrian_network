@@ -1,4 +1,4 @@
-from .config_loader import config_data
+from config_loader import config_data
 from typing import Tuple
 import geopandas as gpd
 

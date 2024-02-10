@@ -1,6 +1,5 @@
 import geopandas as gpd
 
-import os
 import sys
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 
@@ -11,7 +10,7 @@ from data.config_loader import config_data
 
 
 
-def create_streetnet(gdf_osm_net: gpd.GeoDataFrame):
+def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
     """combines the linestring elements in a geodataframe to one entity
 
     Args:
@@ -20,21 +19,15 @@ def create_streetnet(gdf_osm_net: gpd.GeoDataFrame):
     Returns:
         geodataframe: geodataframe that contains one linestring element
     """
-    # Merge the LineStrings into a single LineString
+
     # Use unary_union to merge the LineStrings into a single MultiLineString
     merged_multilinestring = gdf_osm_net["geometry"].unary_union
-    print(type(merged_multilinestring))
     # Merge every LineString that can be merged
     merged_linestring = linemerge(merged_multilinestring)
-    print(type(merged_linestring))  
+
 
     street_net_gdf= gpd.GeoDataFrame(geometry=[merged_linestring], crs=gdf_osm_net.crs)
-    street_net_gdf.reset_index(drop=True, inplace=True)
-    print(type(street_net_gdf))
-    street_net_gdf = street_net_gdf.explode(index_parts=False)
-    print(type(street_net_gdf))
-
-    return street_net_gdf
+    return street_net_gdf.reset_index(drop=True).explode(index_parts=False)
 
 def create_support_points(gdf):
 
@@ -47,12 +40,9 @@ def create_support_points(gdf):
     # Create a new GeoDataFrame from the result list
     support_points_gdf = gpd.GeoDataFrame(geometry=points_list, crs=gdf.crs)
 
-    # Reset the index
-    support_points_gdf.reset_index(drop=True, inplace=True)   
-    support_points_gdf = support_points_gdf.explode(index_parts=False)
+    # Reset the index abd explode possible multipoints
+    return support_points_gdf.reset_index(drop=True).explode(index_parts=False)
 
-
-    return support_points_gdf
 
 def buffer_points(support_points_gdf):
     # Buffer the support points by 0.5 meters (good measure to find intersections)
@@ -101,7 +91,7 @@ def find_intersecting_lines(gdf_lines, gdf_buffers, gdf_support_points):
 
 def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
         # combine downloaded osm net
-        gdf_street_net = create_streetnet(osm_street_net)
+        gdf_street_net = optimize_street_network(osm_street_net)
 
         #create gdf with support points
         gdf_support_points = create_support_points(gdf_street_net)
@@ -116,8 +106,8 @@ def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
 
 
 def main():
-    #load existing GeoPackage with test_network from city
-    
+    # function for testing
+   
     test_gdf = gpd.read_file(config_data["test_package"])
     print(type(test_gdf))
 
