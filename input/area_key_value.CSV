@@ -1,2 +1,14 @@
-Key;value
-natural;wood
+value;Key;Gruppe;Klasse;Einflussbereich;Bedeutung
+water;;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+wetland;;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+riverbank;;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+reservoir;;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+allotments;;Gruen-, Blau- & Platzflaechen;Kleingarten;25;5
+meadow;;Gruen-, Blau- & Platzflaechen;Kleingarten;25;5
+wood;;Gruen-, Blau- & Platzflaechen;Wald/Gehoelz;25;10
+grassland;;Gruen-, Blau- & Platzflaechen;Wald/Gehoelz;25;10
+heath;;Gruen-, Blau- & Platzflaechen;Wald/Gehoelz;25;10
+park;;Gruen-, Blau- & Platzflaechen;Park/gestaltetes Gruen;100;20
+cemetery;;Gruen-, Blau- & Platzflaechen;Friedhof;25;10
+grave_yard;;Gruen-, Blau- & Platzflaechen;Friedhof;25;10
+square;;Gruen-, Blau- & Platzflaechen;Friedhof;25;10
