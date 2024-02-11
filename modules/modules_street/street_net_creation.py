@@ -45,11 +45,9 @@ def create_support_points(gdf):
 
 
 def buffer_points(support_points_gdf):
-    # Buffer the support points by 0.5 meters (good measure to find intersections)
-    buffer_distance = 0.5
     support_points_gdf = support_points_gdf.explode(index_parts=False)
 
-    buffered_points_gdf = gpd.GeoDataFrame(geometry=support_points_gdf['geometry'].buffer(buffer_distance),crs=support_points_gdf.crs)
+    buffered_points_gdf = gpd.GeoDataFrame(geometry=support_points_gdf['geometry'].buffer(0.5),crs=support_points_gdf.crs)
     buffered_points_gdf.reset_index(drop=True, inplace=True)
 
     return buffered_points_gdf
@@ -89,6 +87,15 @@ def find_intersecting_lines(gdf_lines, gdf_buffers, gdf_support_points):
     return gdf_support_points[gdf_support_points["Number_of_intersections"] >= 3]
 
 def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
+        """
+        Create a street network and intersection GeoPackage.
+
+        Args:
+            osm_street_net: GeoDataFrame containing the downloaded OSM street network.
+
+        Returns: None
+        """
+        
         # combine downloaded osm net
         gdf_street_net = optimize_street_network(osm_street_net)
 

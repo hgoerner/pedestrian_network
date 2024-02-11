@@ -4,11 +4,13 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 from utils.config_loader import config_data
 from data.load_data import poi_key_value_dic
 from urllib.parse import quote
+from typing import List, Dict
+
+city = config_data["city_name"]
 
 def list_of_street_queries():
   
     street_queries = []
-    city = config_data["city_name"]
     # Loop through combinations of cities and street types
     for street_type in config_data["street_types_list"]:
         query = f"""
@@ -22,23 +24,25 @@ def list_of_street_queries():
     return street_queries
 
 def list_of_poi_queries():
-    city = config_data["city_name"]
+    
     poi_queries = []
 
     for keys in poi_key_value_dic.keys():
-        key = quote(poi_key_value_dic[keys]["Key"])
-        value = quote(poi_key_value_dic[keys]["value"])
+        osm_key = quote(poi_key_value_dic[keys]["Key"])
+        osm_value = quote(poi_key_value_dic[keys]["value"])
+        
         # Use a list comprehension to generate queries for each value of the key
-        queries = f"""
+        queriy = f"""
             area["ISO3166-1"="DE"][admin_level=2]->.country;
             area[name="{city}"]->.city;
-            node[{key}={value}](area.city)(area.country);
+            node[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
             out body;
-            """     
+            """
+        query_info = {"query":queriy,'key': osm_key, 'value': osm_value}    
 
         # Extend poi_queries with the generated queries
-        poi_queries.append(queries)
+        poi_queries.append(query_info)
 
 
     return poi_queries
