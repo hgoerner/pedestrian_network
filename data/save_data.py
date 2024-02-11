@@ -10,7 +10,7 @@ def safe_gdf_as_gpkg(*args: Tuple[gpd.GeoDataFrame, str, bool]):
         *args: A tuple containing the GeoDataFrame, filename, and interimresult flag.
             - GeoDataFrame: The GeoDataFrame to be saved.
             - filename: The name of the output file.
-            - interimresult: A flag indicating whether the file is safed in the interim result folder
+            - interimresult: if True resluts gets saved in the interim_result folder.
 
     Returns:
         None

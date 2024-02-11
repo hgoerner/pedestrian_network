@@ -1,5 +1,10 @@
 
 import sys
+import os
+
+current_directory = os.getcwd()
+print(current_directory)
+
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 
 import geopandas as gpd
@@ -45,10 +50,17 @@ def create_osm_streets_gdf():
         gdf = _parse_osm_result(result)
         list_of_gdf.append(gdf)
 
-    osm_streets = concatenate_geodataframes(list_of_gdf)
+    osm_streets_gdf = concatenate_geodataframes(list_of_gdf)
 
-    safe_gdf_as_gpkg((osm_streets,"osm_street_net_"+config_data["city_name"],True))
+    safe_gdf_as_gpkg((osm_streets_gdf,"osm_street_net_"+config_data["city_name"],True))
+
+
+def main():
+    
+    create_osm_streets_gdf()
 
 
 
+if __name__ == "__main__":
+    main()
 

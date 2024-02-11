@@ -1,4 +1,10 @@
 import sys
+import os
+
+current_directory = os.getcwd()
+print(current_directory)
+
+
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 import overpy
 import geopandas as gpd
@@ -12,7 +18,8 @@ from tqdm import tqdm
 from overpy.exception import OverpassBadRequest
 
 # Configure logging
-logging.basicConfig(filename='missing_queries.txt', level=logging.INFO)
+#logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
+logging.basicConfig(filename='Result_insights.txt', level=logging.INFO, filemode='w')
 
 api = overpy.Overpass()
 
@@ -62,9 +69,6 @@ def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str, *
 
     #create a GeoDataFrame from the dictionary
     return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
-
-
-
 def create_osm_poi_gdf():
     """
     Creates a GeoDataFrame of OpenStreetMap streets.
@@ -82,14 +86,15 @@ def create_osm_poi_gdf():
         if result is not None:
             gdf = _parse_osm_poi_result(result, osm_key,osm_value)
             list_of_gdf.append(gdf)
+            number_of_pois = len(result.nodes)
+            logging.info(f"osmKey: {osm_key} OsmValue: {osm_value} Anzahl_pois {number_of_pois}")
         else:
             # Log the missing query to the log file
-            logging.info(f"Missing result for query: {osm_key} - {osm_value}")
+            #logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {poi_query}")
             continue
 
-    osm_streets = concatenate_geodataframes(list_of_gdf)
-
-    safe_gdf_as_gpkg((osm_streets,"osm_pois_"+config_data["city_name"],True))
+    osm_poi_gdf = concatenate_geodataframes(list_of_gdf)
+    safe_gdf_as_gpkg((osm_poi_gdf,"osm_pois_plain"+config_data["city_name"]))
 
 def main():
 

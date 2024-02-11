@@ -1,6 +1,3 @@
-import sys
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-
 from utils.config_loader import config_data
 from data.load_data import poi_key_value_dic
 from urllib.parse import quote
