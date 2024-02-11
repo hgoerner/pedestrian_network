@@ -7,11 +7,21 @@ from queries.queries import osm_poi_queries
 from save_data import safe_gdf_as_gpkg
 from utils.helper import concatenate_geodataframes
 from utils.config_loader import config_data
+import time
+from tqdm import tqdm
+from overpy.exception import OverpassBadRequest
 
 api = overpy.Overpass()
 
 def _query_overpass(api,query):
-    return api.query(query)
+    try:
+        result = api.query(query)
+        return result
+    except OverpassBadRequest as e:
+        # Handle the exception (e.g., print an error message)
+        print(f"OverpassBadRequest: {e}")
+    
+
 
 def _parse_osm_poi_result(result):
     data = {'id': [],'key': [],'value': [],'geometry': []}
@@ -38,8 +48,7 @@ def create_osm_poi_gdf():
     #empty list to store the gdf
     list_of_gdf = []
 
-    for poi_query in osm_poi_queries:  
-        print(poi_query)
+    for poi_query in tqdm(osm_poi_queries, desc="Querying Overpass"):
         result = _query_overpass(api, poi_query)
         gdf = _parse_osm_poi_result(result)
         list_of_gdf.append(gdf)
@@ -47,7 +56,6 @@ def create_osm_poi_gdf():
     osm_streets = concatenate_geodataframes(list_of_gdf)
 
     safe_gdf_as_gpkg((osm_streets,"osm_pois_"+config_data["city_name"],True))
-
 
 def main():
 

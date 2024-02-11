@@ -8,6 +8,8 @@ test_package: 'output\test_network\dresden_netz.gpkg'
 
 safe_interim_results: True
 
+path_to_poi_csv: 'input\poi_key_value.CSV'
+
 pois_dictioanry:
   shop:
     - supermarket
