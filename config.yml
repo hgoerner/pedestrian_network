@@ -10,6 +10,7 @@ test_osm_poi_package: 'output\test_network\osm_pois_Dresden.gpkg'
 
 # input csv with necessary key value pairs
 path_to_poi_csv: 'input\poi_key_value.CSV'
+path_to_area_csv: 'input\area_key_value.CSV'
 
 # osm-values for the key highway
 street_types_list: ["primary", "secondary", "tertiary", "unclassified"]
