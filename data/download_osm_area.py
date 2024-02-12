@@ -11,7 +11,7 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 import overpy
 import geopandas as gpd
 from shapely.geometry import Polygon
-from queries.queries import osm_area_queries
+from data.queries.queries import osm_area_queries
 from save_data import safe_gdf_as_gpkg
 from utils.helper import concatenate_geodataframes
 from utils.config_loader import config_data
