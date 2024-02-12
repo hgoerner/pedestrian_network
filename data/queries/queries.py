@@ -78,6 +78,7 @@ def list_of_area_queries():
    
 osm_street_queries = list_of_street_queries()
 osm_poi_queries = list_of_poi_queries()
-osm_area_queries = list_of_area_queries()
+osm_area_queries = []
+#list_of_area_queries()
 
 
