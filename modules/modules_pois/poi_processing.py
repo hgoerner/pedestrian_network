@@ -5,6 +5,7 @@ current_directory = os.getcwd()
 print(current_directory)
 
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 
 import geopandas as gpd
@@ -41,6 +42,7 @@ def main():
     osm_pois_gdf = gpd.read_file(config_data["test_osm_poi_package"])
     osm_pois_gdf = assign_group_categorie_einflussbereich(osm_pois_gdf)
     safe_gdf_as_gpkg((osm_pois_gdf,"osm_pois_dresden_updated" ))
+    print(osm_pois_gdf)
     
 
 

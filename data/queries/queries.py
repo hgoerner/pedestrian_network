@@ -33,7 +33,7 @@ def list_of_poi_queries():
         queriy = f"""
             area["ISO3166-1"="DE"][admin_level=2]->.country;
             area[name="{city}"]->.city;
-            area[{osm_key}={osm_value}](area.city)(area.country);
+            node[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
             out body;
             """
@@ -64,7 +64,7 @@ def list_of_area_queries():
         queriy = f"""
             area["ISO3166-1"="DE"][admin_level=2]->.country;
             area[name="{city}"]->.city;
-            node[{osm_key}](area.city)(area.country);
+            area[{osm_key}](area.city)(area.country);
             (._;>;);
             out body;
             """
@@ -75,11 +75,9 @@ def list_of_area_queries():
 
 
     return aria_queries
-
-
-        
+   
 osm_street_queries = list_of_street_queries()
 osm_poi_queries = list_of_poi_queries()
-osm_area_queries = list_of_area_queries()
+#osm_area_queries = list_of_area_queries()
 
 
