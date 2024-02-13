@@ -1,7 +1,7 @@
 from utils.config_loader import config_data
-from utils.load_data import poi_key_value_dic, area_key_value_dic
+#from data.input.loa import poi_key_value_dic, area_key_value_dic
 from urllib.parse import quote
-
+from data.queries.load_key_value_csv import poi_key_value_dic, area_key_value_dic
 city = config_data["city_name"]
 
 def list_of_street_queries():

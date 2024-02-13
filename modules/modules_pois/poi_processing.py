@@ -9,13 +9,14 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 
 import geopandas as gpd
-from utils.load_data import poi_key_value_df
+from data.queries.load_key_value_csv import poi_key_value_df
 import pandas as pd
 from utils.config_loader import config_data
 from utils.save_data import safe_gdf_as_gpkg
 
 #assign group, categorie and einflussbereich
 def assign_group_categorie_einflussbereich(osm_poi_gdf):
+
     """
     Merges the 'group' and 'categorie' columns of the osm_poi_gdf DataFrame with the poi_key_value_df DataFrame.
     The osm_poi_gdf DataFrame is updated and overwritten with the merged result.
@@ -27,18 +28,17 @@ def assign_group_categorie_einflussbereich(osm_poi_gdf):
         The updated osm_poi_gdf DataFrame with the 'group' and 'categorie' columns merged.
 
     """    
+    # Convert DataFrame to a dictionary
+    poi_key_value_dic = poi_key_value_df.to_dict('index')
     #merge group and categorie
     #updates and overwrites the osm_poi_gdf
     osm_poi_gdf = pd.merge(osm_poi_gdf, poi_key_value_df, left_on=['osm_key','osm_value'], right_on=['Key', 'value'], how='left')
 
-
     return osm_poi_gdf
 
 
-
 def main():
-    # function for testing
-
+    # function for testing 
     osm_pois_gdf = gpd.read_file(config_data["test_osm_poi_package"])
     osm_pois_gdf = assign_group_categorie_einflussbereich(osm_pois_gdf)
     safe_gdf_as_gpkg((osm_pois_gdf,"osm_pois_dresden_updated" ))
