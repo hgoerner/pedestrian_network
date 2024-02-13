@@ -12,7 +12,7 @@ import overpy
 import geopandas as gpd
 from shapely.geometry import Polygon
 from data.queries.queries import osm_area_queries
-from data.save_data import safe_gdf_as_gpkg
+from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import concatenate_geodataframes
 from utils.config_loader import config_data
 import logging
@@ -52,7 +52,7 @@ def _query_overpass(api,query):
     
 
 
-def _parse_osm_area_result(result: overpy.Result, osm_key: str, **kwargs):
+def _parse_osm_area_result(result: overpy.Result, osm_key: str, osm_value: str, **kwargs):
     """
     Parses the result of a query to a GeoDataFrame.
 
@@ -61,37 +61,22 @@ def _parse_osm_area_result(result: overpy.Result, osm_key: str, **kwargs):
     """
     # Create an empty dictionary to store the data 
     data = {'id': [],'osm_key': [],'osm_value': [],'geometry': []}
-
-    # Iterate over all elements in the result
-# Iterate over all relations in the result
-    for relation in result.relations:
-        # Accessing tags from each relation
-        print(f"Relation ID: {relation.id}")
-        for member in relation.members:
-            print(f"  Member Role: {member.role},")
-
-    # Iterate over all ways in the result
-    for way in result.ways:
-        # Accessing tags from each way
-        print(f"Way ID: {way.id}")
-
-
-
-
-        # # Accessing key-value pairs in the tags dictionary
-        # data['id'].append(relation.id)
-        # data['osm_key'].append(osm_key)
-        # #data['osm_value'].append(osm_value)
-        #     # Extract polygon coordinates from the area
-        # coordinates = [(node.lon, node.lat) for node in relation.nodes]
+    for area in result.areas:
+        print(len(result.areas))
+        # Accessing key-value pairs in the tags dictionary
+        data['id'].append(area.id)
+        data['osm_key'].append(osm_key)
+        data['osm_value'].append(osm_value)
+            # Extract polygon coordinates from the area
+        coordinates = [(node.lon, node.lat) for node in area.nodes]
         
-        # # Create a Polygon object
-        # polygon = Polygon(coordinates)
-        # data['geometry'].append(polygon)
+        # Create a Polygon object
+        polygon = Polygon(coordinates)
+        data['geometry'].append(polygon)
 
 
     #create a GeoDataFrame from the dictionary
-    #return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
+    return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
 def create_osm_area_gdf():
     """
     Creates a GeoDataFrame of OpenStreetMap streets.
@@ -101,17 +86,17 @@ def create_osm_area_gdf():
     #empty list to store the gdf
     list_of_gdf = []
 
-    for query_info in osm_area_queries:
+    for query_info in tqdm(osm_area_queries, desc="Querying Overpass"):
         area_query = query_info['query']
         osm_key = query_info['key']
-
+        osm_value = query_info['value']
         result = _query_overpass(api, area_query)
         if result is not None:
-            gdf = _parse_osm_area_result(result, osm_key)
+            gdf = _parse_osm_area_result(result, osm_key,osm_value)
             list_of_gdf.append(gdf)
             #add information to logfile
             number_of_areas = len(result.areas)
-            logging.info(f"osmKey: {osm_key} Anzahl_areas {number_of_areas}")
+            logging.info(f"osmKey: {osm_key} OsmValue: {osm_value} Anzahl_areas {number_of_areas}")
             
         else:
             # Log the missing query to the log file
