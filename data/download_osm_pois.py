@@ -79,6 +79,7 @@ def create_osm_poi_gdf():
     list_of_gdf = []
 
     for query_info in tqdm(osm_poi_queries, desc="Querying Overpass"):
+        print(query_info)
         poi_query = query_info['query']
         osm_key = query_info['key']
         osm_value = query_info['value']

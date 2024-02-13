@@ -1,5 +1,5 @@
 from utils.config_loader import config_data
-from data.load_data import poi_key_value_dic, area_key_value_dic
+from data.queries.load_data import poi_key_value_dic, area_key_value_dic
 from urllib.parse import quote
 
 city = config_data["city_name"]
@@ -57,6 +57,7 @@ def list_of_area_queries():
 
     for keys in area_key_value_dic.keys():
         osm_key = quote(area_key_value_dic[keys]["Key"])
+
         
 
         
@@ -64,7 +65,7 @@ def list_of_area_queries():
         queriy = f"""
             area["ISO3166-1"="DE"][admin_level=2]->.country;
             area[name="{city}"]->.city;
-            area[{osm_key}](area.city)(area.country);
+            rel[{osm_key}](area.city)(area.country);
             (._;>;);
             out body;
             """
@@ -78,7 +79,6 @@ def list_of_area_queries():
    
 osm_street_queries = list_of_street_queries()
 osm_poi_queries = list_of_poi_queries()
-osm_area_queries = []
-#list_of_area_queries()
+osm_area_queries = list_of_area_queries()
 
 
