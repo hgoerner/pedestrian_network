@@ -10,7 +10,7 @@ import overpy
 import geopandas as gpd
 from shapely.geometry import Point
 from data.queries.queries import osm_poi_queries
-from data.save_data import safe_gdf_as_gpkg
+from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import concatenate_geodataframes
 from utils.config_loader import config_data
 import logging
@@ -79,7 +79,6 @@ def create_osm_poi_gdf():
     list_of_gdf = []
 
     for query_info in tqdm(osm_poi_queries, desc="Querying Overpass"):
-        print(query_info)
         poi_query = query_info['query']
         osm_key = query_info['key']
         osm_value = query_info['value']
