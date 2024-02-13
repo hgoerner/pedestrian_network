@@ -9,10 +9,10 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 
 import geopandas as gpd
-from data.queries.load_data import poi_key_value_df
+from utils.load_data import poi_key_value_df
 import pandas as pd
 from utils.config_loader import config_data
-from data.save_data import safe_gdf_as_gpkg
+from utils.save_data import safe_gdf_as_gpkg
 
 #assign group, categorie and einflussbereich
 def assign_group_categorie_einflussbereich(osm_poi_gdf):
