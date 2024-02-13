@@ -12,7 +12,7 @@ import geopandas as gpd
 from shapely.geometry import LineString
 import overpy
 from queries.queries import osm_street_queries
-from save_data import safe_gdf_as_gpkg
+from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import concatenate_geodataframes
 from utils.config_loader import config_data
 

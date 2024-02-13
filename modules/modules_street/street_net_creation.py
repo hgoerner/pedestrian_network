@@ -8,7 +8,7 @@ print(current_directory)
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 
 from shapely.ops import linemerge
-from data.save_data import safe_gdf_as_gpkg
+from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import start_end_points
 from utils.config_loader import config_data
 
