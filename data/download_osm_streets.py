@@ -11,7 +11,7 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 import geopandas as gpd
 from shapely.geometry import LineString
 import overpy
-from queries.queries import osm_street_queries
+from data.queries.queries import osm_street_queries
 from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import concatenate_geodataframes
 from utils.config_loader import config_data
@@ -40,7 +40,7 @@ def create_osm_streets_gdf():
     """
     Creates a GeoDataFrame of OpenStreetMap streets.
 
-    Returns: None
+    Returns: GeoDataFrame of OpenStreetMap streets 
     """
     #empty list to store the gdf
     list_of_gdf = []
@@ -55,6 +55,9 @@ def create_osm_streets_gdf():
 
     safe_gdf_as_gpkg((osm_streets_gdf,"osm_street_net_"+config_data["city_name"],True))
 
+    return osm_streets_gdf
+
+
 
 def main():
     
@@ -64,4 +67,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

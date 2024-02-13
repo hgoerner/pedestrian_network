@@ -6,11 +6,14 @@ current_directory = os.getcwd()
 print(current_directory)
 
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
+
 
 from shapely.ops import linemerge
 from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import start_end_points
 from utils.config_loader import config_data
+from data.download_osm_streets import create_osm_streets_gdf
 
 
 
@@ -101,32 +104,24 @@ def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
         """
         
         # combine downloaded osm net
-        gdf_street_net = optimize_street_network(osm_street_net)
+        gdf_street_net_optimized = optimize_street_network(osm_street_net)
 
         #create gdf with support points
-        gdf_support_points = create_support_points(gdf_street_net)
+        gdf_support_points = create_support_points(gdf_street_net_optimized)
         
         #buffer support points
         gdf_bufferd_points = buffer_points(gdf_support_points)
         #count intersecting lines in buffered points and write to support point with same ID  
-        gdf__intersections_points = find_intersecting_lines(gdf_street_net,gdf_bufferd_points, gdf_support_points)
+        gdf__intersections_points = find_intersecting_lines(gdf_street_net_optimized,gdf_bufferd_points, gdf_support_points)
 
-        safe_gdf_as_gpkg((gdf_street_net,"street_net_optimized_"+config_data["city_name"]),(gdf__intersections_points,"node_points_"+config_data["city_name"]),(gdf_support_points,"support_points_"+config_data["city_name"],True), (gdf_bufferd_points,"buffer_points_"+config_data["city_name"],True    ))
-
-
+        safe_gdf_as_gpkg((gdf_street_net_optimized,"street_net_optimized_"+config_data["city_name"]),(gdf__intersections_points,"node_points_"+config_data["city_name"]),(gdf_support_points,"support_points_"+config_data["city_name"],True), (gdf_bufferd_points,"buffer_points_"+config_data["city_name"],True    ))
 
 def main():
-    # function for testing
-    if config_data["testing_phase"]:
-   
-        test_gdf = gpd.read_file(config_data["test_osm_street_package"])
-        create_street_net_and_intersection_gpkg(test_gdf)
+        
+    osm_street_net = create_osm_streets_gdf()
+        
+    create_street_net_and_intersection_gpkg(osm_street_net)
 
-    else:
-        street_net_gdf= gpd.read_file("output\interim_result\osm_street_net_Eibenstock.gpkg")
-        create_street_net_and_intersection_gpkg(street_net_gdf)
-
-    
 
 
 if __name__ == "__main__":

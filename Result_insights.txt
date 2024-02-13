@@ -1,5 +1,0 @@
-INFO:root:osmKey: place Anzahl_areas 0
-INFO:root:osmKey: natural Anzahl_areas 0
-INFO:root:osmKey: leisure Anzahl_areas 0
-INFO:root:osmKey: landuse Anzahl_areas 0
-INFO:root:osmKey: water Anzahl_areas 0
