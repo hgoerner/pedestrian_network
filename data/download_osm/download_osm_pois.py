@@ -1,7 +1,5 @@
 import sys
 import os
-from sklearn.cluster import DBSCAN
-from sklearn.preprocessing import StandardScaler
 
 current_directory = os.getcwd()
 print(current_directory)
@@ -19,7 +17,7 @@ from utils.config_loader import config_data
 import logging
 from tqdm import tqdm
 from overpy.exception import OverpassBadRequest
-import matplotlib.pyplot as plt
+
 
 # Configure logging
 #logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
@@ -105,34 +103,7 @@ def create_osm_poi_gdf():
     safe_gdf_as_gpkg((osm_poi_gdf,"osm_pois_plain_"+config_data["city_name"]))
 
 
-def find_outliers():
-    # Your GeoDataFrame with points
-    points_gdf = gpd.read_file(r"output\osm_pois_dresden_updated.gpkg")
 
-    # Extract and normalize the coordinates for clustering
-    coords = StandardScaler().fit_transform(points_gdf.geometry.apply(lambda geom: [geom.x, geom.y]).tolist())
-
-    # Apply DBSCAN clustering
-    dbscan = DBSCAN(eps=1, min_samples=5)
-    points_gdf['cluster'] = dbscan.fit_predict(coords)
-
-    # Identify outliers as points not assigned to any cluster (-1) or in small clusters
-    outliers_gdf = points_gdf[(points_gdf['cluster'] == -1) | (points_gdf.groupby('cluster')['cluster'].transform('count') < 5)]
-    print(outliers_gdf.size)
-    print(points_gdf.size)
-    #Plot the original points and outliers for visual inspection
-    fig, ax = plt.subplots(figsize=(12, 8))
-
-    # Plot all points
-    points_gdf.plot(ax=ax, color='blue', alpha=0.5, markersize=5, label='Original Points')
-
-    # Plot outliers
-    outliers_gdf.plot(ax=ax, color='red', alpha=0.5, markersize=5, label='Outliers')
-    safe_gdf_as_gpkg((outliers_gdf,"osm_pois_outliers_"+config_data["city_name"], True), (points_gdf,"osm_pois_original"+config_data["city_name"], True))
-
-    ax.set_title('Original Points and Outliers for Dresden')
-    ax.legend()
-    plt.show()
 
 
 def main():
