@@ -1,4 +1,9 @@
 {
     "python.analysis.addImport.exactMatchOnly": true,
-    "python.analysis.autoImportCompletions": true
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.fixAll": [],
+    "python.analysis.diagnosticSeverityOverrides": {},
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/venv/Scripts",
+    ],
 }

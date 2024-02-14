@@ -104,10 +104,9 @@ def create_osm_poi_gdf():
 
 
 
-
-
 def main():
-    #create_osm_poi_gdf()
-    find_outliers()
+    create_osm_poi_gdf()
+
+
 if __name__ == "__main__":
     main()
