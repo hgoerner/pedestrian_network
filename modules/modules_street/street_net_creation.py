@@ -13,7 +13,7 @@ from shapely.ops import linemerge
 from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import start_end_points
 from utils.config_loader import config_data
-from data.download_osm_streets import create_osm_streets_gdf
+from data.download_osm.download_osm_streets import create_osm_streets_gdf
 
 
 
@@ -29,12 +29,16 @@ def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
 
     # Use unary_union to merge the LineStrings into a single MultiLineString
     merged_multilinestring = gdf_osm_net["geometry"].unary_union
+
     # Merge every LineString that can be merged
     merged_linestring = linemerge(merged_multilinestring)
 
-
+    
     street_net_gdf= gpd.GeoDataFrame(geometry=[merged_linestring], crs=gdf_osm_net.crs)
     return street_net_gdf.reset_index(drop=True).explode(index_parts=False)
+ 
+
+
 
 def create_support_points(gdf):
 
@@ -106,6 +110,9 @@ def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
         # combine downloaded osm net
         gdf_street_net_optimized = optimize_street_network(osm_street_net)
 
+        # Calculate the length for each LineString and create a new column 'length'
+        gdf_street_net_optimized['length'] = gdf_street_net_optimized['geometry'].apply(lambda x: x.length)
+
         #create gdf with support points
         gdf_support_points = create_support_points(gdf_street_net_optimized)
         
@@ -117,6 +124,7 @@ def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
         safe_gdf_as_gpkg((gdf_street_net_optimized,"street_net_optimized_"+config_data["city_name"]),(gdf__intersections_points,"node_points_"+config_data["city_name"]),(gdf_support_points,"support_points_"+config_data["city_name"],True), (gdf_bufferd_points,"buffer_points_"+config_data["city_name"],True    ))
 
 def main():
+       
         
     osm_street_net = create_osm_streets_gdf()
         

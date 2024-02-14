@@ -10,7 +10,6 @@ area_key_value_df = pd.read_csv(area_csv, sep=';')
 
 # Convert DataFrame to a dictionary
 poi_key_value_dic = poi_key_value_df.to_dict('index')
-
 # dictionary is wrong, better a diffferent attapt
 area_key_value_dic = area_key_value_df.to_dict('index')
 

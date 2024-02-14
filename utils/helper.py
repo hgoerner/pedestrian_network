@@ -14,3 +14,4 @@ def start_end_points(line: LineString):
 def concatenate_geodataframes(gdf_list: List[gpd.GeoDataFrame]):
     #Concatenate a list of GeoDataFrames
     return pd.concat(gdf_list, ignore_index=True)
+

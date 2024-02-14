@@ -9,7 +9,7 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 
 import geopandas as gpd
-from data.queries.load_key_value_csv import poi_key_value_df
+from data.queries.load_key_value_data import poi_key_value_df
 import pandas as pd
 from utils.config_loader import config_data
 from utils.save_data import safe_gdf_as_gpkg

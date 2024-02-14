@@ -11,6 +11,7 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 import geopandas as gpd
 from shapely.geometry import LineString
 import overpy
+from tqdm import tqdm
 from data.queries.queries import osm_street_queries
 from utils.save_data import safe_gdf_as_gpkg
 from utils.helper import concatenate_geodataframes
@@ -45,7 +46,7 @@ def create_osm_streets_gdf():
     #empty list to store the gdf
     list_of_gdf = []
 
-    for street_query in osm_street_queries:
+    for street_query in tqdm(osm_street_queries, desc="Querying Overpass"):
     
         result = _query_overpass(api, street_query)
         gdf = _parse_osm_result(result)
