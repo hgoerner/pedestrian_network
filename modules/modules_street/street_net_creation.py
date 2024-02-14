@@ -1,9 +1,9 @@
 import geopandas as gpd
+from shapely import LineString
 import sys
 import os
 
 current_directory = os.getcwd()
-print(current_directory)
 
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
@@ -97,16 +97,21 @@ def find_intersecting_lines(gdf_lines, gdf_buffers, gdf_support_points):
 
     return gdf_support_points[gdf_support_points["Number_of_intersections"] >= 3]
 
-def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame):
+def create_street_net_and_intersection_gpkg(osm_street_net:gpd.GeoDataFrame[LineString]):   
         """
         Create a street network and intersection GeoPackage.
 
         Args:
             osm_street_net: GeoDataFrame containing the downloaded OSM street network.
 
-        Returns: None
+        Returns:
+            None
+
+        This function combines the downloaded OSM street network, optimizes it by merging 
+        the LineString elements into one entity, and calculates the length for each LineString.
+        It then creates a GeoDataFrame with support points, buffers the support points, and counts the number of intersecting lines in the buffered points.
+        The resulting GeoDataFrames are saved as a GeoPackage file.
         """
-        
         # combine downloaded osm net
         gdf_street_net_optimized = optimize_street_network(osm_street_net)
 

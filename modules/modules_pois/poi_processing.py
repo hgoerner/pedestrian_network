@@ -28,8 +28,6 @@ def assign_group_categorie_einflussbereich(osm_poi_gdf):
         The updated osm_poi_gdf DataFrame with the 'group' and 'categorie' columns merged.
 
     """    
-    # Convert DataFrame to a dictionary
-    poi_key_value_dic = poi_key_value_df.to_dict('index')
     #merge group and categorie
     #updates and overwrites the osm_poi_gdf
     osm_poi_gdf = pd.merge(osm_poi_gdf, poi_key_value_df, left_on=['osm_key','osm_value'], right_on=['Key', 'value'], how='left')
@@ -40,6 +38,7 @@ def assign_group_categorie_einflussbereich(osm_poi_gdf):
 def main():
     # function for testing 
     osm_pois_gdf = gpd.read_file(config_data["test_osm_poi_package"])
+
     osm_pois_gdf = assign_group_categorie_einflussbereich(osm_pois_gdf)
     safe_gdf_as_gpkg((osm_pois_gdf,"osm_pois_dresden_updated" ))
     print(osm_pois_gdf)

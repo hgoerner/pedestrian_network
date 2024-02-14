@@ -4,6 +4,8 @@ from urllib.parse import quote
 from data.queries.load_key_value_data import poi_key_value_dic, area_key_value_dic
 city = config_data["city_name"]
 
+
+
 def list_of_street_queries():
   
     street_queries = []
@@ -79,6 +81,3 @@ def list_of_area_queries():
 osm_street_queries = list_of_street_queries()
 osm_poi_queries = list_of_poi_queries()
 osm_area_queries = []
-#list_of_area_queries()
-
-

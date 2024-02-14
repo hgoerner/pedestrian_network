@@ -41,8 +41,14 @@ def create_osm_streets_gdf():
     """
     Creates a GeoDataFrame of OpenStreetMap streets.
 
-    Returns: GeoDataFrame of OpenStreetMap streets 
+    This function queries the Overpass API with predefined street queries to retrieve OpenStreetMap street data.
+    It then parses the result of the query and creates a GeoDataFrame of the streets.
+    The resulting GeoDataFrame is saved as a GeoPackage file.
+
+    Returns:
+        GeoDataFrame: GeoDataFrame of OpenStreetMap streets.
     """
+
     #empty list to store the gdf
     list_of_gdf = []
 

@@ -1,7 +1,7 @@
 # config.yml
 
 #city to create the streetnet, poi ...
-city_name: "Zwickau"
+city_name: "Dresden"
 
 # for testing purposes
 testing_phase: True
