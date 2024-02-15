@@ -39,7 +39,6 @@ def create_plot_of_pois_outlier(gdf_without_outliers: gpd.GeoDataFrame, gdf_outl
         f"Original Points and Outliers for {config_data['city_name']}")
     ax.legend()
     plt.show()
-    plt.close()  # Close the previous plot
 
 
 def create_plot_of_pois(gdf_without_outliers: gpd.GeoDataFrame, **kwargs):
@@ -63,24 +62,10 @@ def create_plot_of_pois(gdf_without_outliers: gpd.GeoDataFrame, **kwargs):
     fig, ax = plt.subplots()
 
     # Plot all points
-    # gdf_without_outliers.plot(ax=ax, color='blue', alpha=0.5,
-    #                           markersize=kwargs.get('markersize', 5), label='Original Points')
+    gdf_without_outliers.plot(ax=ax, column="Klasse", alpha=0.5,
+                              markersize=kwargs.get('markersize', 5), label='Original Points')
 
-    if kwargs.get('basemap', False):
-        # Add basemap using contextily
-        # plot basemap (it uses 'epsg:3857')
+    ax.set_title(
+        f"Original Pois of {config_data['city_name']}")
 
-        gdf_without_outliers = gdf_without_outliers.to_crs(epsg=3857)
-        ax = gdf_without_outliers.plot(
-            figsize=(5, 5), alpha=0.5, edgecolor="k", markersize=0.5)
-        cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik, zoom=12)
-        # Display interactive leaflet map
-        mplleaflet.show(fig=ax.figure)
-
-        plt.show()
-
-    # ax.set_axis_off()
-    # ax.set_title(
-    #     f"Original Pois of {config_data['city_name']}")
-    # ax.legend()
-    # plt.show()
+    plt.show()
