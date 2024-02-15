@@ -1,36 +1,40 @@
 from sklearn.cluster import DBSCAN
 from sklearn.preprocessing import StandardScaler
 import geopandas as gpd
-from utils.config_loader import config_data
-from utils.save_data import safe_gdf_as_gpkg
-import matplotlib.pyplot as plt
+import pandas as pd
+
 
 def find_outliers(osm_points_gdf: gpd.GeoDataFrame):
-    # Your GeoDataFrame with points
-    points_gdf = gpd.read_file(r"output\osm_pois_dresden_updated.gpkg")
+    """
+    Find outliers in a GeoDataFrame of OpenStreetMap points.
+
+    Extracts and normalizes the coordinates of the points for clustering.
+    Applies DBSCAN clustering to identify clusters of points.
+    Identifies outliers as points not assigned to any cluster or in small clusters.
+    Returns two GeoDataFrames: one with the points without outliers and one with the outliers.
+
+    Args:
+        osm_points_gdf: The GeoDataFrame containing the OpenStreetMap points.
+
+    Returns:
+        gdf_points_without_outliers: The GeoDataFrame containing the points without outliers.
+        gdf_points_with_outliers: The GeoDataFrame containing the outliers.
+    """
 
     # Extract and normalize the coordinates for clustering
-    coords = StandardScaler().fit_transform(points_gdf.geometry.apply(lambda geom: [geom.x, geom.y]).tolist())
+    coords = StandardScaler().fit_transform(
+        osm_points_gdf.geometry.apply(lambda geom: [geom.x, geom.y]).tolist())
 
     # Apply DBSCAN clustering
     dbscan = DBSCAN(eps=1, min_samples=5)
-    points_gdf['cluster'] = dbscan.fit_predict(coords)
+    osm_points_gdf['cluster'] = dbscan.fit_predict(coords)
 
     # Identify outliers as points not assigned to any cluster (-1) or in small clusters
-    outliers_gdf = points_gdf[(points_gdf['cluster'] == -1) | (points_gdf.groupby('cluster')['cluster'].transform('count') < 5)]
+    gdf_points_with_outliers = osm_points_gdf[(osm_points_gdf['cluster'] == -1) | (
+        osm_points_gdf.groupby('cluster')['cluster'].transform('count') < 5)]
 
-    #Plot the original points and outliers for visual inspection
-    fig, ax = plt.subplots(figsize=(12, 8))
+    # Subtract df2 from df1
+    gdf_points_without_outliers = pd.merge(osm_points_gdf, gdf_points_with_outliers, how='outer', indicator=True).query(
+        '_merge == "left_only"').drop('_merge', axis=1)
 
-    # Plot all points
-    points_gdf.plot(ax=ax, color='blue', alpha=0.5, markersize=5, label='Original Points')
-
-    # Plot outliers
-    outliers_gdf.plot(ax=ax, color='red', alpha=0.5, markersize=5, label='Outliers')
-    safe_gdf_as_gpkg((outliers_gdf,"osm_pois_outliers_"+config_data["city_name"], True))
-
-    city = config_data["city_name"]
-
-    ax.set_title(f'Original Points and Outliers for {city}')
-    ax.legend()
-    plt.show()
+    return gdf_points_without_outliers, gdf_points_with_outliers

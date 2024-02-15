@@ -1,3 +1,13 @@
+from overpy.exception import OverpassBadRequest
+from tqdm import tqdm
+import logging
+from utils.config_loader import config_data
+from utils.helper import concatenate_geodataframes
+from utils.save_data import safe_gdf_as_gpkg
+from data.queries.queries import osm_poi_queries
+from shapely.geometry import Point
+import geopandas as gpd
+import overpy
 import sys
 import os
 
@@ -7,25 +17,16 @@ print(current_directory)
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
-import overpy
-import geopandas as gpd
-from shapely.geometry import Point
-from data.queries.queries import osm_poi_queries
-from utils.save_data import safe_gdf_as_gpkg
-from utils.helper import concatenate_geodataframes
-from utils.config_loader import config_data
-import logging
-from tqdm import tqdm
-from overpy.exception import OverpassBadRequest
-
 
 # Configure logging
-#logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
-logging.basicConfig(filename='Result_insights.txt', level=logging.INFO, filemode='w')
+# logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
+logging.basicConfig(filename='Result_insights.txt',
+                    level=logging.INFO, filemode='w')
 
 api = overpy.Overpass()
 
-def _query_overpass(api,query):
+
+def _query_overpass(api, query: str):
     """
     Query the Overpass API with the given query.
 
@@ -49,7 +50,6 @@ def _query_overpass(api,query):
     except OverpassBadRequest as e:
         # Handle the exception (e.g., print an error message)
         print(f"OverpassBadRequest: {e}")
-    
 
 
 def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str, **kwargs):
@@ -59,8 +59,8 @@ def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str, *
     Args:
         result: The result of the query.
     """
-    # Create an empty dictionary to store the data 
-    data = {'id': [],'osm_key': [],'osm_value': [],'geometry': []}
+    # Create an empty dictionary to store the data
+    data = {'id': [], 'osm_key': [], 'osm_value': [], 'geometry': []}
 
     for node in result.nodes:
         # Accessing key-value pairs in the tags dictionary
@@ -69,18 +69,31 @@ def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str, *
         data['osm_value'].append(osm_value)
         data['geometry'].append(Point(node.lon, node.lat))
 
-    #create a GeoDataFrame from the dictionary
+    # create a GeoDataFrame from the dictionary
     return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
-
 
 
 def create_osm_poi_gdf():
     """
-    Creates a GeoDataFrame of OpenStreetMap streets.
+    Creates a geodataframe of OpenStreetMap points of interest (POIs).
 
-    Returns: None
+    Queries Overpass API for each specified POI query, parses the result, and appends the resulting geodataframe to a list.
+    The list of geodataframes is then concatenated into a single geodataframe.
+    The final geodataframe is saved as a GeoPackage file.
+
+    Args:
+        None
+
+    Returns:
+        geopandas.GeoDataFrame: The geodataframe containing the OpenStreetMap points of interest.
+
+    Raises:
+        None
+
+    Examples:
+        create_osm_poi_gdf()
     """
-    #empty list to store the gdf
+    # empty list to store the gdf
     list_of_gdf = []
 
     for query_info in tqdm(osm_poi_queries, desc="Querying Overpass"):
@@ -89,19 +102,21 @@ def create_osm_poi_gdf():
         osm_value = query_info['value']
         result = _query_overpass(api, poi_query)
         if result is not None:
-            gdf = _parse_osm_poi_result(result, osm_key,osm_value)
+            gdf = _parse_osm_poi_result(result, osm_key, osm_value)
             list_of_gdf.append(gdf)
-            #add information to logfile
+            # add information to logfile
             number_of_pois = len(result.nodes)
-            logging.info(f"osmKey: {osm_key} OsmValue: {osm_value} Anzahl_pois {number_of_pois}")
+            logging.info(
+                f"osmKey: {osm_key} OsmValue: {osm_value} Anzahl_pois {number_of_pois}")
         else:
             # Log the missing query to the log file
-            #logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {poi_query}")
+            # logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {poi_query}")
             continue
 
     osm_poi_gdf = concatenate_geodataframes(list_of_gdf)
-    safe_gdf_as_gpkg((osm_poi_gdf,"osm_pois_plain_"+config_data["city_name"]))
+    safe_gdf_as_gpkg((osm_poi_gdf, "osm_pois_plain_"+config_data["city_name"]))
 
+    return osm_poi_gdf
 
 
 def main():

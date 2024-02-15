@@ -16,3 +16,15 @@ path_to_area_csv: 'data\input\area_key_value.CSV'
 
 # osm-values for the key highway
 street_types_list: ["primary", "secondary", "tertiary", "unclassified"]
+# visualisationparams
+# not in code yet
+
+osm_points_kwargs:
+  color: "blue"
+  alpha: 0.5
+  markersize: 5
+
+outliers_kwargs:
+  color: "red"
+  alpha: 0.5
+  markersize: 5
