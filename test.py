@@ -11,7 +11,6 @@ folium.Marker(
     icon=folium.Icon(color='blue')
 ).add_to(m)
 
-<<<<<<< HEAD
 # Replace with your actual point data
 points_array = np.array(
     list(zip(points_gdf.geometry.x, points_gdf.geometry.y)))
@@ -24,7 +23,3 @@ points_gdf['cluster'] = dbscan.fit_predict(points_array)
 fig, ax = plt.subplots(figsize=(10, 10))
 points_gdf.plot(column='cluster', cmap='viridis', legend=True, ax=ax)
 plt.show()
-=======
-# Save the map as an HTML file
-m.save("simple_map.html")
->>>>>>> 840e115a4d0120048247be77784be4ff31759d39
