@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 current_directory = os.getcwd()
 print(current_directory)
@@ -8,16 +8,18 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 
-import overpy
-import geopandas as gpd
-from shapely.geometry import Polygon
-from data.queries.queries import osm_area_queries
-from utils.save_data import safe_gdf_as_gpkg
-from utils.helper import concatenate_geodataframes
-from utils.config_loader import config_data
 import logging
-from tqdm import tqdm
+
+import geopandas as gpd
+import overpy
 from overpy.exception import OverpassBadRequest
+from shapely.geometry import Polygon
+from tqdm import tqdm
+
+from data.queries.queries import osm_area_queries
+from utils.config_loader import config_data
+from utils.helper import concatenate_geodataframes
+from utils.save_data import safe_gdf_as_gpkg
 
 # Configure logging
 #logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)

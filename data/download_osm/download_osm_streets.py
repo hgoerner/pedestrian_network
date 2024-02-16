@@ -1,6 +1,6 @@
 
-import sys
 import os
+import sys
 
 current_directory = os.getcwd()
 print(current_directory)
@@ -9,13 +9,14 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 import geopandas as gpd
-from shapely.geometry import LineString
 import overpy
+from shapely.geometry import LineString
 from tqdm import tqdm
+
 from data.queries.queries import osm_street_queries
-from utils.save_data import safe_gdf_as_gpkg
-from utils.helper import concatenate_geodataframes
 from utils.config_loader import config_data
+from utils.helper import concatenate_geodataframes
+from utils.save_data import safe_gdf_as_gpkg
 
 api = overpy.Overpass()
 
