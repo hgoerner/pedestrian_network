@@ -1,6 +1,5 @@
-Key
-place
-natural
-leisure
-landuse
-water
+value;Key;Gruppe;Klasse;Einflussbereich;Bedeutung;
+wetland;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+wood;natural;Gruen-, Blau- & Platzflaechen;Wald/Gehoelz;25;10
+
+

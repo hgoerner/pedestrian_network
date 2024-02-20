@@ -54,28 +54,65 @@ def _query_overpass(api,query):
     
 
 
-def _parse_osm_area_result(result: overpy.Result, osm_key: str, osm_value: str, **kwargs):
+def _parse_osm_area_result(result: overpy.Result, osm_key: str,osm_value: str,**kwargs):
     """
     Parses the result of a query to a GeoDataFrame.
 
     Args:
         result: The result of the query.
     """
-    # Create an empty dictionary to store the data 
-    data = {'id': [],'osm_key': [],'osm_value': [],'geometry': []}
-    for area in result.areas:
-        print(len(result.areas))
-        # Accessing key-value pairs in the tags dictionary
-        data['id'].append(area.id)
-        data['osm_key'].append(osm_key)
-        data['osm_value'].append(osm_value)
-            # Extract polygon coordinates from the area
-        coordinates = [(node.lon, node.lat) for node in area.nodes]
-        
-        # Create a Polygon object
-        polygon = Polygon(coordinates)
-        data['geometry'].append(polygon)
 
+    # Create an empty dictionary to store the data 
+    data = {'id': [], 'osm_key': [], 'osm_value': [], 'geometry': []}
+    
+    for relation in result.relations:
+        
+        # Initialize lists to store outer and inner coordinates for each polygon
+        outer_polygons = []
+        inner_polygons = []
+        result_polygons = []
+        for member in relation.members:
+            member_ref = member.ref
+            polygon_line_query = f"way({member_ref});(._;>;);out geom;"
+            polygon_line_result = api.query(polygon_line_query)
+            for polygon_line in polygon_line_result.ways:
+                if len(polygon_line.nodes) >= 4:
+                    coordinates = [(node.lon, node.lat) for node in polygon_line.nodes]
+                    print(member,len(coordinates))
+
+                    polygon = Polygon(coordinates)
+                    if polygon.is_valid:
+
+                        # Check if the member role is "inner" or "outer"
+                        if member.role == "outer":
+                            outer_polygons.append(polygon)
+                        elif member.role == "inner":
+                            inner_polygons.append(polygon)  
+                        
+            for outer_polygon in outer_polygons:
+                # Attempt to subtract each inner polygon from the current outer polygon
+                try:
+                    for inner_polygon in inner_polygons:
+                        outer_polygon = outer_polygon.difference(inner_polygon)
+                    
+                    # If the result is not empty, append it to the list
+                    if outer_polygon.is_empty:
+                        # Handle the case where the subtraction results in an empty geometry
+                        print(f"Subtraction resulted in an empty geometry for outer polygon {outer_polygon}")
+                    else:
+                        result_polygons.append(outer_polygon)
+                except Exception as e:
+                    # Handle the exception, log it, or take appropriate action
+                    print(f"Error subtracting inner polygons from outer polygon: {e}")            
+                    #polygon_nodes = polygon_line_result.ways[0].nodes
+        print(len(result_polygons))
+        # # Update the data dictionary with information for each polygon
+        for polygon in result_polygons:
+            print(polygon)
+            data['id'].append(relation.id)
+            data['osm_key'].append(osm_key)
+            data['osm_value'].append(osm_value)
+            data['geometry'].append(polygon) 
 
     #create a GeoDataFrame from the dictionary
     return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
@@ -87,18 +124,22 @@ def create_osm_area_gdf():
     """
     #empty list to store the gdf
     list_of_gdf = []
+ 
 
     for query_info in tqdm(osm_area_queries, desc="Querying Overpass"):
         area_query = query_info['query']
+        
         osm_key = query_info['key']
         osm_value = query_info['value']
+
+        print(osm_value)
         result = _query_overpass(api, area_query)
         if result is not None:
-            gdf = _parse_osm_area_result(result, osm_key,osm_value)
+            gdf = _parse_osm_area_result(result, osm_key, osm_value)
             list_of_gdf.append(gdf)
             #add information to logfile
             number_of_areas = len(result.areas)
-            logging.info(f"osmKey: {osm_key} OsmValue: {osm_value} Anzahl_areas {number_of_areas}")
+            logging.info(f"osmKey: {osm_key} Anzahl_areas {number_of_areas}")
             
         else:
             # Log the missing query to the log file
