@@ -4,7 +4,6 @@ from utils.helper import start_end_points
 from utils.save_data import safe_gdf_as_gpkg
 from shapely.ops import linemerge
 import geopandas as gpd
-from shapely import LineString
 import sys
 import os
 
