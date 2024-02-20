@@ -89,26 +89,25 @@ def _parse_osm_area_result(result: overpy.Result, osm_key: str,osm_value: str,**
                         elif member.role == "inner":
                             inner_polygons.append(polygon)  
                         
-            for outer_polygon in outer_polygons:
-                # Attempt to subtract each inner polygon from the current outer polygon
-                try:
-                    for inner_polygon in inner_polygons:
-                        outer_polygon = outer_polygon.difference(inner_polygon)
-                    
-                    # If the result is not empty, append it to the list
-                    if outer_polygon.is_empty:
-                        # Handle the case where the subtraction results in an empty geometry
-                        print(f"Subtraction resulted in an empty geometry for outer polygon {outer_polygon}")
-                    else:
-                        result_polygons.append(outer_polygon)
-                except Exception as e:
-                    # Handle the exception, log it, or take appropriate action
-                    print(f"Error subtracting inner polygons from outer polygon: {e}")            
-                    #polygon_nodes = polygon_line_result.ways[0].nodes
+        for outer_polygon in outer_polygons:
+            # Attempt to subtract each inner polygon from the current outer polygon
+            try:
+                for inner_polygon in inner_polygons:
+                    outer_polygon = outer_polygon.difference(inner_polygon)
+                
+                # If the result is not empty, append it to the list
+                if outer_polygon.is_empty:
+                    # Handle the case where the subtraction results in an empty geometry
+                    print(f"Subtraction resulted in an empty geometry for outer polygon {outer_polygon}")
+                else:
+                    result_polygons.append(outer_polygon)
+            except Exception as e:
+                # Handle the exception, log it, or take appropriate action
+                print(f"Error subtracting inner polygons from outer polygon: {e}")            
+                #polygon_nodes = polygon_line_result.ways[0].nodes
         print(len(result_polygons))
         # # Update the data dictionary with information for each polygon
         for polygon in result_polygons:
-            print(polygon)
             data['id'].append(relation.id)
             data['osm_key'].append(osm_key)
             data['osm_value'].append(osm_value)
