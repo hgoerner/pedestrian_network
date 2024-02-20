@@ -1,15 +1,17 @@
-from overpy.exception import OverpassBadRequest
-from tqdm import tqdm
 import logging
+import os
+import sys
+
+import geopandas as gpd
+import overpy
+from overpy.exception import OverpassBadRequest
+from shapely.geometry import Point
+from tqdm import tqdm
+
+from data.queries.queries import osm_poi_queries
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
 from utils.save_data import safe_gdf_as_gpkg
-from data.queries.queries import osm_poi_queries
-from shapely.geometry import Point
-import geopandas as gpd
-import overpy
-import sys
-import os
 
 current_directory = os.getcwd()
 print(current_directory)
