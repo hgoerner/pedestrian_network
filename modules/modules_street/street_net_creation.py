@@ -131,7 +131,7 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
     gdf__intersections_points = find_intersecting_lines(
         gdf_street_net_optimized, gdf_bufferd_points, gdf_support_points)
     
-    gdf_street_net_optimized = overay_geo_data(osm_street_net, gdf_street_net_optimized)
+    #gdf_street_net_optimized = overay_geo_data(osm_street_net, gdf_street_net_optimized)
 
     safe_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf__intersections_points, "node_points_"+config_data["city_name"]), (
         gdf_support_points, "support_points_"+config_data["city_name"], True), (gdf_bufferd_points, "buffer_points_"+config_data["city_name"], True))
