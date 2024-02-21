@@ -1,12 +1,14 @@
-from data.download_osm.download_osm_streets import create_osm_streets_gdf
-from utils.config_loader import config_data
-from utils.helper import start_end_points
-from utils.save_data import safe_gdf_as_gpkg
-from shapely.ops import linemerge
+import os
+import sys
+
 import geopandas as gpd
 from shapely import LineString
-import sys
-import os
+from shapely.ops import linemerge
+
+from data.download_osm.download_osm_streets import create_osm_streets_gdf
+from utils.config_loader import config_data
+from utils.helper import overay_geo_data, start_end_points
+from utils.save_data import safe_gdf_as_gpkg
 
 current_directory = os.getcwd()
 
@@ -131,13 +133,19 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
 
     safe_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf__intersections_points, "node_points_"+config_data["city_name"]), (
         gdf_support_points, "support_points_"+config_data["city_name"], True), (gdf_bufferd_points, "buffer_points_"+config_data["city_name"], True))
+    
+    return gdf_street_net_optimized
 
 
 def main():
 
     osm_street_net = create_osm_streets_gdf()
 
-    create_street_net_and_intersection_gpkg(osm_street_net)
+    gdf_street_net_optimized = create_street_net_and_intersection_gpkg(osm_street_net)
+    
+    new_gdf = overay_geo_data(osm_street_net,gdf_street_net_optimized)
+    print(new_gdf.head())
+    
 
 
 if __name__ == "__main__":

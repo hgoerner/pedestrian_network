@@ -1,5 +1,6 @@
 import os
 import sys
+from distutils import config
 
 current_directory = os.getcwd()
 print(current_directory)
@@ -105,7 +106,6 @@ def _parse_osm_area_result(result: overpy.Result, osm_key: str,osm_value: str,**
                 # Handle the exception, log it, or take appropriate action
                 print(f"Error subtracting inner polygons from outer polygon: {e}")            
                 #polygon_nodes = polygon_line_result.ways[0].nodes
-        print(len(result_polygons))
         # # Update the data dictionary with information for each polygon
         for polygon in result_polygons:
             data['id'].append(relation.id)
@@ -123,11 +123,11 @@ def create_osm_area_gdf():
     """
     #empty list to store the gdf
     list_of_gdf = []
- 
+
 
     for query_info in tqdm(osm_area_queries, desc="Querying Overpass"):
         area_query = query_info['query']
-        
+
         osm_key = query_info['key']
         osm_value = query_info['value']
 
@@ -139,15 +139,18 @@ def create_osm_area_gdf():
             #add information to logfile
             number_of_areas = len(result.areas)
             logging.info(f"osmKey: {osm_key} Anzahl_areas {number_of_areas}")
-            
+
         else:
             # Log the missing query to the log file
             #logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {poi_query}")
-            #for testin
-            continue
 
-    osm_area_gdf = concatenate_geodataframes(list_of_gdf)
-    safe_gdf_as_gpkg((osm_area_gdf,"osm_area_plain_"+config_data["city_name"]))
+            continue
+    if list_of_gdf is not None:
+
+        osm_area_gdf = concatenate_geodataframes(list_of_gdf)
+        safe_gdf_as_gpkg((osm_area_gdf,"osm_area_plain_"+config_data["city_name"]))
+    else:
+        logging.info("No area result in " + config_data["city_name"])
 
 def main():
 
