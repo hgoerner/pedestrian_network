@@ -1,6 +1,11 @@
 import os
 import sys
 
+current_directory = os.getcwd()
+
+sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
+
 import geopandas as gpd
 from shapely import LineString
 from shapely.ops import linemerge
@@ -9,11 +14,6 @@ from data.download_osm.download_osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
 from utils.helper import overay_geo_data, start_end_points
 from utils.save_data import safe_gdf_as_gpkg
-
-current_directory = os.getcwd()
-
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
 
 
 def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
@@ -130,6 +130,8 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
     # count intersecting lines in buffered points and write to support point with same ID
     gdf__intersections_points = find_intersecting_lines(
         gdf_street_net_optimized, gdf_bufferd_points, gdf_support_points)
+    
+    gdf_street_net_optimized = overay_geo_data(osm_street_net, gdf_street_net_optimized)
 
     safe_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf__intersections_points, "node_points_"+config_data["city_name"]), (
         gdf_support_points, "support_points_"+config_data["city_name"], True), (gdf_bufferd_points, "buffer_points_"+config_data["city_name"], True))
@@ -141,10 +143,7 @@ def main():
 
     osm_street_net = create_osm_streets_gdf()
 
-    gdf_street_net_optimized = create_street_net_and_intersection_gpkg(osm_street_net)
-    
-    new_gdf = overay_geo_data(osm_street_net,gdf_street_net_optimized)
-    print(new_gdf.head())
+    create_street_net_and_intersection_gpkg(osm_street_net)
     
 
 
