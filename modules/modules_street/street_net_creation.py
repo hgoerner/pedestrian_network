@@ -28,6 +28,8 @@ def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
 
     # Use unary_union to merge the LineStrings into a single MultiLineString
     merged_multilinestring = gdf_osm_net["geometry"].unary_union
+    exploded_osm_net = gdf_osm_net.explode()
+    print(exploded_osm_net)
 
     # Merge every LineString that can be merged
     merged_linestring = linemerge(merged_multilinestring)
