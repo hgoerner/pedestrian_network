@@ -13,6 +13,8 @@ safe_interim_results: true
 # input csv with necessary key value pairs
 path_to_poi_csv: 'data\input\poi_key_value.CSV'
 path_to_area_csv: 'data\input\area_key_value.CSV'
+path_to_census_file: 'data\input\Zensus_Bevoelkerung_100m-Gitter.csv'
+zensus_crs : "EPSG:3035"
 
 # osm-values for the key highway
 street_types_list: ["primary", "secondary", "tertiary", "unclassified"]
