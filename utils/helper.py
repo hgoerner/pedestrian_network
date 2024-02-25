@@ -1,5 +1,5 @@
 from typing import List
-
+import os
 import geopandas as gpd
 import pandas as pd
 from shapely.geometry import LineString, Point
@@ -19,3 +19,7 @@ def concatenate_geodataframes(gdf_list: List[gpd.GeoDataFrame]):
 
 def overlay_geo_data(osm_gdf, optimized_gdf):
     return gpd.overlay(osm_gdf, optimized_gdf, how='intersection')
+
+
+def file_exists(file_path):
+    return os.path.exists(file_path)

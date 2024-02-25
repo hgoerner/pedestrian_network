@@ -22,7 +22,7 @@ from utils.save_data import safe_gdf_as_gpkg
 
 # Configure logging
 # logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
-logging.basicConfig(filename='Result_insights.txt',
+logging.basicConfig(filename='Result_area_insights.txt',
                     level=logging.INFO, filemode='w')
 
 api = overpy.Overpass()

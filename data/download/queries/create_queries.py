@@ -61,7 +61,6 @@ def list_of_area_queries():
     for keys in area_key_value_dic.keys():
         osm_key = quote(area_key_value_dic[keys]["Key"])  
         osm_value = quote(area_key_value_dic[keys]["value"])
-        print(osm_value)
         # Use a list comprehension to generate queries for each value of the key
         queriy = f"""
             area["ISO3166-1"="DE"][admin_level=2]->.country;
