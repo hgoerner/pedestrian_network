@@ -17,5 +17,5 @@ def concatenate_geodataframes(gdf_list: List[gpd.GeoDataFrame]):
     #Concatenate a list of GeoDataFrames
     return pd.concat(gdf_list, ignore_index=True)
 
-def overay_geo_data(osm_gdf, optimized_gdf):
+def overlay_geo_data(osm_gdf, optimized_gdf):
     return gpd.overlay(osm_gdf, optimized_gdf, how='intersection')

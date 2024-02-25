@@ -1,4 +1,4 @@
-value;Key;Gruppe;Klasse;Einflussbereich;Bedeutung;;Info ;25m Mindestpuffer da sonst keine Strecken ber�hrt werden
+value;Key;Gruppe;Klasse;Einflussbereich;Bedeutung;
 wetland;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
 riverbank;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
 reservoir;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
@@ -11,3 +11,7 @@ park;leisure;Gruen-, Blau- & Platzflaechen;Park/gestaltetes Gruen;100;20
 cemetery;landuse;Gruen-, Blau- & Platzflaechen;Friedhof;25;10
 grave_yard;amenity;Gruen-, Blau- & Platzflaechen;Friedhof;25;10
 square;place;Gruen-, Blau- & Platzflaechen;Friedhof;25;10
+natural;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+river;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+basin;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
+pond;water;Gruen-, Blau- & Platzflaechen;Gewaesser;100;15
