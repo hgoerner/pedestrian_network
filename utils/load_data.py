@@ -16,10 +16,3 @@ area_key_value_dic = area_key_value_df.to_dict('index')
 #TODO: create load function for the different used geodataframes
 # like osm street net, osm_pois, 
 
-zensus_dataframe = pd.read_csv(config_data["path_to_census_file"], sep=";")
-
-# Assuming df is your DataFrame
-zensus_dataframe = zensus_dataframe[zensus_dataframe['Einwohner'] != -1]
-
-
-print(zensus_dataframe)

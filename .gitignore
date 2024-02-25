@@ -165,3 +165,5 @@ Zensus_Bevoelkerung_100m-Gitter.csv
 /data/input/Zensus_Bevoelkerung_100m-Gitter.csv
 /data/output/zensus_data.gpkg
 zensus_data.gpkg
+csv_Bevoelkerung_100m_Gitter.zip
+/data/input/zensusfile/csv_Bevoelkerung_100m_Gitter.zip
