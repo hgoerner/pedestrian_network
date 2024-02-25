@@ -21,7 +21,7 @@ from utils.save_data import safe_gdf_as_gpkg
 
 # Configure logging
 # logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
-logging.basicConfig(filename='Result_insights.txt',
+logging.basicConfig(filename='Result__poi_insights.txt',
                     level=logging.INFO, filemode='w')
 
 api = overpy.Overpass()
@@ -113,7 +113,7 @@ def create_osm_poi_gdf():
                 f"osmKey: {osm_key} OsmValue: {osm_value} Anzahl_pois {number_of_pois}")
         else:
             # Log the missing query to the log file
-            # logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {poi_query}")
+            logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {poi_query}")
             continue
 
     osm_poi_gdf = concatenate_geodataframes(list_of_gdf)

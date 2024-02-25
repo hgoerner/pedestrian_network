@@ -8,6 +8,7 @@ testing_phase: True
 test_osm_street_package: 'output\test_network\osm_street_net_Dresden.gpkg'
 test_osm_poi_package: 'output\test_network\osm_pois_Dresden.gpkg'
 
+#if interim result wants to be safed, is not needed for internal compution
 safe_interim_results: true
 
 # input csv with necessary key value pairs

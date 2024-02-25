@@ -161,23 +161,22 @@ def create_osm_area_gdf():
 
         else:
             # Log the missing query to the log file
-            # logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {poi_query}")
+            logging.warning(f"Missing result for query: {osm_key} - {osm_value} in {number_of_areas}")
 
             continue
+        
     if list_of_gdf is not None:
 
         osm_area_gdf = concatenate_geodataframes(list_of_gdf)
-        
-        # Assuming gdf is your GeoDataFrame
-        osm_area_gdf['is_duplicate'] = osm_area_gdf.duplicated(subset='geometry')
-        
+              
         safe_gdf_as_gpkg(
             (osm_area_gdf, "osm_area_plain_"+config_data["city_name"], True))
+        
+        return osm_area_gdf
     else:
         logging.info("No area result in " + config_data["city_name"])
 
-    return osm_area_gdf
-
+        return None
 
 def main():
 

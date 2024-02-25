@@ -1,6 +1,7 @@
 from utils.config_loader import config_data
 from utils.load_data import zensus_dataframe
 from utils.save_data import safe_gdf_as_gpkg
+from utils.save_data import zip_geopackage
 import geopandas as gpd
 from shapely.geometry import Point
 
@@ -16,3 +17,5 @@ gdf = gpd.GeoDataFrame(zensus_dataframe, geometry=geometry, crs=config_data["zen
 print(gdf.head())
 
 safe_gdf_as_gpkg((gdf, "zensus_data"))
+
+zip_geopackage("data\output\zensus_data.gpkg", "data\output\zensus_data.zip")
