@@ -1,7 +1,7 @@
 from utils.save_data import safe_gdf_as_gpkg
 from utils.config_loader import config_data
 import pandas as pd
-from utils.load_key_value_data import poi_key_value_df
+from utils.load_data import poi_key_value_df
 import geopandas as gpd
 import sys
 import os

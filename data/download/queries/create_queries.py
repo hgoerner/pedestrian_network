@@ -1,6 +1,6 @@
 #from data.input.loa import poi_key_value_dic, area_key_value_dic
 from urllib.parse import quote
-from utils.load_key_value_data import (area_key_value_dic,
+from utils.load_data import (area_key_value_dic,
                                               poi_key_value_dic)
 from utils.config_loader import config_data
 

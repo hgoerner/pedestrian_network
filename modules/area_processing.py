@@ -11,7 +11,7 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 from utils.save_data import safe_gdf_as_gpkg
 from utils.config_loader import config_data
-from utils.load_key_value_data import area_key_value_df
+from utils.load_data import area_key_value_df
 
 # assign group, categorie and einflussbereich
 
