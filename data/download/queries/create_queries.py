@@ -5,6 +5,7 @@ from utils.load_data import (area_key_value_dic,
 from utils.config_loader import config_data
 
 city = config_data["city_name"]
+country_code = config_data["country_code"]
 
 
 
@@ -14,7 +15,7 @@ def list_of_street_queries():
     # Loop through combinations of cities and street types
     for street_type in config_data["street_types_list"]:
         query = f"""
-        area["ISO3166-1"="DE"][admin_level=2]->.country;
+        area["ISO3166-1"={country_code}][admin_level=2]->.country;
         area[name="{city}"]->.city;
         way[highway={street_type}](area.city)(area.country);
         (._;>;);
@@ -35,7 +36,7 @@ def list_of_poi_queries():
         
         # Use a list comprehension to generate queries for each value of the key
         queriy = f"""
-            area["ISO3166-1"="DE"][admin_level=2]->.country;
+            area["ISO3166-1"={country_code}][admin_level=2]->.country;
             area[name="{city}"]->.city;
             node[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
@@ -63,7 +64,7 @@ def list_of_area_queries():
         osm_value = quote(area_key_value_dic[keys]["value"])
         # Use a list comprehension to generate queries for each value of the key
         queriy = f"""
-            area["ISO3166-1"="DE"][admin_level=2]->.country;
+            area["ISO3166-1"={country_code}][admin_level=5]->.country;
             area[name="{city}"]->.city;
             nwr[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
