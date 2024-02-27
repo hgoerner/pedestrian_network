@@ -11,7 +11,6 @@ INFO:root:landuse OsmValue: cemetery Anzahl_areas 0
 INFO:root:amenity OsmValue: grave_yard Anzahl_areas 0
 INFO:root:place OsmValue: square Anzahl_areas 0
 INFO:root:water OsmValue: natural Anzahl_areas 0
-INFO:root:water OsmValue: river Anzahl_areas 0
 INFO:root:water OsmValue: basin Anzahl_areas 0
 INFO:root:water OsmValue: pond Anzahl_areas 0
 INFO:root:landuse OsmValue: forest Anzahl_areas 0
