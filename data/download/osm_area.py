@@ -11,9 +11,9 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 import geopandas as gpd
 import overpy
 from overpy.exception import OverpassBadRequest
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, LineString
 from tqdm import tqdm
-
+from shapely.ops import polygonize
 from data.download.queries.create_queries import osm_area_queries
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
@@ -66,52 +66,45 @@ def _parse_osm_area_result(result: overpy.Result, osm_key: str, osm_value: str, 
     data = {'id': [], 'osm_key': [], 'osm_value': [], 'geometry': []}
     result_polygons = []
     possible_double_ids = []
+    inner_polygons = []
 
     for relation in result.relations:
-
         # Initialize lists to store outer and inner coordinates for each polygon
         outer_polygons = []
-        inner_polygons = []
+        
 
         for member in relation.members:
             member_ref = member.ref
             polygon_line_query = f"way({member_ref});(._;>;);out geom;"
             polygon_line_result = api.query(polygon_line_query)
             for polygon_line in polygon_line_result.ways:
-                if len(polygon_line.nodes) >= 4:
-                    coordinates = [(node.lon, node.lat)
-                                   for node in polygon_line.nodes]
+                    coordinates = [(node.lon, node.lat) for node in polygon_line.nodes]
+                    line = LineString(coordinates)
+                    polygons = list(polygonize([line]))
+                    
+                    for polygon in polygons:
+                        if polygon.is_valid and polygon.area > 0:  # Check for validity and non-zero area
 
-                    polygon = Polygon(coordinates)
-                    if polygon.is_valid:
-
-                        # Check if the member role is "inner" or "outer"
-                        if member.role == "outer":
-                            outer_polygons.append(polygon)
-                            possible_double_ids.append(polygon_line.id)
-                        elif member.role == "inner":
-                            inner_polygons.append(polygon)
-                            possible_double_ids.append(polygon_line.id)
+                            # Check if the member role is "inner" or "outer"
+                            if member.role == "outer":
+                                outer_polygons.append(polygon)
+                                possible_double_ids.append(polygon_line.id)
+                            elif member.role == "inner":
+                                inner_polygons.append(polygon)
+                                possible_double_ids.append(polygon_line.id)
 
         for outer_polygon in outer_polygons:
-            # Attempt to subtract each inner polygon from the current outer polygon
-            try:
-                for inner_polygon in inner_polygons:
-                    outer_polygon = outer_polygon.difference(inner_polygon)
+            # Create a copy of the outer polygon to avoid modifying the original
+            current_polygon = outer_polygon
 
-                # If the result is not empty, append it to the list
-                if outer_polygon.is_empty:
-                    # Handle the case where the subtraction results in an empty geometry
-                    print(
-                        f"Subtraction resulted in an empty geometry for outer polygon {outer_polygon}")
-                else:
-                    result_polygons.append((outer_polygon, relation.id))
-            except Exception as e:
-                # Handle the exception, log it, or take appropriate action
-                print(
-                    f"Error subtracting inner polygons from outer polygon: {e}")
-                # polygon_nodes = polygon_line_result.ways[0].nodes
-        # # Update the data dictionary with information for each polygon
+            # Subtract each inner polygon from the current outer polygon
+            for inner_polygon in inner_polygons:
+                current_polygon = current_polygon.difference(inner_polygon)
+
+            # If the result is not empty, append it to the list
+            if not current_polygon.is_empty:
+                result_polygons.append((current_polygon, relation.id))
+        
     for way in result.ways:
         # check if a way of the relation polygon is also a way from result
         if way.id in possible_double_ids:
