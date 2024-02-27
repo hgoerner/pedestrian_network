@@ -2,7 +2,7 @@
 
 #city to create the streetnet, poi ...
 city_name: "Montreal"
-country_code: "DE"
+country_code: "CA"
 
 # for testing purposes
 testing_phase: False
@@ -19,6 +19,7 @@ path_to_area_csv: 'data\input\area_key_value.CSV'
 #zensus
 zensus_crs : "EPSG:3035"
 zensus_url : "https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&v=2"
+
 
 # osm-values for the key highway
 street_types_list: ["primary", "secondary", "tertiary", "unclassified"]
