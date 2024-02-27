@@ -149,7 +149,6 @@ def create_osm_area_gdf():
         osm_key = query_info['key']
         osm_value = query_info['value']
 
-        print(osm_value)
         result = _query_overpass(api, area_query)
         if result is not None:
             gdf = _parse_osm_area_result(result, osm_key, osm_value)

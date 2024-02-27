@@ -22,7 +22,7 @@ zensus_url : "https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung
 
 
 # osm-values for the key highway
-street_types_list: ["primary", "secondary", "tertiary", "unclassified"]
+street_types_list: ["primary", "secondary", "tertiary", "unclassified", "residential"]
 # visualisationparams
 # not in code yet
 
