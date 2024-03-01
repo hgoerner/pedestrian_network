@@ -68,7 +68,7 @@ def list_of_area_queries():
             area["name:en"="{city}"]->.city;
             nwr[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
-            out body;
+            out geom;
             """
         
         query_info = {"query":queriy,'key': osm_key, 'value': osm_value}
