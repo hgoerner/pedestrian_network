@@ -1,5 +1,18 @@
 from utils.config_loader import config_data
 import pandas as pd
+import os
+
+def find_files_by_city(folder_path = f'data\output', target_name=config_data["city_name"]):
+    matching_files = []
+    
+    # Get the list of files in the specified folder
+    files_in_folder = os.listdir(folder_path)
+    
+    # Check if the target_name is in the file names
+    matching_files = [file for file in files_in_folder if target_name in file]
+
+    # Return the list of matching files
+    return matching_files
 
 poi_csv = config_data["path_to_poi_csv"]
 area_csv = config_data["path_to_area_csv"]
