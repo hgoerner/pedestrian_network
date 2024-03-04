@@ -16,7 +16,10 @@ from utils.save_data import safe_gdf_as_gpkg
 montreal_counts_csv_filepath = r"data\input\Sonstiges\comptages_vehicules_cyclistes_pietons.csv"
 
 #montreal crs TODO: transfer all necessarry gpkg to this crs
+
 crs = "EPSG:4326"
+# CRS from website
+#crs = "EPSG:32188"
 
 monetreal_counts_df = pd.read_csv(montreal_counts_csv_filepath, sep=",")
 
@@ -29,7 +32,6 @@ geometry = [Point(xy) for xy in zip(monetreal_counts_ped_df['Longitude'], monetr
 
 # return 729 Knotenpunkte
 print(len(monetreal_counts_ped_df["Nom_Intersection"].unique()))
-
 # Create a GeoDataFrame with the original DataFrame and the geometry
 monetreal_counts_ped_gdf = gpd.GeoDataFrame(monetreal_counts_ped_df, geometry=geometry, crs=crs)
 
