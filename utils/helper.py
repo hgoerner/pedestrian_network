@@ -24,3 +24,5 @@ def overlay_geo_data(osm_gdf, optimized_gdf):
 def file_exists(file_path):
     return os.path.exists(file_path)
 
+def assign_to_dickey():
+    list_of_dict_keys = [""]

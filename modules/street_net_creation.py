@@ -119,8 +119,10 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
     gdf_street_net_optimized = optimize_street_network(osm_street_net)
 
     # Calculate the length for each LineString and create a new column 'length'
-    gdf_street_net_optimized['length'] = gdf_street_net_optimized['geometry'].apply(
+    gdf_street_net_optimized['laenge [km]'] = gdf_street_net_optimized['geometry'].apply(
         lambda x: x.length)
+    
+    gdf_street_net_optimized['laenge [km]'] = gdf_street_net_optimized['laenge [km]'] / 1000
 
     # create gdf with support points
     gdf_support_points = create_support_points(gdf_street_net_optimized)

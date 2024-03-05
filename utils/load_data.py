@@ -14,6 +14,7 @@ def find_files_by_city(folder_path = f'data\output', target_name=config_data["ci
     # Return the list of matching files
     return matching_files
 
+
 poi_csv = config_data["path_to_poi_csv"]
 area_csv = config_data["path_to_area_csv"]
 # Read the CSV file into a DataFrame
