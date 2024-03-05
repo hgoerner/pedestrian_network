@@ -20,7 +20,6 @@ BUFFERSIZE = 250
 montreal_counts_csv_filepath = r"data\input\Sonstiges\comptages_vehicules_cyclistes_pietons.csv"
 census = r"data\input\Sonstiges\98-401-X2021020_English_CSV_data.csv"
 
-<<<<<<< HEAD
 census_data = pd.read_csv(census, encoding='latin-1',sep=",")
 print(census_data)
 
@@ -29,10 +28,6 @@ street_net_optimized_filepath = r"data\output\street_net_optimized_Montreal.gpkg
 area_montreal_filepath = r"data\output\osm_area_updated_Montreal.gpkg"
 pois_montreal_filepath = r"data\output\osm_pois_updated_Montreal.gpkg"
 nodes_filepath = r"data\output\node_points_Montreal.gpkg"
-=======
-#montreal crs TODO: transfer all necessarry gpkg to this crs
-crs = "EPSG:4326"
->>>>>>> parent of 387eb5d (update to 4326 crs)
 
 #read geopackages
 street_net_optimized_gdf = gpd.read_file(street_net_optimized_filepath)
@@ -45,15 +40,7 @@ street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["la
 #buffer street net by buffersize
 street_net_optimized_buffered_gdf = street_net_optimized_gdf.buffer(BUFFERSIZE)
 
-<<<<<<< HEAD
 #safe_gdf_as_gpkg((street_net_optimized_buffered_gdf, "street_net_buffered_montreal", True))
-=======
-# return 729 Knotenpunkte
-print(len(monetreal_counts_ped_df["Nom_Intersection"].unique()))
-
-# Create a GeoDataFrame with the original DataFrame and the geometry
-monetreal_counts_ped_gdf = gpd.GeoDataFrame(monetreal_counts_ped_df, geometry=geometry, crs=crs)
->>>>>>> parent of 387eb5d (update to 4326 crs)
 
 #buffer pois
 pois_montreal_buffered_gdf = pois_montreal_gdf.copy()
