@@ -1,8 +1,8 @@
 # config.yml
 
 #city to create the streetnet, poi ...
-city_name: "Montreal"
-country_code: "CA"
+city_name: "Cologne"
+country_code: "DE"
 
 # for testing purposes
 testing_phase: False

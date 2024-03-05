@@ -6,13 +6,13 @@ from sklearn.cluster import KMeans
 from scipy.spatial import Voronoi, voronoi_plot_2d
 
 # Laden Sie den GeoDataFrame aus dem Geopackage
-gdf = gpd.read_file('data\output\osm_pois_updated_Dresden.gpkg')
+gdf = gpd.read_file('data\output\osm_pois_updated_Montreal.gpkg')
 
 # Extrahieren Sie die Koordinaten aus dem GeoDataFrame
 city_points = np.array(gdf.geometry.apply(lambda point: (point.x, point.y)).tolist())
 
 # Perform clustering (e.g., k-means)
-k = 25  # Number of clusters
+k = 200  # Number of clusters
 kmeans = KMeans(n_clusters=k, random_state=0)
 gdf['cluster'] = kmeans.fit_predict(city_points)
 
@@ -20,7 +20,7 @@ gdf['cluster'] = kmeans.fit_predict(city_points)
 cluster_centers = gdf.groupby('cluster').geometry.apply(lambda x: x.iloc[0]).to_numpy()
 
 # Scale the cluster centers by a factor (e.g., 100)
-scaling_factor = 10
+scaling_factor = 50
 scaled_cluster_centers = np.array([(point.x, point.y) for point in cluster_centers]) * scaling_factor
 
 # Berechnen Sie das Voronoi-Diagramm mit den skalierten Cluster-Centers
