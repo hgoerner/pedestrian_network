@@ -1,19 +1,44 @@
-from utils.config_loader import config_data
+import os
+import sys
 import pandas as pd
+
+current_directory = os.getcwd()
+print(current_directory)
+
+sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
+
+from utils.config_loader import config_data
 import os
 
-def find_files_by_city(folder_path = f'data\output', target_name=config_data["city_name"]):
-    matching_files = []
-    
-    # Get the list of files in the specified folder
-    files_in_folder = os.listdir(folder_path)
-    
-    # Check if the target_name is in the file names
-    matching_files = [file for file in files_in_folder if target_name in file]
+def find_geo_packages(city_name = config_data["city_name"], output_folder="data\output\{0}_results".format(config_data["city_name"])):
+    """
+    Find GeoPackage files in the specified output folder that match the given city name.
 
-    # Return the list of matching files
-    return matching_files
+    Args:
+        city_name (str, optional): The name of the city to search for in the file names. Defaults to the value from config_data.
+        output_folder (str, optional): The path to the output folder where the GeoPackage files are located. Defaults to "data\output".
 
+    Returns:
+        dict: A dictionary mapping the file keys to their corresponding file paths.
+
+    """
+    gpkg_files = {}
+    
+    for file in os.listdir(output_folder):
+        if file.endswith(".gpkg"):
+            if "street" in file and city_name in file:
+                gpkg_files["streets"] = os.path.join(output_folder, file)
+            elif "area" in file and city_name in file:
+                gpkg_files["areas"] = os.path.join(output_folder, file)  
+            elif "pois" in file and city_name in file:
+                gpkg_files["pois"] = os.path.join(output_folder, file)
+            elif "node" in file and city_name in file:
+                gpkg_files["nodes"] = os.path.join(output_folder, file)
+            elif "zensus" in file:
+                gpkg_files["census"] = os.path.join(output_folder, file)
+
+    return gpkg_files
 
 poi_csv = config_data["path_to_poi_csv"]
 area_csv = config_data["path_to_area_csv"]

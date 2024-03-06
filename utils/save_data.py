@@ -20,6 +20,7 @@ def safe_gdf_as_gpkg(*args: Tuple[gpd.GeoDataFrame, str, bool]):
     Examples:
         safe_gdf_as_gpkg(gdf, 'output_file', False)
     """
+    city = config_data["city_name"]
 
     for arg in args:
         gdf, filename, interimresult = arg + (False,) if len(arg) == 2 else arg

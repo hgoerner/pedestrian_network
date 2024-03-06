@@ -1,9 +1,8 @@
 import os
 import sys
 import geopandas as gpd
-import pandas as pd
-from shapely import Point
 from tqdm import tqdm
+from utils.config_loader import config_data
 
 current_directory = os.getcwd()
 print(current_directory)
@@ -12,29 +11,34 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\Code2\\pedestrian_network'
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 from utils.save_data import safe_gdf_as_gpkg
-from utils.load_data import find_files_by_city
+from utils.load_data import find_geo_packages
 
 #buffer in meter
 BUFFERSIZE = 250
 
-Munich_counts_csv_filepath = r""
+
+counts_csv_filepath = r""
 #census = r"data\input\Sonstiges\98-401-X2021020_English_CSV_data.csv"
 
 #census_data = pd.read_csv(census, encoding='latin-1',sep=",")
 
 #print(census_data)
 
+geo_packages = find_geo_packages()
+
+print(geo_packages)
+
 #filepaths to files using
-street_net_optimized_filepath = r"data\output\street_net_optimized_Munich.gpkg"
-area_Munich_filepath = r"data\output\osm_area_updated_Munich.gpkg"
-pois_Munich_filepath = r"data\output\osm_pois_updated_Munich.gpkg"
-nodes_filepath = r"data\output\node_points_Munich.gpkg"
+street_net_optimized_filepath = geo_packages["streets"]
+area_filepath = geo_packages["areas"]
+pois_filepath = geo_packages["pois"]
+nodes_filepath = geo_packages["nodes"]
 census_filepath = r"data\output\zensus_100x100.gpkg"
 
 #read geopackages
 street_net_optimized_gdf = gpd.read_file(street_net_optimized_filepath)
-area_Munich_gdf = gpd.read_file(area_Munich_filepath)
-pois_Munich_gdf = gpd.read_file(pois_Munich_filepath)
+area_gdf = gpd.read_file(area_filepath)
+pois_gdf = gpd.read_file(pois_filepath)
 census_gdf = gpd.read_file(census_filepath)
 
 #filter street net to only use streets thar are longer than 100
@@ -45,12 +49,12 @@ street_net_optimized_buffered_gdf = street_net_optimized_gdf.copy()
 street_net_optimized_buffered_gdf["geometry"] = street_net_optimized_gdf["geometry"].buffer(BUFFERSIZE)
 
 #buffer pois
-pois_Munich_buffered_gdf = pois_Munich_gdf.copy()
-pois_Munich_buffered_gdf['geometry'] = pois_Munich_gdf.apply(lambda row: row['geometry'].buffer(row['Einflussbereich']), axis=1)
+pois_buffered_gdf = pois_gdf.copy()
+pois_buffered_gdf['geometry'] = pois_gdf.apply(lambda row: row['geometry'].buffer(row['Einflussbereich']), axis=1)
 
 #buffer areas
-area_Munich_buffered_gdf = area_Munich_gdf.copy()
-area_Munich_buffered_gdf['geometry'] = area_Munich_gdf.apply(lambda row: row['geometry'].buffer(row['Einflussbereich']), axis=1)
+area_buffered_gdf = area_gdf.copy()
+area_buffered_gdf['geometry'] = area_gdf.apply(lambda row: row['geometry'].buffer(row['Einflussbereich']), axis=1)
 
 #Initialize a new column for the sum of values
 street_net_optimized_gdf['Summe POI*Bedeutung'] = 0
@@ -72,12 +76,12 @@ for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
 
 # Iterate through lines and update the Summe POI*Bedeutung column
 for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
-    intersected_pois = pois_Munich_buffered_gdf[pois_Munich_buffered_gdf['geometry'].intersects(line['geometry'])]
+    intersected_pois = pois_buffered_gdf[pois_buffered_gdf['geometry'].intersects(line['geometry'])]
     street_net_optimized_gdf.at[idx, 'Summe POI*Bedeutung'] = intersected_pois['Bedeutung'].sum()
     
 # Iterate through lines and update the Summe AREA*Bedeutung column    
 for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
-    intersected_areas = area_Munich_buffered_gdf[area_Munich_buffered_gdf['geometry'].intersects(line['geometry'])]
+    intersected_areas = area_buffered_gdf[area_buffered_gdf['geometry'].intersects(line['geometry'])]
     street_net_optimized_gdf.at[idx, 'Summe AREA*Bedeutung'] = intersected_areas['Bedeutung'].sum()
  
 street_net_optimized_gdf["Bedeutung je km"] = round((street_net_optimized_gdf["Summe AREA*Bedeutung"] + street_net_optimized_gdf['Summe POI*Bedeutung']) /street_net_optimized_gdf["laenge [km]"] ,2)
@@ -85,5 +89,6 @@ street_net_optimized_gdf["Einwohner je km"] = round(street_net_optimized_gdf['Su
 
 # create Faktor
 street_net_optimized_gdf["Einwohner-Faktor"] = round(street_net_optimized_gdf["Einwohner je km"]  * 1/15000, 2)
+
 # Drop the intermediate column 'intersected_points'
-safe_gdf_as_gpkg((street_net_optimized_gdf, "street_net_optimized_updated_Munich"))
+safe_gdf_as_gpkg((street_net_optimized_gdf, f"street_net_optimized_updated_"+config_data["city_name"]))

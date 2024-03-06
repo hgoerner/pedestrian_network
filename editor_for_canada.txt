@@ -1,7 +1,0 @@
-"""
-area(3601634158)->.searchArea;
-area[name="{city}"]->.city;
-way[highway={street_type}](area.searchArea);
-(._;>;);
-out body;
-"""

@@ -1,11 +1,18 @@
 
+import os
+import sys
+
+current_directory = os.getcwd()
+print(current_directory)
+
+sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
+
 from analysis.outlier_analyses import find_outliers
 from analysis.visualisation import create_plot_of_pois_outlier, create_plot_of_pois
 from data.download.osm_pois import create_osm_poi_gdf
 from modules.poi_processing import assign_group_categorie_poi
 from utils.config_loader import config_data
-import geopandas as gpd
-
 from utils.save_data import safe_gdf_as_gpkg
 
 

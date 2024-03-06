@@ -1,4 +1,3 @@
-#from data.input.loa import poi_key_value_dic, area_key_value_dic
 from urllib.parse import quote
 from utils.load_data import (area_key_value_dic,
                                               poi_key_value_dic)
@@ -8,6 +7,12 @@ city = config_data["city_name"]
 country_code = config_data["country_code"]
 
 print(city)
+if config_data["english_city_name"]:
+    nameconvention = "name:en"
+else:
+    nameconvention = "name"
+
+
 
 def list_of_street_queries():
   
@@ -16,7 +21,7 @@ def list_of_street_queries():
     for street_type in config_data["street_types_list"]:
         query = f"""
         area["ISO3166-1"={country_code}][admin_level=2]->.country;
-        area["name:en"="{city}"]->.city;
+        area["{nameconvention}"="{city}"]->.city;
         way[highway={street_type}](area.city)(area.country);
         (._;>;);
         out body;
@@ -37,7 +42,7 @@ def list_of_poi_queries():
         # Use a list comprehension to generate queries for each value of the key
         queriy = f"""
             area["ISO3166-1"={country_code}][admin_level=2]->.country;
-            area["name:en"="{city}"]->.city;
+            area["{nameconvention}"="{city}"]->.city;
             node[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
             out body;
@@ -65,7 +70,7 @@ def list_of_area_queries():
         # Use a list comprehension to generate queries for each value of the key
         queriy = f"""
             area["ISO3166-1"={country_code}][admin_level=2]->.country;
-            area["name:en"="{city}"]->.city;
+            area["{nameconvention}"="{city}"]->.city;
             nwr[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
             out geom;
