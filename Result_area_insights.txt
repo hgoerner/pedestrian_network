@@ -1,2 +1,4 @@
 INFO:root:water OsmValue: wetland Anzahl_areas 0
 INFO:root:water OsmValue: riverbank Anzahl_areas 0
+INFO:root:water OsmValue: reservoir Anzahl_areas 0
+INFO:root:landuse OsmValue: allotments Anzahl_areas 0
