@@ -11,7 +11,7 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 from utils.config_loader import config_data
 import os
 
-def find_geo_packages(city_name = config_data["city_name"], output_folder="data\output\{0}_results".format(config_data["city_name"])):
+def find_geo_packages(city_name = config_data["city_name"], output_folder="data\output"):
     """
     Find GeoPackage files in the specified output folder that match the given city name.
 
@@ -26,6 +26,7 @@ def find_geo_packages(city_name = config_data["city_name"], output_folder="data\
     gpkg_files = {}
     
     for file in os.listdir(output_folder):
+        print(file)
         if file.endswith(".gpkg"):
             if "street" in file and city_name in file:
                 gpkg_files["streets"] = os.path.join(output_folder, file)

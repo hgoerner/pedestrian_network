@@ -2,10 +2,10 @@
 
 
 #city to create the streetnet, poi ...
-city_name: "Zwickau"
-country_code: "DE"
+city_name: "Montreal"
+country_code: "CA"
 
-english_city_name: False
+english_city_name: True
 
 # for testing purposes
 testing_phase: False

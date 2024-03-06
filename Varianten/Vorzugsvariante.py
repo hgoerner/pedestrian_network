@@ -2,7 +2,7 @@ import os
 import sys
 import geopandas as gpd
 from tqdm import tqdm
-from utils.config_loader import config_data
+
 
 current_directory = os.getcwd()
 print(current_directory)
@@ -12,7 +12,7 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 from utils.save_data import safe_gdf_as_gpkg
 from utils.load_data import find_geo_packages
-
+from utils.config_loader import config_data
 #buffer in meter
 BUFFERSIZE = 250
 
