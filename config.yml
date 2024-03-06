@@ -1,7 +1,7 @@
 # config.yml
 
 #city to create the streetnet, poi ...
-city_name: "Cologne"
+city_name: "Munich"
 country_code: "DE"
 
 # for testing purposes
@@ -20,7 +20,8 @@ path_to_area_csv: 'data\input\area_key_value.CSV'
 zensus_crs : "EPSG:3035"
 zensus_url : "https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&v=2"
 
-
+#gauskrueger crs
+gauss_crs : EPSG:31468
 # osm-values for the key highway
 street_types_list: ["primary", "secondary", "tertiary", "unclassified", "residential"]
 # visualisationparams
