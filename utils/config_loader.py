@@ -7,3 +7,4 @@ def load_config(file_path='config.yml'):
 
 # Load the configuration once when the module is imported
 config_data = load_config()
+

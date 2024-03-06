@@ -1,5 +1,10 @@
-from data.download_osm.download_osm_streets import create_osm_streets_gdf
-from modules.modules_street.street_net_creation import create_street_net_and_intersection_gpkg
+from data.download.osm_streets import create_osm_streets_gdf
+from modules.street_net_creation import \
+    create_street_net_and_intersection_gpkg
+from utils.save_data import safe_gdf_as_gpkg
+from utils.config_loader import config_data
+
+
 
 
 # create_osm_area_gdf()
@@ -7,7 +12,9 @@ def main():
 
     osm_street_net = create_osm_streets_gdf()
 
-    create_street_net_and_intersection_gpkg(osm_street_net=osm_street_net)
+    gdf_street_net_optimized,gdf_intersections_points = create_street_net_and_intersection_gpkg(osm_street_net)
+    
+    safe_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf_intersections_points, "node_points_"+config_data["city_name"]))
 
 
 if __name__ == "__main__":

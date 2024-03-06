@@ -1,25 +1,13 @@
-import folium
+from shapely.geometry import MultiPoint
 
-# Create a Folium map centered on a specific location
-map_center = [37.7749, -122.4194]  # Example coordinates for San Francisco, CA
-m = folium.Map(location=map_center, zoom_start=12)
+# Set of points
+points = [(0, 0), (1, 2), (3, 1), (4, 3)]
 
-# Add a marker to the map
-folium.Marker(
-    location=[37.7749, -122.4194],
-    popup="Hello, Folium!",
-    icon=folium.Icon(color='blue')
-).add_to(m)
+# Create a MultiPoint geometry
+multi_point = MultiPoint(points)
 
-# Replace with your actual point data
-points_array = np.array(
-    list(zip(points_gdf.geometry.x, points_gdf.geometry.y)))
+# Calculate the convex hull
+convex_hull = multi_point.convex_hull
 
-# Apply DBSCAN clustering
-dbscan = DBSCAN(eps=0.1, min_samples=5)
-points_gdf['cluster'] = dbscan.fit_predict(points_array)
-
-# Plot the clusters
-fig, ax = plt.subplots(figsize=(10, 10))
-points_gdf.plot(column='cluster', cmap='viridis', legend=True, ax=ax)
-plt.show()
+# Print the coordinates of the convex hull
+print(convex_hull.exterior.coords.xy)
