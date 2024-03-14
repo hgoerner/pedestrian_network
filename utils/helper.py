@@ -3,6 +3,14 @@ import os
 import geopandas as gpd
 import pandas as pd
 from shapely.geometry import LineString, Point
+import sys
+
+current_directory = os.getcwd()
+
+sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
+
+from utils.load_data import config_data
 
 
 def start_end_points(line: LineString):
@@ -26,3 +34,16 @@ def file_exists(file_path):
 
 def assign_to_dickey():
     list_of_dict_keys = [""]
+    
+def write_params_to_textfile(list_of_keys: list, params_file_name : str, purpose: str):
+    # Log the correlation matrices to a text file
+    output_file =params_file_name+'.txt'
+    with open(output_file, 'w') as file:
+        file.write(f"Purpose: {purpose}\n")
+        file.write("\n")
+        file.write("This textfile writes down the used parames for the above declared purpose and its used functions\n")
+        file.write("\n")
+       
+        for key in list_of_keys:
+            value = config_data[key]
+            file.write(f"{key}: {value}""\n")

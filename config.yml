@@ -1,13 +1,12 @@
 # config.yml
 
-
 #city to create the streetnet, poi ...
 city_name: "Montreal"
 country_code: "CA"
 
 english_city_name: True
 
-# for testing purposes
+# for testing purposes only!
 testing_phase: False
 test_osm_street_package: 'output\test_network\osm_street_net_Dresden.gpkg'
 test_osm_poi_package: 'output\test_network\osm_pois_Dresden.gpkg'
@@ -29,6 +28,11 @@ gauss_crs : EPSG:31468
 street_types_list: ["primary", "secondary", "tertiary", "unclassified", "residential"]
 # visualisationparams
 # not in code yet
+
+#tessalation config
+min_cluster_size : 50
+number_of_polygons : 200
+poi_categories : "all"
 
 osm_points_kwargs:
   color: "blue"

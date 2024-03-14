@@ -13,8 +13,9 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 from utils.save_data import safe_gdf_as_gpkg
 from utils.load_data import find_geo_packages
 from utils.config_loader import config_data
+
 #buffer in meter
-BUFFERSIZE = 250
+buffersize = config_data["Street_buffer_size"]
 
 
 counts_csv_filepath = r""
@@ -46,7 +47,7 @@ street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["la
 
 #buffer street net by buffersize ands create new geodataframe
 street_net_optimized_buffered_gdf = street_net_optimized_gdf.copy()
-street_net_optimized_buffered_gdf["geometry"] = street_net_optimized_gdf["geometry"].buffer(BUFFERSIZE)
+street_net_optimized_buffered_gdf["geometry"] = street_net_optimized_gdf["geometry"].buffer(buffersize)
 
 #buffer pois
 pois_buffered_gdf = pois_gdf.copy()
