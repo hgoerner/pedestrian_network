@@ -54,6 +54,8 @@ ax.set_title(f"Clustering Algorithm: HDBSCAN")
 plt.tight_layout()
 plt.show()
 
-
-montreal_vor_hdbscan.to_crs("EPSG:31468")
+# convert to gausskrueger ==> helps for later calculation
+montreal_vor_hdbscan = montreal_vor_hdbscan.to_crs("EPSG:31468")
 safe_gdf_as_gpkg((montreal_vor_hdbscan, "montreal_voronoi" ))
+
+print(montreal_vor_hdbscan.crs)

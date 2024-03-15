@@ -15,7 +15,7 @@ from utils.load_data import find_geo_packages
 from utils.config_loader import config_data
 
 #buffer in meter
-buffersize = config_data["Street_buffer_size"]
+buffersize = config_data["street_buffer_size"]
 
 
 counts_csv_filepath = r""
@@ -48,7 +48,7 @@ street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["la
 #buffer street net by buffersize ands create new geodataframe
 street_net_optimized_buffered_gdf = street_net_optimized_gdf.copy()
 street_net_optimized_buffered_gdf["geometry"] = street_net_optimized_gdf["geometry"].buffer(buffersize)
-
+print(type(street_net_optimized_buffered_gdf))
 #buffer pois
 pois_buffered_gdf = pois_gdf.copy()
 pois_buffered_gdf['geometry'] = pois_gdf.apply(lambda row: row['geometry'].buffer(row['Einflussbereich']), axis=1)
