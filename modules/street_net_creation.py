@@ -1,7 +1,3 @@
-from data.download.osm_streets import create_osm_streets_gdf
-from utils.config_loader import config_data
-from utils.helper import start_end_points
-from utils.save_data import safe_gdf_as_gpkg
 from shapely.ops import linemerge
 import geopandas as gpd
 import sys
@@ -16,6 +12,13 @@ sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
 import geopandas as gpd
 from shapely import LineString
 from shapely.ops import linemerge
+from data.download.osm_streets import create_osm_streets_gdf
+from utils.config_loader import config_data
+from utils.helper import start_end_points
+from data.download.osm_streets import create_osm_streets_gdf
+from utils.config_loader import config_data
+from utils.helper import start_end_points
+from utils.save_data import safe_gdf_as_gpkg
 
 from data.download.osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
@@ -35,13 +38,36 @@ def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
 
     # Use unary_union to merge the LineStrings into a single MultiLineString
     merged_multilinestring = gdf_osm_net["geometry"].unary_union
-
     # Merge every LineString that can be merged
     merged_linestring = linemerge(merged_multilinestring)
 
     street_net_gdf = gpd.GeoDataFrame(
         geometry=[merged_linestring], crs=gdf_osm_net.crs)
-    return street_net_gdf.reset_index(drop=True).explode(index_parts=False)
+    gdf_street_net_optimized = street_net_gdf.explode(index_parts=False)
+    gdf_street_net_optimized.reset_index(inplace=True, drop=True)
+    return assign_values_to_new_stret_net(gdf_osm_net,gdf_street_net_optimized)
+    
+    
+
+def assign_values_to_new_stret_net(gdf_osm_net: gpd.GeoDataFrame, gdf_street_net_optimized: gpd.GeoDataFrame):
+    # Iteriere über die kürzeren Linestrings und finde die entsprechenden Werte in df1
+    
+    
+    for index, row in gdf_street_net_optimized.iterrows():
+        # Finde den Linestring in df1, der den aktuellen Linestring in df2 schneidet oder enthält
+        intersecting_row = gdf_osm_net[gdf_osm_net.intersects(row['geometry'])]
+        # Wenn ein Überschneidungslinestring gefunden wurde
+        if not intersecting_row.empty:  
+            
+            # Finde den entsprechenden Wert in df1 und übertrage ihn auf df2
+            street_type = intersecting_row.iloc[0]['highway']
+            street_name = intersecting_row.iloc[0]['name']
+            # Setze den Wert in df2
+            gdf_street_net_optimized.at[index, 'highway'] = street_type
+            gdf_street_net_optimized.at[index, 'name'] = street_name
+            
+            
+    return gdf_street_net_optimized
 
 
 def create_support_points(gdf):
@@ -129,7 +155,7 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
     gdf_street_net_optimized['laenge [km]'] = gdf_street_net_optimized['geometry'].apply(
         lambda x: x.length)
     
-    gdf_street_net_optimized['laenge [km]'] = gdf_street_net_optimized['laenge [km]'] / 1000
+    gdf_street_net_optimized['laenge [km]'] = round(gdf_street_net_optimized['laenge [km]'] / 1000, 3)
 
     # create gdf with support points
     gdf_support_points = create_support_points(gdf_street_net_optimized)
@@ -139,8 +165,6 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
     # count intersecting lines in buffered points and write to support point with same ID
     gdf__intersections_points = find_intersecting_lines(
         gdf_street_net_optimized, gdf_bufferd_points, gdf_support_points)
-    
-    #gdf_street_net_optimized = overay_geo_data(osm_street_net, gdf_street_net_optimized)
 
     safe_gdf_as_gpkg((gdf_support_points, "support_points_"+config_data["city_name"], True), (gdf_bufferd_points, "buffer_points_"+config_data["city_name"], True))
     
@@ -151,8 +175,8 @@ def main():
 
     osm_street_net = create_osm_streets_gdf()
 
-    gdf_street_net_optimized,gdf_intersections_points = create_street_net_and_intersection_gpkg(osm_street_net)
-    
+    gdf_street_net_optimized, gdf_intersections_points = create_street_net_and_intersection_gpkg(osm_street_net)
+    print(gdf_street_net_optimized)
     safe_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf_intersections_points, "node_points_"+config_data["city_name"]))
     
 if __name__ == "__main__":
