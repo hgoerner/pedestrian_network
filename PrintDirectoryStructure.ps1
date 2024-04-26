@@ -36,4 +36,4 @@ function Print-DirectoryStructure {
 }
 
 # Example usage with output to a file
-Print-DirectoryStructure -path "C:\Users\Hendr\OneDrive\Desktop\pedestrian_network" -outputFile "DirectoryStructureOutput.txt"
+Print-DirectoryStructure -path "C:\Users\Goerner\Desktop\pedestrian_network" -outputFile "DirectoryStructureOutput.txt"

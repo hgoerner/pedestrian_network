@@ -26,7 +26,6 @@ def find_geo_packages(city_name = config_data["city_name"], output_folder="data\
     gpkg_files = {}
     
     for file in os.listdir(output_folder):
-        print(file)
         if file.endswith(".gpkg"):
             if "street" in file and city_name in file:
                 gpkg_files["streets"] = os.path.join(output_folder, file)

@@ -24,6 +24,9 @@ voroinoi_montreal_gdf = gpd.read_file("data\output\montreal_voronoi.gpkg")
 pois_gdf = gpd.read_file(pois_filepath)
 area_gdf = gpd.read_file(area_filepath)
 
+print(pois_gdf)
+print(area_gdf)
+
 #Initialize a new column for the sum of values
 voroinoi_montreal_gdf['Summe POI*Bedeutung'] = 0
 voroinoi_montreal_gdf['Summe AREA*Bedeutung'] = 0

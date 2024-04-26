@@ -1,8 +1,8 @@
 # config.yml
 
 #city to create the streetnet, poi ...
-city_name: "Chemnitz"
-country_code: "DE"
+city_name: "Montreal"
+country_code: "EN"
 
 english_city_name: False
 
