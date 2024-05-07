@@ -1,6 +1,0 @@
-Purpose: calculation of voronoi_geopackage
-
-This textfile writes down the used parames for the above declared purpose and its used functions
-
-poi_categories: all
-min_cluster_size: 50

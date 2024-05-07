@@ -1,9 +1,10 @@
 # config.yml
 
 #city to create the streetnet, poi ...
-city_name: "Montreal"
-country_code: "EN"
+city_name: "Heidelberg"
+country_code: "DE"
 
+#if the city name has special character or so
 english_city_name: False
 
 # for testing purposes only!
@@ -11,7 +12,7 @@ testing_phase: False
 test_osm_street_package: 'output\test_network\osm_street_net_Dresden.gpkg'
 test_osm_poi_package: 'output\test_network\osm_pois_Dresden.gpkg'
 
-#if interim result wants to be safed, is not needed for internal compution
+#if interim result wants to be safed, is not needed for internal computation
 safe_interim_results: true
 
 # input csv with necessary key value pairs

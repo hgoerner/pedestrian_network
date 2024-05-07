@@ -32,13 +32,13 @@ street_net_optimized_filepath = geo_packages["streets"]
 area_filepath = geo_packages["areas"]
 pois_filepath = geo_packages["pois"]
 nodes_filepath = geo_packages["nodes"]
-#census_filepath = r"data\output\zensus_100x100.gpkg"
+census_filepath = r"data\output\zensus_100x100.gpkg"
 
 #read geopackages
 street_net_optimized_gdf = gpd.read_file(street_net_optimized_filepath)
 area_gdf = gpd.read_file(area_filepath)
 pois_gdf = gpd.read_file(pois_filepath)
-#census_gdf = gpd.read_file(census_filepath)
+census_gdf = gpd.read_file(census_filepath)
 
 #filter street net to only use streets thar are longer than 100
 street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["laenge [km]"] >= 0.1]
@@ -78,9 +78,6 @@ for klasse in list_of_class:
     klasse_Anzahl_header = klasse + ": Anzahl"
     klasse_Summe_bedeutung_header = klasse + ": Summe_Bedeutung"
     list_of_header.extend([klasse_Anzahl_header, klasse_Summe_bedeutung_header])
-    
-print(list_of_header)
-
 
 # needed columns
 for header in list_of_header:
@@ -98,17 +95,16 @@ street_net_optimized_gdf['Summe Einwohner'] = 0
     
 
 # Create a spatial index for the census GeoDataFrame
-#census_sindex = census_gdf.sindex
+census_sindex = census_gdf.sindex
 
 # # Calculate Zensusdensity   
-# for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
-#     print(idx)
-#     possible_matches_index = list(census_sindex.intersection(buffered_line['geometry'].bounds))
-#     possible_matches = census_gdf.iloc[possible_matches_index]
+for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
+    possible_matches_index = list(census_sindex.intersection(buffered_line['geometry'].bounds))
+    possible_matches = census_gdf.iloc[possible_matches_index]
     
-#     intersected_points = possible_matches[possible_matches['geometry'].intersects(buffered_line['geometry'])]
-#     # assign to id in original gdf
-#     street_net_optimized_gdf.at[idx, 'Summe Einwohner'] = intersected_points['Einwohner'].sum()  
+    intersected_points = possible_matches[possible_matches['geometry'].intersects(buffered_line['geometry'])]
+    # assign to id in original gdf
+    street_net_optimized_gdf.at[idx, 'Summe Einwohner'] = intersected_points['Einwohner'].sum()  
 
 # Iterate through lines and update the Summe POI*Bedeutung column
 for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
@@ -122,7 +118,6 @@ for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
     
     for group, count in group_counts.items():
         # assign counts
-        # das funktioniert
         street_net_optimized_gdf.at[idx, group+": Anzahl"] = count
         # filter intesected pois by group
         intersected_pois_filtert  = intersected_pois[intersected_pois["Gruppe"] == group]
@@ -132,7 +127,6 @@ for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
         
         # assign Sum of bedeutung to group
         street_net_optimized_gdf.at[idx, group+": Summe_Bedeutung"] = group_summe_bedeutung
-        #print(street_net_optimized_gdf.at[idx, group+": Summe_Bedeutung"])
                                                                                        
     for klasse, count in klasse_counts.items():      
         # assign counts
@@ -150,7 +144,33 @@ for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
 for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
     intersected_areas = area_buffered_gdf[area_buffered_gdf['geometry'].intersects(line['geometry'])]
     street_net_optimized_gdf.at[idx, 'Summe AREA*Bedeutung'] = intersected_areas['Bedeutung'].sum()
- 
+    
+    # count unique groups of intersected_pois dataframe
+    group_counts = intersected_areas['Gruppe'].value_counts() 
+    klasse_counts = intersected_areas['Klasse'].value_counts() 
+    
+    for group, count in group_counts.items():
+        # assign counts
+        street_net_optimized_gdf.at[idx, group+": Anzahl"] = count
+        # filter intesected pois by group
+        intersected_areas_filtert  = intersected_areas[intersected_areas["Gruppe"] == group]
+
+        # get sum of Bedeutung in filtered intersected pois
+        group_summe_bedeutung = intersected_areas_filtert['Bedeutung'].sum()
+        
+        # assign Sum of bedeutung to group
+        street_net_optimized_gdf.at[idx, group+": Summe_Bedeutung"] = group_summe_bedeutung
+        
+    for klasse, count in klasse_counts.items():      
+        # assign counts
+        street_net_optimized_gdf.at[idx, klasse+": Anzahl"] = count  
+        # filter intesected pois by klasse
+        intersected_areas_filtert  = intersected_areas[intersected_areas["Klasse"] == klasse]
+        
+        # get sum of Bedeutung in filtered intersected pois
+        klasse_summe_bedeutung = intersected_areas_filtert['Bedeutung'].sum()
+    
+# caluculate overall results
 street_net_optimized_gdf["Bedeutung je km"] = round((street_net_optimized_gdf["Summe AREA*Bedeutung"] + street_net_optimized_gdf['Summe POI*Bedeutung']) /street_net_optimized_gdf["laenge [km]"] ,2)
 street_net_optimized_gdf["Einwohner je km"] = round(street_net_optimized_gdf['Summe Einwohner']/street_net_optimized_gdf["laenge [km]"] ,2)
 
