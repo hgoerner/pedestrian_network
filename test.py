@@ -12,15 +12,6 @@ Y_LABEL = "Y-Achse"
 
 # Function to read CSV files from a folder
 def read_csv_files(folder):
-    """
-    Reads all CSV files in the specified folder and returns a dictionary where keys are the base names of the files and values are DataFrames.
-
-    Args:
-        folder (str): The path to the folder containing CSV files.
-
-    Returns:
-        dict: A dictionary where keys are file base names and values are DataFrames.
-    """
     file_dic = {}
     for filename in os.listdir(folder):
         if filename.endswith('.csv'):
@@ -32,28 +23,11 @@ def read_csv_files(folder):
 
 # Function to add random numbers for testing
 def add_random_numbers(file_dic,filename):
-    """
-    Adds random numbers to a specific DataFrame in the file dictionary for testing purposes.
-
-    Args:
-        file_dic (dict): A dictionary containing DataFrames.
-        filename (str): The key of the DataFrame to which random numbers will be added.
-    """
-    file_dic[filename]["count"] = np.random.randint(20, 400, size=len(file_dic[filename]))
+        file_dic[filename]["count"] = np.random.randint(20, 400, size=len(file_dic[filename]))
 
 # Function to plot data
-
-def plot_data(file_dic): 
-    """
-    Plots the data from the provided file dictionary.
-
-    Args:
-        file_dic (dict): A dictionary containing the CSV files, where the keys are the filenames and the values are the corresponding pandas DataFrames.
-
-    Returns:
-        None
-    """
-    _, ax = plt.subplots()
+def plot_data(file_dic):
+    fig, ax = plt.subplots()
     for filename, df in file_dic.items():
         df['start time'] = pd.to_datetime(df['start time'], format='ISO8601')
         summed_up_count = df["count"].sum()
