@@ -2,9 +2,7 @@ import os
 import sys
 import geopandas as gpd
 from tqdm import tqdm
-import pandas as pd
-from geopy.distance import geodesic
-
+from geopandas.tools import sjoin_nearest
 
 current_directory = os.getcwd()
 
@@ -15,42 +13,80 @@ from utils.save_data import safe_gdf_as_gpkg
 from utils.load_data import find_geo_packages
 from utils.config_loader import config_data
 
-geo_packages = find_geo_packages()
+# Read geometric packages
+def read_geo_packages():
+    """
+    Reads and returns GeoDataFrames for street network and points of interest from the found geo packages.
 
+    Returns:
+        Dictionary with keys "street_net" and "pois" mapping to the respective GeoDataFrames.
+    """
+    geo_packages = find_geo_packages()
+    return {
+        "street_net": gpd.read_file(geo_packages["streets"]),
+        "pois": gpd.read_file(geo_packages["pois"]),
+    }
 
-#filepaths to files using
-street_net_filepath = geo_packages["streets"]
-area_filepath = geo_packages["areas"]
-pois_filepath = geo_packages["pois"]
-nodes_filepath = geo_packages["nodes"]
+# Filter points of interest
+def filter_pois(pois_gdf):
+    """
+    Filters points of interest GeoDataFrame into separate GeoDataFrames based on the type of public transportation.
 
-#read geopackages
-street_net_optimized_gdf = gpd.read_file(street_net_filepath)
-area_gdf = gpd.read_file(area_filepath)
-pois_gdf = gpd.read_file(pois_filepath)
+    Args:
+        pois_gdf: GeoDataFrame containing points of interest data.
 
-# filter pois 
-pois_opnv_gdf = pois_gdf[pois_gdf["Gruppe"] == "Haltestellen des OPNV"]
+    Returns:
+        Tuple of three GeoDataFrames: pois_opnv_bus_gdf, pois_opnv_spnv_gdf, pois_opnv_strassenbahn_gdf.
+    """
+    pois_opnv_bus_gdf = pois_gdf[pois_gdf["Klasse"] == "Bushaltestelle"]
+    pois_opnv_spnv_gdf = pois_gdf[pois_gdf["Klasse"] == "SPNV-Haltestelle"]
+    pois_opnv_strassenbahn_gdf = pois_gdf[pois_gdf["Klasse"] == "Strassenbahnhaltestelle"]
+    return pois_opnv_bus_gdf, pois_opnv_spnv_gdf, pois_opnv_strassenbahn_gdf
 
+# Update street network with distances to points of interest
+def assign_distance_opnv(street_net_optimized_updated_gdf, pois_opnv_bus_gdf, pois_opnv_spnv_gdf, pois_opnv_strassenbahn_gdf):
+    """
+    Assigns the distance from each street segment to the nearest public transportation points of interest.
 
-# Iterate through lines and update the Summe AREA*Bedeutung column    
-for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
-    min_dist = float('inf')  # Initialize minimum distance to infinity
-    closest_point = None
-    
-    # Iterate through each point
-    for point_idx, point in pois_opnv_gdf.iterrows():
-        # Calculate geodesic distance between line and point
-        dist = line.geometry.distance(point.geometry)
+    Args:
+        street_net_optimized_updated_gdf: GeoDataFrame containing street network data.
+        pois_opnv_bus_gdf: GeoDataFrame containing points of interest for bus stops.
+        pois_opnv_spnv_gdf: GeoDataFrame containing points of interest for SPNV stops.
+        pois_opnv_strassenbahn_gdf: GeoDataFrame containing points of interest for tram stops.
+
+    Returns:
+        None
+    """
+    if not pois_opnv_bus_gdf.empty:
+        nearest_bus = sjoin_nearest(street_net_optimized_updated_gdf, pois_opnv_bus_gdf, distance_col="dist_bus", max_distance=2500)
+        nearest_bus = nearest_bus.drop_duplicates(subset='geometry')
+
+        street_net_optimized_updated_gdf['Entfernung Bushaltestelle'] = nearest_bus['dist_bus'].astype(int)
+
+    if not pois_opnv_spnv_gdf.empty:
+        nearest_spnv = sjoin_nearest(street_net_optimized_updated_gdf, pois_opnv_spnv_gdf, distance_col="dist_SPNV", max_distance=2500)
+        nearest_spnv = nearest_spnv.drop_duplicates(subset='geometry')
         
-        # Check if this point is closer than the current closest point
-        # dist in meters
-        if dist < min_dist:
-            min_dist = dist
-            closest_point = point
-           
-   
-    # Assign the closest point to the 'closest_point' column of the line
-    street_net_optimized_gdf.at[idx, 'distance_to_opnv'] = dist
+        street_net_optimized_updated_gdf['Entfernung SPNV-Haltestelle'] = nearest_spnv['dist_SPNV'].astype(int)
+
+    if not pois_opnv_strassenbahn_gdf.empty:
+        nearest_strassenbahn = sjoin_nearest(street_net_optimized_updated_gdf, pois_opnv_strassenbahn_gdf, distance_col="dist_strassenbahn", max_distance=2500)
+        nearest_strassenbahn = nearest_strassenbahn.drop_duplicates(subset='geometry')
+        
+        street_net_optimized_updated_gdf['Entfernung Strassenbahnhaltestelle'] = nearest_strassenbahn['dist_strassenbahn'].astype(int)
+
+
+# Main function
+def main():  # sourcery skip: remove-redundant-fstring
+    geo_packages = read_geo_packages()
+    street_net_optimized_updated_gdf = geo_packages["street_net"]
+    pois_gdf = geo_packages["pois"]
+
+    pois_opnv_bus_gdf, pois_opnv_spnv_gdf, pois_opnv_strassenbahn_gdf = filter_pois(pois_gdf)
     
-safe_gdf_as_gpkg((street_net_optimized_gdf, f"street_net_optimized_updated_"+config_data["city_name"]))
+    assign_distance_opnv(street_net_optimized_updated_gdf, pois_opnv_bus_gdf, pois_opnv_spnv_gdf, pois_opnv_strassenbahn_gdf)
+    
+    safe_gdf_as_gpkg((street_net_optimized_updated_gdf, f"street_net_optimized_updated_" + config_data["city_name"]))
+
+if __name__ == "__main__":
+    main()

@@ -39,7 +39,7 @@ street_net_optimized_gdf = gpd.read_file(street_net_optimized_filepath)
 area_gdf = gpd.read_file(area_filepath)
 pois_gdf = gpd.read_file(pois_filepath)
 census_gdf = gpd.read_file(census_filepath)
-
+print("Zensus loading done!")
 #filter street net to only use streets thar are longer than 100
 street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["laenge [km]"] >= 0.1]
 
@@ -169,7 +169,8 @@ for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
         
         # get sum of Bedeutung in filtered intersected pois
         klasse_summe_bedeutung = intersected_areas_filtert['Bedeutung'].sum()
-    
+        street_net_optimized_gdf.at[idx, klasse+": Summe_Bedeutung"] = klasse_summe_bedeutung
+        
 # caluculate overall results
 street_net_optimized_gdf["Bedeutung je km"] = round((street_net_optimized_gdf["Summe AREA*Bedeutung"] + street_net_optimized_gdf['Summe POI*Bedeutung']) /street_net_optimized_gdf["laenge [km]"] ,2)
 street_net_optimized_gdf["Einwohner je km"] = round(street_net_optimized_gdf['Summe Einwohner']/street_net_optimized_gdf["laenge [km]"] ,2)

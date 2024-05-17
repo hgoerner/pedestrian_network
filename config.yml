@@ -1,8 +1,29 @@
 # config.yml
 
 #city to create the streetnet, poi ...
-city_name: "Heidelberg"
+city_name: "Gießen"
 country_code: "DE"
+# 6 for cities
+
+adminlevel_country : https://wiki.openstreetmap.org/wiki/DE:Grenze#Staatsgrenze_-_admin_level=2
+adminlevel_for_cities : https://www.openstreetmap.org/ 
+
+admin_level_country: 2
+admin_level_city: 8
+
+#info zu admin_level
+# Leipzig = 6
+# Halle (Saale) = 6
+# Heidelberg = 6
+# Leverkusen = 6
+# Karlsruhe = 6 
+# Kiel = 6
+# Chemnitz = 6
+# Fürstenfeldbruck = 8
+# Ratingen = 8
+# Neumüster = 6
+# Landau in der Pfalz = 6
+# Gießen = 8
 
 #if the city name has special character or so
 english_city_name: False

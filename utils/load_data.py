@@ -37,7 +37,7 @@ def find_geo_packages(city_name = config_data["city_name"], output_folder="data\
                 gpkg_files["nodes"] = os.path.join(output_folder, file)
             elif "zensus" in file:
                 gpkg_files["census"] = os.path.join(output_folder, file)
-
+    print(gpkg_files)
     return gpkg_files
 
 poi_csv = config_data["path_to_poi_csv"]
