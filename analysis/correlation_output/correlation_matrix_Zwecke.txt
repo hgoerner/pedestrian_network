@@ -1,0 +1,23 @@
+Correlation matrix for sheet 'Zwecke':
+Help text for pd.DataFrame.corr:
+
+
+Parameters
+----------
+method : {'pearson', 'kendall', 'spearman'} or callable
+    Method of correlation:
+    * pearson : standard correlation coefficient
+    * kendall : Kendall Tau correlation coefficient
+    * spearman : Spearman rank correlation
+    * callable: callable with input two 1d ndarrays
+        and returning a float. Note that the returned matrix from corr
+        will have 1 along the diagonals and will be symmetric
+        regardless of the callable's behavior.
+
+                          Arbeit.1  Kita/Schule/Ausbildung.1  Einkaufen/Dienstl..1  Freizeit.1  anderer Zweck.1
+Arbeit.1                  1.000000                  0.756581             -0.099457   -0.059707         0.364955
+Kita/Schule/Ausbildung.1  0.756581                  1.000000             -0.051745   -0.146645         0.328821
+Einkaufen/Dienstl..1     -0.099457                 -0.051745              1.000000    0.414249         0.819172
+Freizeit.1               -0.059707                 -0.146645              0.414249    1.000000         0.540774
+anderer Zweck.1           0.364955                  0.328821              0.819172    0.540774         1.000000
+

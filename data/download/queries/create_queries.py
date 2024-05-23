@@ -4,7 +4,11 @@ from utils.load_data import (area_key_value_dic,
 from utils.config_loader import config_data
 
 city = config_data["city_name"]
+# Encode special characters in city name
+
 country_code = config_data["country_code"]
+admin_level_city = config_data["admin_level_city"]
+admin_level_country = config_data["admin_level_country"]
 
 print(city)
 if config_data["english_city_name"]:
@@ -15,13 +19,18 @@ else:
 
 
 def list_of_street_queries():
-  
+    """
+    Generates a list of street queries based on combinations of cities and street types.
+
+    Returns:
+        list: A list of street queries for each combination of city and street type.
+    """
     street_queries = []
     # Loop through combinations of cities and street types
     for street_type in config_data["street_types_list"]:
         query = f"""
-        area["ISO3166-1"={country_code}][admin_level=2]->.country;
-        area["{nameconvention}"="{city}"]->.city;
+        area["ISO3166-1"={country_code}][admin_level={admin_level_country}]->.country;
+        area["{nameconvention}"="{city}"][admin_level={admin_level_city}]->.city;
         way[highway={street_type}](area.city)(area.country);
         (._;>;);
         out body;
@@ -30,6 +39,12 @@ def list_of_street_queries():
     return street_queries
 
 def list_of_poi_queries():
+    """
+    Generates a list of Point of Interest (POI) queries based on key-value pairs from a dictionary.
+
+    Returns:
+        list: A list of dictionaries containing the generated queries along with key and value information.
+    """
     
     poi_queries = []
 
@@ -41,8 +56,8 @@ def list_of_poi_queries():
         
         # Use a list comprehension to generate queries for each value of the key
         queriy = f"""
-            area["ISO3166-1"={country_code}][admin_level=2]->.country;
-            area["{nameconvention}"="{city}"]->.city;
+            area["ISO3166-1"={country_code}][admin_level={admin_level_country}]->.country;
+            area["{nameconvention}"="{city}"][admin_level={admin_level_city}]->.city;
             node[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
             out body;
@@ -69,8 +84,8 @@ def list_of_area_queries():
         osm_value = quote(area_key_value_dic[keys]["value"])
         # Use a list comprehension to generate queries for each value of the key
         queriy = f"""
-            area["ISO3166-1"={country_code}][admin_level=2]->.country;
-            area["{nameconvention}"="{city}"]->.city;
+            area["ISO3166-1"={country_code}][admin_level={admin_level_country}]->.country;
+            area["{nameconvention}"="{city}"][admin_level={admin_level_city}]->.city;
             nwr[{osm_key}={osm_value}](area.city)(area.country);
             (._;>;);
             out geom;

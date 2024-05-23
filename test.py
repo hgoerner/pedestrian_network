@@ -1,70 +1,73 @@
-import os
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
 
-# Constants
-RICHTUNGSFEIN = True
-TITLE = "TITLE"
-LEGENDTITLE = "Fußverkehrsaufkommen"
-X_LABEL = "X-Achse"
-Y_LABEL = "Y-Achse"
 
-# Function to read CSV files from a folder
-def read_csv_files(folder):
-    file_dic = {}
-    for filename in os.listdir(folder):
-        if filename.endswith('.csv'):
-            file_path = os.path.join(folder, filename)
-            file_basename = os.path.splitext(filename)[0]
-            df = pd.read_csv(file_path)
-            file_dic[file_basename] = df
-    return file_dic
+    # Confirm if the user wants to proceed
+def abort_option():
+    proceed = input("Do you want to proceed(yes/no): ").strip().lower()
+    
+    if proceed != 'y':
+        print("Operation aborted by the user.")
+        return
 
-# Function to add random numbers for testing
-def add_random_numbers(file_dic,filename):
-        file_dic[filename]["count"] = np.random.randint(20, 400, size=len(file_dic[filename]))
 
-# Function to plot data
-def plot_data(file_dic):
-    fig, ax = plt.subplots()
-    for filename, df in file_dic.items():
-        df['start time'] = pd.to_datetime(df['start time'], format='ISO8601')
-        summed_up_count = df["count"].sum()
-        df["count_anteilig"] = df["count"] / summed_up_count
-        df_grouped_by_flow = df.groupby(['start time', 'flow'])['count_anteilig'].sum().reset_index()
-        df_total = df.groupby('start time')['count_anteilig'].sum().reset_index()
+def wirte_correlation_matrix(correlation_matrix, txt_output_file, excel_output_file, sheet_name):
+    with open(txt_output_file, 'w',encoding="utf-8") as file:
+        file.write(f"Correlation matrix for sheet '{sheet_name}':\n")
+        file.write(help(pd.DataFrame.corr)"\n")
+        file.write(f"{correlation_matrix}\n\n")
         
-        ax.plot(df_total['start time'], df_total['count_anteilig'], linestyle='-', label=filename+"_total")
-        if RICHTUNGSFEIN:
-            for flow, group in df_grouped_by_flow.groupby('flow'):
-                ax.plot(group['start time'], group['count_anteilig'], linestyle='-', label=f'{flow, filename}', linewidth=1.5)
-
-    plt.title(TITLE, fontsize=14)
-    plt.xlabel(X_LABEL, fontsize=12)
-    plt.ylabel(Y_LABEL, fontsize=12)
-    plt.xticks(df_total['start time'], fontsize=8, rotation=90)
-    plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%H:%M:%S'))
-    plt.grid(True, alpha=0.5)
-    plt.legend(title=LEGENDTITLE, fontsize=10)
-    plt.xlim(df_total['start time'].min(), df_total['start time'].max())
-    plt.tight_layout()
-    plt.show()
-
-# Main function
-def main():
-    # Specify the folder containing CSV files
-    folder = r"C:\Users\Goerner\Desktop\Hamburg_zaehlstellen"
+    with pd.ExcelWriter(excel_output_file) as writer:
+        correlation_matrix.to_excel(writer, sheet_name=sheet_name)       
     
-    # Read CSV files into a dictionary
-    file_dic = read_csv_files(folder)
-    
-    # Add random numbers for testing
-    add_random_numbers(file_dic, "HH9_OTC23")
-    
-    # Plot data
-    plot_data(file_dic)
+        
+def read_excel_sheet(file_path, sheet_name):
+    """
+    Reads an Excel sheet from the specified file path and sheet name.
 
-# Entry point of the script
+    Args:
+        file_path (str): The path to the Excel file.
+        sheet_name (str): The name of the sheet to read.
+
+    Returns:
+        pandas.DataFrame: The data from the specified Excel sheet, skipping the first 2 rows.
+    """
+    return  pd.read_excel(file_path, sheet_name=sheet_name, skiprows=2)
+    
+
+def create_correlation_matrix(dataframe):
+    """
+    Creates a correlation matrix based on a subset of columns from the input dataframe.
+
+    Args:
+        dataframe (pandas.DataFrame): The input dataframe containing the data.
+
+    Returns:
+        pandas.DataFrame: The correlation matrix of the selected columns.
+    """
+    dataframe = dataframe.iloc[:, 10:15]
+
+    print(dataframe.columns)
+    print(dataframe)
+
+    abort_option()
+
+    return dataframe.corr()
+
+
 if __name__ == "__main__":
-    main()
+    # Define file paths and sheet name
+    file_path = r"Ganglinien_RegioStaR_v7.xlsx"
+    sheet_name = "Tätigkeit"
+    txt_output_file = f"correlation_matrix_{sheet_name}.txt"
+    excel_output_file = f"correlation_matrix_{sheet_name}.xlsx"
+    
+    
+    dataframe = read_excel_sheet(file_path, sheet_name)
+    
+    corr_matrix = create_correlation_matrix(dataframe)
+    
+    wirte_correlation_matrix(corr_matrix, txt_output_file, excel_output_file, sheet_name)
+    
+    
+    
+    

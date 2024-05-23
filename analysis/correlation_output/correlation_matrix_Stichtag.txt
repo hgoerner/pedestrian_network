@@ -1,0 +1,21 @@
+Correlation matrix for sheet 'Stichtag':
+Help text for pd.DataFrame.corr:
+
+
+Parameters
+----------
+method : {'pearson', 'kendall', 'spearman'} or callable
+    Method of correlation:
+    * pearson : standard correlation coefficient
+    * kendall : Kendall Tau correlation coefficient
+    * spearman : Spearman rank correlation
+    * callable: callable with input two 1d ndarrays
+        and returning a float. Note that the returned matrix from corr
+        will have 1 along the diagonals and will be symmetric
+        regardless of the callable's behavior.
+
+              Dienstag.1  Mittwoch.1  Donnerstag.1
+Dienstag.1      1.000000    0.996975      0.997375
+Mittwoch.1      0.996975    1.000000      0.996285
+Donnerstag.1    0.997375    0.996285      1.000000
+
