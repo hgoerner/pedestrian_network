@@ -12,10 +12,13 @@ python city_pois.py
 echo Running city_zensus.py
 python city_zensus.py
 
+echo Running modules\processing\distance_to_opnv.py
+python modules\processing\distance_to_opnv.py
+
+echo Running final calculations
+
 echo Running Varianten\Vorzugsvariante.py
 python Varianten\Vorzugsvariante.py
 
-echo Running modules\processing\distance_to_opnv.py
 
-python modules\processing\distance_to_opnv.py
 echo Batch execution complete

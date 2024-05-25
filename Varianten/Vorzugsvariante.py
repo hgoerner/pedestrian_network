@@ -10,7 +10,7 @@ current_directory = os.getcwd()
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\Code2\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
-from utils.save_data import safe_gdf_as_gpkg
+from utils.save_data import save_gdf_as_gpkg
 from utils.load_data import find_geo_packages
 from utils.config_loader import config_data
 
@@ -32,16 +32,16 @@ street_net_optimized_filepath = geo_packages["streets"]
 area_filepath = geo_packages["areas"]
 pois_filepath = geo_packages["pois"]
 nodes_filepath = geo_packages["nodes"]
-census_filepath = r"data\output\zensus_100x100.gpkg"
+#census_filepath = r"data\output\zensus_100x100.gpkg"
 
 #read geopackages
 street_net_optimized_gdf = gpd.read_file(street_net_optimized_filepath)
 area_gdf = gpd.read_file(area_filepath)
 pois_gdf = gpd.read_file(pois_filepath)
-census_gdf = gpd.read_file(census_filepath)
+#census_gdf = gpd.read_file(census_filepath)
 print("Zensus loading done!")
 #filter street net to only use streets thar are longer than 100
-street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["laenge [km]"] >= 0.1]
+#street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["laenge [km]"] >= 0.1]
 
 #buffer street net by buffersize ands create new geodataframe
 street_net_optimized_buffered_gdf = street_net_optimized_gdf.copy()
@@ -86,25 +86,25 @@ for header in list_of_header:
     
 # Initialize a new column for the sum of values
 # Columns with counts
-street_net_optimized_gdf['Summe Einwohner'] = 0
+#street_net_optimized_gdf['Summe Einwohner'] = 0
 
 # Columns with Bedeutung
 street_net_optimized_gdf['Summe POI*Bedeutung'] = 0
 street_net_optimized_gdf['Summe AREA*Bedeutung'] = 0
-street_net_optimized_gdf['Summe Einwohner'] = 0
+#street_net_optimized_gdf['Summe Einwohner'] = 0
     
 
 # Create a spatial index for the census GeoDataFrame
-census_sindex = census_gdf.sindex
+#census_sindex = census_gdf.sindex
 
 # # Calculate Zensusdensity   
-for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
-    possible_matches_index = list(census_sindex.intersection(buffered_line['geometry'].bounds))
-    possible_matches = census_gdf.iloc[possible_matches_index]
+# for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
+#     possible_matches_index = list(census_sindex.intersection(buffered_line['geometry'].bounds))
+#     possible_matches = census_gdf.iloc[possible_matches_index]
     
-    intersected_points = possible_matches[possible_matches['geometry'].intersects(buffered_line['geometry'])]
-    # assign to id in original gdf
-    street_net_optimized_gdf.at[idx, 'Summe Einwohner'] = intersected_points['Einwohner'].sum()  
+#     intersected_points = possible_matches[possible_matches['geometry'].intersects(buffered_line['geometry'])]
+#     # assign to id in original gdf
+#     street_net_optimized_gdf.at[idx, 'Summe Einwohner'] = intersected_points['Einwohner'].sum()  
 
 # Iterate through lines and update the Summe POI*Bedeutung column
 for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
@@ -173,11 +173,16 @@ for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
         
 # caluculate overall results
 street_net_optimized_gdf["Bedeutung je km"] = round((street_net_optimized_gdf["Summe AREA*Bedeutung"] + street_net_optimized_gdf['Summe POI*Bedeutung']) /street_net_optimized_gdf["laenge [km]"] ,2)
-street_net_optimized_gdf["Einwohner je km"] = round(street_net_optimized_gdf['Summe Einwohner']/street_net_optimized_gdf["laenge [km]"] ,2)
+#street_net_optimized_gdf["Einwohner je km"] = round(street_net_optimized_gdf['Summe Einwohner']/street_net_optimized_gdf["laenge [km]"] ,2)
 
 # create Faktor
-street_net_optimized_gdf["Einwohner-Faktor"] = round(street_net_optimized_gdf["Einwohner je km"]  * 1/15000, 2)
+#street_net_optimized_gdf["Einwohner-Faktor"] = round(street_net_optimized_gdf["Einwohner je km"]  * 1/15000, 2)
 
-street_net_optimized_gdf.to_excel('data.xlsx', index=True)  # Save DataFrame to Excel without index
+
 # Drop the intermediate column 'intersected_points'
-safe_gdf_as_gpkg((street_net_optimized_gdf, f"street_net_optimized_updated_"+config_data["city_name"]))
+def create_variante1(street_net_optimized_gdf):
+
+    save_gdf_as_gpkg(street_net_optimized_gdf, f"street_net_"+config_data["city_name"], final=True, version="1.2")
+    
+create_variante1(street_net_optimized_gdf)
+street_net_optimized_gdf.to_excel(f""+config_data["city_name"]+'.xlsx', index=True)  # Save DataFrame to Excel without index

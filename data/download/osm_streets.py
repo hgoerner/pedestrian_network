@@ -15,7 +15,7 @@ from tqdm import tqdm
 from data.download.queries.create_queries import osm_street_queries
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
-from utils.save_data import safe_gdf_as_gpkg
+from utils.save_data import save_gdf_as_gpkg
 
 api = overpy.Overpass()
 
@@ -60,7 +60,7 @@ def create_osm_streets_gdf():
 
     osm_streets_gdf = concatenate_geodataframes(list_of_gdf)
 
-    safe_gdf_as_gpkg((osm_streets_gdf,"osm_street_net_"+config_data["city_name"],True))
+    save_gdf_as_gpkg(osm_streets_gdf,"osm_street_net_"+config_data["city_name"],interimresult=True, version="0.0")
 
     return osm_streets_gdf
 

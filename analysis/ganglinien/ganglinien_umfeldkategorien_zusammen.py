@@ -53,6 +53,8 @@ def read_and_process_file(filepath):
 
     return df_grouped, base_filename, total_count
 
+import matplotlib as mpl
+
 def plot_data_from_folders(folderpaths, title, subtitle): 
     """
     Plots the data from CSV files in the provided folders.
@@ -70,7 +72,7 @@ def plot_data_from_folders(folderpaths, title, subtitle):
     plt.figure(figsize=(14, 8))
     ax = plt.gca()
     
-    colors = [cm.Reds, cm.Blues, cm.Greens,  cm.Purples, cm.Oranges,]  # Add more colormaps if needed
+    colors = [mpl.cm.Reds, mpl.cm.Blues, mpl.cm.Greens, mpl.cm.Purples, mpl.cm.Oranges]  # Add more colormaps if needed
     all_handles = []
     all_labels = []
     head_labels = []

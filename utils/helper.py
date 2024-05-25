@@ -47,3 +47,4 @@ def write_params_to_textfile(list_of_keys: list, params_file_name : str, purpose
         for key in list_of_keys:
             value = config_data[key]
             file.write(f"{key}: {value}""\n")
+            

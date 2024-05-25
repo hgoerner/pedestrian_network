@@ -1,8 +1,8 @@
 # config.yml
 
 #city to create the streetnet, poi ...
-city_name: "Gießen"
-country_code: "DE"
+city_name: "Montréal"
+country_code: "CA"
 # 6 for cities
 
 adminlevel_country : https://wiki.openstreetmap.org/wiki/DE:Grenze#Staatsgrenze_-_admin_level=2
@@ -28,13 +28,17 @@ admin_level_city: 8
 #if the city name has special character or so
 english_city_name: False
 
+#still download osm data even if data is in draftfolder
+redownload : True
+
+
 # for testing purposes only!
 testing_phase: False
 test_osm_street_package: 'output\test_network\osm_street_net_Dresden.gpkg'
 test_osm_poi_package: 'output\test_network\osm_pois_Dresden.gpkg'
 
 #if interim result wants to be safed, is not needed for internal computation
-safe_interim_results: true
+save_interim_results: true
 
 # input csv with necessary key value pairs
 path_to_poi_csv: 'data\input\poi_key_value.CSV'

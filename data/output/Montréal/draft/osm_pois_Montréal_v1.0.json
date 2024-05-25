@@ -1,0 +1,8 @@
+{
+    "filename": "osm_pois_Montr\u00e9al_v1.0",
+    "creation_date": "2024-05-25T04:04:50.444018",
+    "version": "1.0",
+    "stage": "draft",
+    "description": "Description of the contents",
+    "used in function:": "create_osm_poi_gdf"
+}

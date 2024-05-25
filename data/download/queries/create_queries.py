@@ -83,15 +83,18 @@ def list_of_area_queries():
         osm_key = quote(area_key_value_dic[keys]["Key"])  
         osm_value = quote(area_key_value_dic[keys]["value"])
         # Use a list comprehension to generate queries for each value of the key
-        queriy = f"""
+        query = f"""
             area["ISO3166-1"={country_code}][admin_level={admin_level_country}]->.country;
             area["{nameconvention}"="{city}"][admin_level={admin_level_city}]->.city;
-            nwr[{osm_key}={osm_value}](area.city)(area.country);
+            (
+            way[{osm_key}={osm_value}](area.city)(area.country);
+            relation[{osm_key}={osm_value}](area.city)(area.country);
+            );
             (._;>;);
             out geom;
             """
         
-        query_info = {"query":queriy,'key': osm_key, 'value': osm_value}
+        query_info = {"query":query,'key': osm_key, 'value': osm_value}
 
         # Extend poi_queries with the generated queries
         area_queries.append(query_info)
