@@ -1,73 +1,58 @@
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import pandas as pd
+import numpy as np
+from matplotlib.lines import Line2D
 
+def prepare_dataframe(dataframe):
+    pass
 
-    # Confirm if the user wants to proceed
-def abort_option():
-    proceed = input("Do you want to proceed(yes/no): ").strip().lower()
-    
-    if proceed != 'y':
-        print("Operation aborted by the user.")
-        return
+class PlotManager:
+    def __init__(self, title, xlabel, ylabel):
+        self.fig, self.ax = plt.subplots(figsize=(14, 8))
+        self.ax.set_title(title)
+        self.ax.set_xlabel(xlabel)
+        self.ax.set_ylabel(ylabel)
+        self.ax.grid(True)
+        self.legend_elements = []
 
+    def plot_group(self, dataframes, labels, color_map, group_label):
+        """Plots a group of dataframes with a common colormap but distinct intensities."""
+        # Create a color map based on the length of the dataframes list
+        colors = color_map(np.linspace(0.3, 1, len(dataframes)))
 
-def wirte_correlation_matrix(correlation_matrix, txt_output_file, excel_output_file, sheet_name):
-    with open(txt_output_file, 'w',encoding="utf-8") as file:
-        file.write(f"Correlation matrix for sheet '{sheet_name}':\n")
-        file.write(help(pd.DataFrame.corr)"\n")
-        file.write(f"{correlation_matrix}\n\n")
-        
-    with pd.ExcelWriter(excel_output_file) as writer:
-        correlation_matrix.to_excel(writer, sheet_name=sheet_name)       
-    
-        
-def read_excel_sheet(file_path, sheet_name):
-    """
-    Reads an Excel sheet from the specified file path and sheet name.
+        # Header for the group in the legend
+        self.legend_elements.append(Line2D([0], [0], color='w', label=group_label, markerfacecolor='w', markersize=15))
 
-    Args:
-        file_path (str): The path to the Excel file.
-        sheet_name (str): The name of the sheet to read.
+        for df, label, color in zip(dataframes, labels, colors):
+            self.ax.plot(df['x'], df['y'], label=f"{label}", color=color)
+            self.legend_elements.append(Line2D([0], [0], color=color, label=f"{label}"))
 
-    Returns:
-        pandas.DataFrame: The data from the specified Excel sheet, skipping the first 2 rows.
-    """
-    return  pd.read_excel(file_path, sheet_name=sheet_name, skiprows=2)
-    
+    def show(self):
+        # Custom legend handling to include group headers
+        self.ax.legend(handles=self.legend_elements, title='Zählstelle', loc='upper left', bbox_to_anchor=(1,1))
+        plt.tight_layout(rect=[0, 0, 0.85, 1])  # Adjust layout to make space for legend
+        plt.show()
 
-def create_correlation_matrix(dataframe):
-    """
-    Creates a correlation matrix based on a subset of columns from the input dataframe.
+# Example usage
 
-    Args:
-        dataframe (pandas.DataFrame): The input dataframe containing the data.
+# Create an instance of the plot manager
+pm = PlotManager('Anteil Fußverkehr je Zeitscheibe', 'Beginn 15-min-Intervall', 'Anteil je 15-min-Intervall (gleitend)')
 
-    Returns:
-        pandas.DataFrame: The correlation matrix of the selected columns.
-    """
-    dataframe = dataframe.iloc[:, 10:15]
+# Example DataFrames
+data1 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10)})
+data2 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10) * 0.5})
+data3 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10) * 1.5})
+data4 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10)})
+data5 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10) * 0.5})
 
-    print(dataframe.columns)
-    print(dataframe)
+# Define color maps
+reds = plt.cm.Reds
+blues = plt.cm.Blues
 
-    abort_option()
+# Plot groups with respective color themes and headers
+pm.plot_group([data1, data2, data3], ['Data1', 'Data2', 'Data3'], reds, 'PH EH')
+pm.plot_group([data4, data5], ['Data4', 'Data5'], blues, 'PH EN')
 
-    return dataframe.corr()
-
-
-if __name__ == "__main__":
-    # Define file paths and sheet name
-    file_path = r"Ganglinien_RegioStaR_v7.xlsx"
-    sheet_name = "Tätigkeit"
-    txt_output_file = f"correlation_matrix_{sheet_name}.txt"
-    excel_output_file = f"correlation_matrix_{sheet_name}.xlsx"
-    
-    
-    dataframe = read_excel_sheet(file_path, sheet_name)
-    
-    corr_matrix = create_correlation_matrix(dataframe)
-    
-    wirte_correlation_matrix(corr_matrix, txt_output_file, excel_output_file, sheet_name)
-    
-    
-    
-    
+# Display the plot
+pm.show()
