@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import matplotlib.cm as cm
+import matplotlib as mpl
 from matplotlib.ticker import FixedLocator, FuncFormatter
 from matplotlib.lines import Line2D
 
@@ -53,7 +54,7 @@ def read_and_process_file(filepath):
 
     return df_grouped, base_filename, total_count
 
-import matplotlib as mpl
+
 
 def plot_data_from_folders(folderpaths, title, subtitle): 
     """

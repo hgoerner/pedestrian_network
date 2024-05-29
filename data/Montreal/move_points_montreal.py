@@ -2,7 +2,6 @@ import os
 import sys
 from shapely.geometry import Point
 import geopandas as gpd
-import rtree
 from tqdm import tqdm
 
 current_directory = os.getcwd()
@@ -11,7 +10,6 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\Code2\\pedestrian_network'
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 from utils.save_data import save_gdf_as_gpkg
-from utils.load_data import find_geo_packages
 from utils.config_loader import config_data
 
 

@@ -1,11 +1,54 @@
+import os
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-import pandas as pd
-import numpy as np
+import matplotlib.cm as cm
+import matplotlib as mpl
+from matplotlib.ticker import FixedLocator, FuncFormatter
 from matplotlib.lines import Line2D
+import numpy as np
 
-def prepare_dataframe(dataframe):
-    pass
+def read_and_process_file(filepath):
+    """
+    Reads a CSV file, processes it, and returns the processed DataFrame.
+
+    Args:
+        filepath (str): The path to the CSV file.
+
+    Returns:
+        pd.DataFrame: The processed DataFrame.
+        str: The base filename.
+        int: The total count of pedestrians.
+    """
+    df = pd.read_csv(filepath)
+    
+    # Extract filename without extension
+    base_filename = os.path.splitext(os.path.basename(filepath))[0]
+    base_filename = base_filename.split('.')[0]
+    # Convert 'start time' to datetime and extract the time component
+    df['start time(ohne Tag)'] = pd.to_datetime(df['start time'], format='ISO8601').dt.strftime('%H:%M')
+    
+    # Filter to only include pedestrians
+    df = df[df['classification'] == 'pedestrian'].copy()
+    
+    # Calculate the proportion of counts
+    total_count = df["count"].sum()
+    df["count_anteilig"] = df["count"] / total_count
+    
+    # Group by 'start time(ohne Tag)' and sum the 'count_anteilig'
+    df_grouped = df.groupby('start time(ohne Tag)')['count_anteilig'].sum().reset_index()
+    df_grouped.sort_values(by='start time(ohne Tag)', inplace=True)
+    
+    # Calculate rolling mean with window size of 4
+    df_grouped['gleitender_Mittelwert'] = df_grouped['count_anteilig'].rolling(window=4, min_periods=1).mean()
+    
+    # Manually adjust the first three values of 'gleitender_Mittelwert'
+    if len(df_grouped) >= 4:
+        df_grouped.at[0, 'gleitender_Mittelwert'] = (df_grouped['count_anteilig'][-3:].sum() + df_grouped['count_anteilig'][:2].sum()) / 4
+        df_grouped.at[1, 'gleitender_Mittelwert'] = (df_grouped['count_anteilig'][-2:].sum() + df_grouped['count_anteilig'][:3].sum()) / 4
+        df_grouped.at[2, 'gleitender_Mittelwert'] = (df_grouped['count_anteilig'][-1:].sum() + df_grouped['count_anteilig'][:4].sum()) / 4
+
+    return df_grouped, base_filename, total_count
 
 class PlotManager:
     def __init__(self, title, xlabel, ylabel):
@@ -25,12 +68,34 @@ class PlotManager:
         self.legend_elements.append(Line2D([0], [0], color='w', label=group_label, markerfacecolor='w', markersize=15))
 
         for df, label, color in zip(dataframes, labels, colors):
-            self.ax.plot(df['x'], df['y'], label=f"{label}", color=color)
-            self.legend_elements.append(Line2D([0], [0], color=color, label=f"{label}"))
 
-    def show(self):
+            self.ax.plot(df['start time(ohne Tag)'], df['gleitender_Mittelwert'], label=f"{label}", color=color)
+            self.legend_elements.append(Line2D([0], [0], color=color, label=f"{label}"))
+        
+        
+    def show(self, dataframes):
+        # Set x-axis labels to show every 4th tick / just take the first dataframe
+        dataframe = dataframes[0]
+        xticks = range(0, len(dataframe['start time(ohne Tag)']), 4)
+        self.ax.set_xticks(xticks)
+        self.ax.xaxis.set_major_locator(FixedLocator(xticks))
+        labels = dataframe['start time(ohne Tag)'].iloc[xticks]
+        self.ax.set_xticklabels(labels, rotation=90)
+        self.ax.set_xlim(-0.5, len(dataframe['start time(ohne Tag)']) - 0.5)
+        # Set y-axis labels to percentage and limits from 0% to 8%
+        self.ax.set_ylim(0, 0.08)
+        self.ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y * 100:.0f}%'))
+        self.ax.yaxis.set_major_locator(FixedLocator([0.01 * i for i in range(0, 9)]))
+        # Set plot details
+        
         # Custom legend handling to include group headers
         self.ax.legend(handles=self.legend_elements, title='Zählstelle', loc='upper left', bbox_to_anchor=(1,1))
+        # plt.title(plot_title, fontsize=16)
+        # plt.xlabel(X_LABEL, fontsize=14)
+        # plt.ylabel(Y_LABEL, fontsize=14)
+        plt.yticks(fontsize=10)
+        plt.xticks(fontsize=10)
+        plt.grid(True, alpha=0.5)
         plt.tight_layout(rect=[0, 0, 0.85, 1])  # Adjust layout to make space for legend
         plt.show()
 
@@ -40,19 +105,33 @@ class PlotManager:
 pm = PlotManager('Anteil Fußverkehr je Zeitscheibe', 'Beginn 15-min-Intervall', 'Anteil je 15-min-Intervall (gleitend)')
 
 # Example DataFrames
-data1 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10)})
-data2 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10) * 0.5})
-data3 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10) * 1.5})
-data4 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10)})
-data5 = pd.DataFrame({'x': range(10), 'y': np.random.rand(10) * 0.5})
-
 # Define color maps
 reds = plt.cm.Reds
 blues = plt.cm.Blues
+Set2 = plt.cm.Set2
+CMRmap = plt.cm.CMRmap
+
+folderpath =r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Umfeld_Kategorie\PH_EH"
+
+
+def return_dataframe(folderpath):
+    dataframes_list = []
+    basename_list = []
+    for filename in os.listdir(folderpath):
+        if filename.endswith('.csv'):
+            filepath = os.path.join(folderpath, filename)
+            dataframe, basename, n = read_and_process_file(filepath)
+            dataframes_list.append(dataframe)
+            basename_list.append(basename+' n='+str(n))
+            
+            
+    return dataframes_list, basename_list, 
+
+dataframes_list, basename_list= return_dataframe(folderpath)
 
 # Plot groups with respective color themes and headers
-pm.plot_group([data1, data2, data3], ['Data1', 'Data2', 'Data3'], reds, 'PH EH')
-pm.plot_group([data4, data5], ['Data4', 'Data5'], blues, 'PH EN')
+pm.plot_group(dataframes_list, basename_list, Set2, 'PH EH')
+#pm.plot_group([data4, data5], ['Data4', 'Data5'], blues, 'PH EN')
 
 # Display the plot
-pm.show()
+pm.show(dataframes_list)
