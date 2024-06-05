@@ -1,0 +1,8 @@
+{
+    "filename": "buffer_points_Landau in der Pfalz",
+    "creation_date": "2024-06-03T19:29:42.063243",
+    "version": null,
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
+}

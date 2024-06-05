@@ -14,7 +14,7 @@ import re
 
 def find_geo_packages(city_name=config_data["city_name"], output_folder="data/output"):
     """
-    Find GeoPackage files in the specified draft output folder that match the given city name and have the highest version.
+    Find GeoPackage files in the specified draft! output folder that match the given city name and have the highest version.
 
     Args:
         city_name (str, optional): The name of the city to search for in the file names. Defaults to the value from config_data.

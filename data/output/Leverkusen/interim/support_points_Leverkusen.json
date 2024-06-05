@@ -1,0 +1,8 @@
+{
+    "filename": "support_points_Leverkusen",
+    "creation_date": "2024-05-31T14:15:22.810281",
+    "version": null,
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
+}

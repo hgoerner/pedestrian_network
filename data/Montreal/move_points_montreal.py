@@ -42,7 +42,7 @@ def closest_endpoint_on_line(point, lines, sindex, buffer_distance=1000):
 # Example usage
 # Load your GeoDataFrames
 
-gdf_points = gpd.read_file(r'data\output\intersections_with_counts_montreal.gpkg')
+gdf_points = gpd.read_file(r'data\Montreal\Studienarbeit\intesection_counts_montreal_ohne21_aprl_okt.gpkg')
 
 print(f"old_crs: {gdf_points.crs}")
 
@@ -61,6 +61,6 @@ for index, point in tqdm(gdf_points.iterrows()):
     closest_point = closest_endpoint_on_line(point.geometry, gdf_lines, lines_sindex)
     gdf_points.at[index, 'geometry'] = closest_point
     
-save_gdf_as_gpkg(gdf_points, "intersections_with_counts_montreal_updated", final=True, version="1.2")
+save_gdf_as_gpkg(gdf_points, "intersections_with_counts_montreal_StDa", final=True, version="1.3")
 
 # Save the updated points GeoDataFrame to a new shapefile if needed

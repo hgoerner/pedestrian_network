@@ -1,7 +1,8 @@
 {
     "filename": "osm_areaNeum\u00fcnster_v1.0",
-    "creation_date": "2024-05-25T03:03:20.046320",
+    "creation_date": "2024-06-03T22:12:43.837562",
     "version": "1.0",
     "stage": "draft",
-    "description": "Description of the contents"
+    "description": "Description of the contents",
+    "used in function:": "create_osm_area_gdf"
 }

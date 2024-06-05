@@ -1,7 +1,8 @@
 {
     "filename": "node_points_Neum\u00fcnster_v1.0",
-    "creation_date": "2024-05-25T03:02:42.807524",
+    "creation_date": "2024-06-03T22:12:04.652851",
     "version": "1.0",
     "stage": "draft",
-    "description": "Description of the contents"
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
 }

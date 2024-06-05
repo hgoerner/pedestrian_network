@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Kiel_v0.0",
+    "creation_date": "2024-06-03T17:10:40.650016",
+    "version": "0.0",
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_osm_streets_gdf"
+}

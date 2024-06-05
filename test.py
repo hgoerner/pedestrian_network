@@ -8,6 +8,18 @@ from matplotlib.ticker import FixedLocator, FuncFormatter
 from matplotlib.lines import Line2D
 import numpy as np
 
+
+# Define color maps
+reds = plt.cm.Reds
+blues = plt.cm.Blues
+Set2 = plt.cm.Set2
+CMRmap = plt.cm.CMRmap
+
+X_LABEL = "Beginn 15-min-Intervall"
+Y_LABEL = "Anteil je 15-min-Intervall"
+PLOTTITLE = 'Anteil Fußverkehr je Zeitscheibe'
+LEGENDTITLE = "Zählstelle"
+
 def read_and_process_file(filepath):
     """
     Reads a CSV file, processes it, and returns the processed DataFrame.
@@ -51,7 +63,7 @@ def read_and_process_file(filepath):
     return df_grouped, base_filename, total_count
 
 class PlotManager:
-    def __init__(self, title, xlabel, ylabel):
+    def __init__(self, title = PLOTTITLE, xlabel = X_LABEL, ylabel = Y_LABEL):
         self.fig, self.ax = plt.subplots(figsize=(14, 8))
         self.ax.set_title(title)
         self.ax.set_xlabel(xlabel)
@@ -89,7 +101,7 @@ class PlotManager:
         # Set plot details
         
         # Custom legend handling to include group headers
-        self.ax.legend(handles=self.legend_elements, title='Zählstelle', loc='upper left', bbox_to_anchor=(1,1))
+        self.ax.legend(handles=self.legend_elements, title=LEGENDTITLE, loc='upper left', bbox_to_anchor=(1,1))
         # plt.title(plot_title, fontsize=16)
         # plt.xlabel(X_LABEL, fontsize=14)
         # plt.ylabel(Y_LABEL, fontsize=14)
@@ -102,14 +114,8 @@ class PlotManager:
 # Example usage
 
 # Create an instance of the plot manager
-pm = PlotManager('Anteil Fußverkehr je Zeitscheibe', 'Beginn 15-min-Intervall', 'Anteil je 15-min-Intervall (gleitend)')
+pm = PlotManager()
 
-# Example DataFrames
-# Define color maps
-reds = plt.cm.Reds
-blues = plt.cm.Blues
-Set2 = plt.cm.Set2
-CMRmap = plt.cm.CMRmap
 
 folderpath =r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Umfeld_Kategorie\PH_EH"
 

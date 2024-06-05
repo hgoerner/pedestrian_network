@@ -1,7 +1,8 @@
 {
     "filename": "osm_street_net_Neum\u00fcnster_v0.0",
-    "creation_date": "2024-05-25T03:02:32.878341",
+    "creation_date": "2024-06-03T22:11:57.183736",
     "version": "0.0",
     "stage": "interim",
-    "description": "Description of the contents"
+    "description": "Description of the contents",
+    "used in function:": "create_osm_streets_gdf"
 }
