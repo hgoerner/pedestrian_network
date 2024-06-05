@@ -1,8 +1,0 @@
-{
-    "filename": "osm_street_net_Gie\u00dfen",
-    "creation_date": "2024-06-03T20:43:49.041728",
-    "version": null,
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_street_net_and_intersection_gpkg"
-}

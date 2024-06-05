@@ -1,8 +1,0 @@
-{
-    "filename": "support_points_Neum\u00fcnster",
-    "creation_date": "2024-06-03T22:12:05.373666",
-    "version": null,
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_street_net_and_intersection_gpkg"
-}

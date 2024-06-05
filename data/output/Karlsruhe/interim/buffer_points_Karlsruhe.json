@@ -1,8 +1,0 @@
-{
-    "filename": "buffer_points_Karlsruhe",
-    "creation_date": "2024-06-03T16:02:32.060470",
-    "version": null,
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_street_net_and_intersection_gpkg"
-}

@@ -1,8 +1,0 @@
-{
-    "filename": "osm_street_net_Chemnitz_v0.0",
-    "creation_date": "2024-05-31T09:58:15.012867",
-    "version": "0.0",
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_osm_streets_gdf"
-}
