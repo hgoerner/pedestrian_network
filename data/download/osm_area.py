@@ -2,8 +2,9 @@ import logging
 import os
 import sys
 
+from data.download.osm_retry import fetch_osm_data
+
 current_directory = os.getcwd()
-print(current_directory)
 
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
@@ -17,8 +18,7 @@ from shapely.ops import polygonize
 from data.download.queries.create_queries import osm_area_queries
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
-from utils.save_data import safe_gdf_as_gpkg
-
+from utils.save_data import save_gdf_as_gpkg
 
 # Configure logging
 # logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
@@ -28,7 +28,7 @@ logging.basicConfig(filename='Result_area_insights.txt',
 api = overpy.Overpass()
 
 
-def _query_overpass(api, query):
+def _query_overpass(query):
     """
     Query the Overpass API with the given query.
 
@@ -48,10 +48,10 @@ def _query_overpass(api, query):
     """
 
     try:
-        return api.query(query)
-    except OverpassBadRequest as e:
-        # Handle the exception (e.g., print an error message)
-        print(f"OverpassBadRequest: {e}")
+        return fetch_osm_data(query)
+        # Process the result as needed
+    except Exception as e:
+        print(f"Error fetching OSM data: {e}")  
 
 
 def _parse_osm_area_result(result: overpy.Result, osm_key: str, osm_value: str, **kwargs):
@@ -141,8 +141,7 @@ def create_osm_area_gdf():
 
         osm_key = query_info['key']
         osm_value = query_info['value']
-
-        result = _query_overpass(api, area_query)
+        result = _query_overpass(area_query)
         if result is not None:
             gdf = _parse_osm_area_result(result, osm_key, osm_value)
             list_of_gdf.append(gdf)
@@ -161,8 +160,7 @@ def create_osm_area_gdf():
 
         osm_area_gdf = concatenate_geodataframes(list_of_gdf)
               
-        safe_gdf_as_gpkg(
-            (osm_area_gdf, "osm_area_plain_"+config_data["city_name"], True))
+        save_gdf_as_gpkg(osm_area_gdf, "osm_area"+config_data["city_name"],  version="1.0")
         
         return osm_area_gdf
     else:

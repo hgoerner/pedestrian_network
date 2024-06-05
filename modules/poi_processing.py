@@ -1,12 +1,10 @@
-from utils.save_data import safe_gdf_as_gpkg
-from utils.config_loader import config_data
 import pandas as pd
 from utils.load_data import poi_key_value_df
 import geopandas as gpd
 import sys
 import os
-
-
+from utils.save_data import save_gdf_as_gpkg
+from utils.config_loader import config_data
 current_directory = os.getcwd()
 print(current_directory)
 
@@ -32,17 +30,8 @@ def assign_group_categorie_poi(osm_poi_gdf: gpd.GeoDataFrame):
     # updates and overwrites the osm_poi_gdf
     osm_poi_gdf = pd.merge(osm_poi_gdf, poi_key_value_df, left_on=[
                            'osm_key', 'osm_value'], right_on=['Key', 'value'], how='left')
+    
+    save_gdf_as_gpkg(osm_poi_gdf, "osm_pois_"+config_data["city_name"], version="1.1")  
 
     return osm_poi_gdf
 
-
-def main():
-    # function for testing
-    osm_pois_gdf = gpd.read_file(config_data["test_osm_poi_package"])
-
-    osm_pois_gdf = assign_group_categorie_poi(osm_pois_gdf)
-    safe_gdf_as_gpkg((osm_pois_gdf, "osm_pois_dresden_updated"))
-
-
-if __name__ == "__main__":
-    main()

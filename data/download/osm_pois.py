@@ -2,6 +2,8 @@ import logging
 import os
 import sys
 
+from data.download.osm_retry import fetch_osm_data
+
 current_directory = os.getcwd()
 print(current_directory)
 
@@ -17,17 +19,15 @@ from tqdm import tqdm
 from data.download.queries.create_queries import osm_poi_queries
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
-from utils.save_data import safe_gdf_as_gpkg
+from utils.save_data import save_gdf_as_gpkg
 
 # Configure logging
 # logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
 logging.basicConfig(filename='Result__poi_insights.txt',
                     level=logging.INFO, filemode='w')
 
-api = overpy.Overpass()
 
-
-def _query_overpass(api, query: str):
+def _query_overpass(query: str):
     """
     Query the Overpass API with the given query.
 
@@ -45,12 +45,12 @@ def _query_overpass(api, query: str):
         >>> query = siehe queryservice
         >>> result = _query_overpass(api, query)
     """
-
+      
     try:
-        return api.query(query)
-    except OverpassBadRequest as e:
-        # Handle the exception (e.g., print an error message)
-        print(f"OverpassBadRequest: {e}")
+        return fetch_osm_data(query)
+        # Process the result as needed
+    except Exception as e:
+        print(f"Error fetching OSM data: {e}")      
 
 
 def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str, **kwargs):
@@ -103,7 +103,7 @@ def create_osm_poi_gdf():
         poi_query = query_info['query']
         osm_key = query_info['key']
         osm_value = query_info['value']
-        result = _query_overpass(api, poi_query)
+        result = _query_overpass(poi_query)
         if result is not None:
             gdf = _parse_osm_poi_result(result, osm_key, osm_value)
             list_of_gdf.append(gdf)
@@ -117,7 +117,7 @@ def create_osm_poi_gdf():
             continue
 
     osm_poi_gdf = concatenate_geodataframes(list_of_gdf)
-    safe_gdf_as_gpkg((osm_poi_gdf, "osm_pois_plain_"+config_data["city_name"], True))
+    save_gdf_as_gpkg(osm_poi_gdf, "osm_pois_"+config_data["city_name"], version="1.0")
 
     return osm_poi_gdf
 

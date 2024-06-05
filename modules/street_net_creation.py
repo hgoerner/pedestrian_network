@@ -1,4 +1,5 @@
 from shapely.ops import linemerge
+import numpy as np
 import geopandas as gpd
 import sys
 import os
@@ -10,7 +11,6 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
 
 import geopandas as gpd
-from shapely import LineString
 from shapely.ops import linemerge
 from data.download.osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
@@ -18,12 +18,12 @@ from utils.helper import start_end_points
 from data.download.osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
 from utils.helper import start_end_points
-from utils.save_data import safe_gdf_as_gpkg
+from utils.save_data import save_gdf_as_gpkg
 
 from data.download.osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
-from utils.helper import overlay_geo_data, start_end_points
-from utils.save_data import safe_gdf_as_gpkg
+from utils.helper import start_end_points
+from utils.save_data import save_gdf_as_gpkg
 
 
 def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
@@ -163,12 +163,16 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
     # buffer support points
     gdf_bufferd_points = buffer_points(gdf_support_points)
     # count intersecting lines in buffered points and write to support point with same ID
-    gdf__intersections_points = find_intersecting_lines(
+    gdf_intersections_points = find_intersecting_lines(
         gdf_street_net_optimized, gdf_bufferd_points, gdf_support_points)
-
-    safe_gdf_as_gpkg((gdf_support_points, "support_points_"+config_data["city_name"], True), (gdf_bufferd_points, "buffer_points_"+config_data["city_name"], True))
     
-    return gdf_street_net_optimized, gdf__intersections_points
+    save_gdf_as_gpkg(gdf_street_net_optimized, "street_net_"+config_data["city_name"], version="1.0")
+    save_gdf_as_gpkg(gdf_intersections_points, "node_points_"+config_data["city_name"], version="1.0")
+    save_gdf_as_gpkg(osm_street_net, "osm_street_net_"+config_data["city_name"],interimresult= True) 
+    save_gdf_as_gpkg(gdf_support_points, "support_points_"+config_data["city_name"],interimresult= True) 
+    save_gdf_as_gpkg(gdf_bufferd_points, "buffer_points_"+config_data["city_name"], interimresult= True)
+    return gdf_street_net_optimized, gdf_intersections_points
+
 
 
 def main():
@@ -176,8 +180,7 @@ def main():
     osm_street_net = create_osm_streets_gdf()
 
     gdf_street_net_optimized, gdf_intersections_points = create_street_net_and_intersection_gpkg(osm_street_net)
-    print(gdf_street_net_optimized)
-    safe_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf_intersections_points, "node_points_"+config_data["city_name"]))
+    #save_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf_intersections_points, "node_points_"+config_data["city_name"]))
     
 if __name__ == "__main__":
     main()

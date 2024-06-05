@@ -576,6 +576,7 @@ amenity;doctor;Gesundheit;Praxen, Gesundheitsbedarf, Sozialeinrichtungen;300;3
 healthcare;centre;Gesundheit;Praxen, Gesundheitsbedarf, Sozialeinrichtungen;300;3
 highway;bus_stop;Haltestellen des OPNV;Bushaltestelle;300;10
 railway;tram_stop;Haltestellen des OPNV;Strassenbahnhaltestelle;300;15
+railway;subway_entrance ;Haltestellen des OPNV;Strassenbahnhaltestelle;300;15
 railway;station;Haltestellen des OPNV;SPNV-Haltestelle;500;20
 sport;fighting;Versammlungsstaetten, Sport- & Freizeit;Sportanlagen;200;2
 sport;"billiards;darts";Versammlungsstaetten, Sport- & Freizeit;Sportanlagen;200;2
