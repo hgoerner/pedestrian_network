@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Chemnitz",
+    "creation_date": "2024-05-31T09:58:37.162855",
+    "version": null,
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
+}

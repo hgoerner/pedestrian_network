@@ -1,0 +1,22 @@
+Correlation matrix for sheet 'Quartal':
+Help text for pd.DataFrame.corr:
+
+
+Parameters
+----------
+method : {'pearson', 'kendall', 'spearman'} or callable
+    Method of correlation:
+    * pearson : standard correlation coefficient
+    * kendall : Kendall Tau correlation coefficient
+    * spearman : Spearman rank correlation
+    * callable: callable with input two 1d ndarrays
+        and returning a float. Note that the returned matrix from corr
+        will have 1 along the diagonals and will be symmetric
+        regardless of the callable's behavior.
+
+              1. Quartal.1  2. Quartal.1  3. Quartal.1  4. Quartal.1
+1. Quartal.1      1.000000      0.987884      0.991026      0.994376
+2. Quartal.1      0.987884      1.000000      0.993550      0.991616
+3. Quartal.1      0.991026      0.993550      1.000000      0.992840
+4. Quartal.1      0.994376      0.991616      0.992840      1.000000
+

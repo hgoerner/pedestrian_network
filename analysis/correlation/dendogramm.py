@@ -11,6 +11,8 @@ data = np.array([base_traffic + np.random.normal(0, 10, 96) for _ in range(10)])
 # Calculate DTW distances
 dist_matrix = dtw.distance_matrix_fast(data)
 
+print(dist_matrix)
+help(dist_matrix)
 # Perform hierarchical clustering using the complete linkage method
 Z = linkage(dist_matrix, method='complete')
 
@@ -20,4 +22,4 @@ dendrogram(Z)
 plt.title('Dendrogram of Traffic Volume Patterns')
 plt.xlabel('Day Index')
 plt.ylabel('DTW Distance')
-plt.show()
+#plt.show()
