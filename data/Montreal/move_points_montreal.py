@@ -10,7 +10,6 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\Code2\\pedestrian_network'
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 from utils.save_data import save_gdf_as_gpkg
-from utils.config_loader import config_data
 
 
 def closest_endpoint_on_line(point, lines, sindex, buffer_distance=1000):
