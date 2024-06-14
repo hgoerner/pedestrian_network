@@ -160,18 +160,20 @@ def return_and_process_dataframes(folderpath):
 def main(): 
     
     #folder to catogorized csv-files
-    folderpath =r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Umfeld_Kategorie\PH_EH" 
+    folderpath =r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Alle_Zählstellen"
     
     # Example usage
     # Create an instance of the plot manager
     pm = PlotManager()
        
     dataframes_list, basename_list= return_and_process_dataframes(folderpath)
-    print(dataframes_list[0])
+    for dataframe, basename in zip(dataframes_list, basename_list):
+        print(dataframe)
+        dataframe.to_excel(basename+".xlsx", float_format='%.4f')
     # Plot groups with respective color themes and headers
-    pm.plot_group(dataframes_list, basename_list, Set2, 'PH EH')
+    pm.plot_group(dataframes_list, basename_list, Set2, '-')
     # Display the plot
-    pm.show(dataframes_list)
+    pm.show(dataframes_list, "test.png")
     
 
 # Entry point of the script
