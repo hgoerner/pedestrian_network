@@ -19,14 +19,14 @@ buffersize = config_data["street_buffer_size"]
 
 
 counts_csv_filepath = r""
-#census = r"data\input\Sonstiges\98-401-X2021020_English_CSV_data.csv"
+census = r"data\input\Sonstiges\98-401-X2021020_English_CSV_data.csv"
 
-#census_data = pd.read_csv(census, encoding='latin-1',sep=",")
+census_data = pd.read_csv(census, encoding='latin-1',sep=",")
 
 #print(census_data)
 
 geo_packages = find_geo_packages()
-
+print(geo_packages)
 #filepaths to files using
 street_net_optimized_filepath = geo_packages["streets"]
 area_filepath = geo_packages["areas"]
@@ -182,7 +182,7 @@ street_net_optimized_gdf["Zaehlstelle"] = ""
 # Drop the intermediate column 'intersected_points'
 def create_variante1(street_net_optimized_gdf):
 
-    save_gdf_as_gpkg(street_net_optimized_gdf, f"street_net_"+config_data["city_name"], final=True, version="1.2")
+    save_gdf_as_gpkg(street_net_optimized_gdf, f"street_net_"+config_data["city_name"], final=True, version="1.3")
     
 create_variante1(street_net_optimized_gdf)
 street_net_optimized_gdf.to_excel(f""+config_data["city_name"]+'.xlsx', index=True)  # Save DataFrame to Excel without index

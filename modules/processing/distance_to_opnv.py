@@ -80,6 +80,7 @@ def assign_distance_opnv(street_net_optimized_updated_gdf, pois_opnv_bus_gdf, po
 # Main function
 def main():  # sourcery skip: remove-redundant-fstring
     geo_packages = read_geo_packages()
+    print(geo_packages)
     street_net_optimized_updated_gdf = geo_packages["street_net"]
     pois_gdf = geo_packages["pois"]
 
