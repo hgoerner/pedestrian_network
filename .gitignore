@@ -172,3 +172,5 @@ csv_Bevoelkerung_100m_Gitter.zip
 zensus_100x100.gpkg
 /data/output/zensus_100x100.gpkg
 cache
+area_key_value.CSV
+poi_key_value.CSV
