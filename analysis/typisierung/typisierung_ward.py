@@ -149,21 +149,21 @@ plt.ylabel('Series Index')
 plt.show()
 
 
-# import plotly.graph_objects as go
-# # Color map
-# colors = plt.cm.get_cmap('viridis', np.unique(clustering.labels_).size)
+import plotly.graph_objects as go
+# Color map
+colors = plt.cm.get_cmap('viridis', np.unique(clustering.labels_).size)
 
 
-# fig = go.Figure()
-# for i in range(num_series):
-#     fig.add_trace(go.Scatter3d(x=time_vector, y=np.full(num_points, i), z=data[i],
-#                                mode='lines',
-#                                line=dict(color=colors(clustering.labels_[i]), width=2),
-#                                name=f'Cluster {clustering.labels_[i]}'))
+fig = go.Figure()
+for i in range(num_series):
+    fig.add_trace(go.Scatter3d(x=time_vector, y=np.full(num_points, i), z=data[i],
+                               mode='lines',
+                               line=dict(color=colors(clustering.labels_[i]), width=2),
+                               name=f'Cluster {clustering.labels_[i]}'))
 
-# fig.update_layout(scene=dict(
-#                     xaxis_title='Time of Day (hours)',
-#                     yaxis_title='Series Index',
-#                     zaxis_title='Data Value'),
-#                   title='3D Plot of Time Series Data by Cluster')
-# fig.show()
+fig.update_layout(scene=dict(
+                    xaxis_title='Time of Day (hours)',
+                    yaxis_title='Series Index',
+                    zaxis_title='Data Value'),
+                  title='3D Plot of Time Series Data by Cluster')
+fig.show()
