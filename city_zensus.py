@@ -1,6 +1,6 @@
 from data.download.zensus_100x100 import download_zensus_data
 from utils.helper import file_exists
-import geopandas as gpd
+
 
 
 def main():

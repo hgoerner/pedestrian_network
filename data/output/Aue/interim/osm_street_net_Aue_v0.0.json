@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Aue_v0.0",
+    "creation_date": "2024-06-21T15:50:23.647632",
+    "version": "0.0",
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_osm_streets_gdf"
+}

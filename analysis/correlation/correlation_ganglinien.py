@@ -3,7 +3,7 @@ import pandas as pd
 
     # Confirm if the user wants to proceed
 
-def write_correlation_matrix(correlation_matrix, txt_output_file, excel_output_file, sheet_name):
+def write_correlation_matrix(correlation_matrix, txt_output_file, excel_output_file, sheet_name="Zeitreihe"):
     
     proceed = input("Do you want to proceed(yes/no): ").strip().lower()
     

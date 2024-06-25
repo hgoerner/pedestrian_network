@@ -2,8 +2,6 @@ import logging
 import os
 import sys
 
-from data.download.osm_retry import fetch_osm_data
-
 current_directory = os.getcwd()
 
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
@@ -11,11 +9,11 @@ sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 import geopandas as gpd
 import overpy
-from overpy.exception import OverpassBadRequest
 from shapely.geometry import Polygon, LineString
 from tqdm import tqdm
 from shapely.ops import polygonize
-from data.download.queries.create_queries import osm_area_queries
+from queries.create_queries import osm_area_queries
+from osm_retry import fetch_osm_data
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
 from utils.save_data import save_gdf_as_gpkg
