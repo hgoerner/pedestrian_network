@@ -40,6 +40,7 @@ if __name__ == "__main__":
 
     # Reverse the ranks only for selected columns
     reversed_ranks = ranked_df.copy()  # Copy the ranked DataFrame
+    # small distance has high rank, big distance has low rank
     for column in columns_to_reverse:
         reversed_ranks[column] = ranked_df[column].max() + 1 - ranked_df[column]
         
