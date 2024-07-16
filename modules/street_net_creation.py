@@ -5,21 +5,13 @@ import sys
 import os
 import sys
 
-current_directory = os.getcwd()
-
+# current_directory = os.getcwd()
+print(os.getcwd())
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
 
 import geopandas as gpd
 from shapely.ops import linemerge
-from data.download.osm_streets import create_osm_streets_gdf
-from utils.config_loader import config_data
-from utils.helper import start_end_points
-from data.download.osm_streets import create_osm_streets_gdf
-from utils.config_loader import config_data
-from utils.helper import start_end_points
-from utils.save_data import save_gdf_as_gpkg
-
 from data.download.osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
 from utils.helper import start_end_points
@@ -176,11 +168,11 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
 
 
 def main():
+    print("test")
+    # osm_street_net = create_osm_streets_gdf()
 
-    osm_street_net = create_osm_streets_gdf()
-
-    gdf_street_net_optimized, gdf_intersections_points = create_street_net_and_intersection_gpkg(osm_street_net)
-    #save_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf_intersections_points, "node_points_"+config_data["city_name"]))
+    # gdf_street_net_optimized, gdf_intersections_points = create_street_net_and_intersection_gpkg(osm_street_net)
+    # #save_gdf_as_gpkg((gdf_street_net_optimized, "street_net_optimized_"+config_data["city_name"]), (gdf_intersections_points, "node_points_"+config_data["city_name"]))
     
 if __name__ == "__main__":
     main()
