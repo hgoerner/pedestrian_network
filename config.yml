@@ -1,6 +1,6 @@
 # config.yml
 
-openweatherapi_key : "9f548b05df513f03b9295e7abff9f41a"
+openweatherapi_key : False
 
 #city to create the streetnet, poi ...
 city_name: "Aue"
