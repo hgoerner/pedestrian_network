@@ -21,7 +21,7 @@ def get_coordinates(city_name, api_key):
         api_key (str): API key for accessing the OpenWeatherMap API.
 
     Returns:
-        tuple: A tuple containing the latitude and longitude coordinates of the city.
+        tuple: A tuple containing the latitude and longitude coordinates of the city. This is used in the OpenMeteo API
 
     Raises:
         requests.exceptions.RequestException: If an error occurs during the API request.
@@ -168,7 +168,7 @@ def recieve_weather_data(df, api_key):
         else:
             print("No data fetched.") 
     else:
-        print("Invalid Api_key, go to config.yaml and insert personal api_key") 
+        print("Invalid Api_key, go to config.yaml and insert personal api_key from openweathermap") 
 def main():
     
     filepath = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Matrix_Zählstellen_kategorisiert.xlsx"
