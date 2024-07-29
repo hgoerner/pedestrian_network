@@ -19,9 +19,9 @@ buffersize = config_data["street_buffer_size"]
 
 
 counts_csv_filepath = r""
-census = r"data\input\Sonstiges\98-401-X2021020_English_CSV_data.csv"
+#census = r"data\input\Sonstiges\98-401-X2021020_English_CSV_data.csv"
 
-census_data = pd.read_csv(census, encoding='latin-1',sep=",")
+#census_data = pd.read_csv(census, encoding='latin-1',sep=",")
 
 #print(census_data)
 
@@ -32,13 +32,16 @@ street_net_optimized_filepath = geo_packages["streets"]
 area_filepath = geo_packages["areas"]
 pois_filepath = geo_packages["pois"]
 nodes_filepath = geo_packages["nodes"]
-census_filepath = r"data\output\zensus_100x100.gpkg"
+#census_filepath = r"data\output\zensus_100x100.gpkg"
 
 #read geopackages
 street_net_optimized_gdf = gpd.read_file(street_net_optimized_filepath)
 area_gdf = gpd.read_file(area_filepath)
 pois_gdf = gpd.read_file(pois_filepath)
-census_gdf = gpd.read_file(census_filepath)
+#census_gdf = gpd.read_file(census_filepath)
+
+#area_gdf = area_gdf.to_crs("EPSG:32188")
+#pois_gdf = pois_gdf.to_crs("EPSG:32188")
 print("Zensus loading done!")
 #filter street net to only use streets thar are longer than 100
 #street_net_optimized_gdf = street_net_optimized_gdf[street_net_optimized_gdf["laenge [km]"] >= 0.1]
@@ -95,16 +98,16 @@ street_net_optimized_gdf['Summe AREA*Bedeutung'] = 0
     
 
 # Create a spatial index for the census GeoDataFrame
-census_sindex = census_gdf.sindex
+#census_sindex = census_gdf.sindex
 
 # Calculate Zensusdensity   
-for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
-    possible_matches_index = list(census_sindex.intersection(buffered_line['geometry'].bounds))
-    possible_matches = census_gdf.iloc[possible_matches_index]
+# for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
+#     possible_matches_index = list(census_sindex.intersection(buffered_line['geometry'].bounds))
+#     possible_matches = census_gdf.iloc[possible_matches_index]
     
-    intersected_points = possible_matches[possible_matches['geometry'].intersects(buffered_line['geometry'])]
-    # assign to id in original gdf
-    street_net_optimized_gdf.at[idx, 'Summe Einwohner'] = intersected_points['Einwohner'].sum()  
+#     intersected_points = possible_matches[possible_matches['geometry'].intersects(buffered_line['geometry'])]
+#     # assign to id in original gdf
+#     street_net_optimized_gdf.at[idx, 'Summe Einwohner'] = intersected_points['Einwohner'].sum()  
 
 # Iterate through lines and update the Summe POI*Bedeutung column
 for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
@@ -173,16 +176,16 @@ for idx, line in tqdm(street_net_optimized_gdf.iterrows()):
         
 # caluculate overall results
 street_net_optimized_gdf["Bedeutung je km"] = round((street_net_optimized_gdf["Summe AREA*Bedeutung"] + street_net_optimized_gdf['Summe POI*Bedeutung']) /street_net_optimized_gdf["laenge [km]"] ,2)
-street_net_optimized_gdf["Einwohner je km"] = round(street_net_optimized_gdf['Summe Einwohner']/street_net_optimized_gdf["laenge [km]"] ,2)
+#street_net_optimized_gdf["Einwohner je km"] = round(street_net_optimized_gdf['Summe Einwohner']/street_net_optimized_gdf["laenge [km]"] ,2)
 
 # create Faktor
-street_net_optimized_gdf["Einwohner-Faktor"] = round(street_net_optimized_gdf["Einwohner je km"]  * 1/15000, 2)
+#street_net_optimized_gdf["Einwohner-Faktor"] = round(street_net_optimized_gdf["Einwohner je km"]  * 1/15000, 2)
 street_net_optimized_gdf["Zaehlstelle"] = ""
 
 # Drop the intermediate column 'intersected_points'
 def create_variante1(street_net_optimized_gdf):
 
-    save_gdf_as_gpkg(street_net_optimized_gdf, f"street_net_"+config_data["city_name"], final=True, version="1.3")
-    
+    save_gdf_as_gpkg(street_net_optimized_gdf, f"street_net_"+config_data["city_name"], final=True, version="1.9")
+    save_gdf_as_gpkg(pois_buffered_gdf, f"buffered_pois_check"+config_data["city_name"], final=True, version="1.1")
 create_variante1(street_net_optimized_gdf)
 street_net_optimized_gdf.to_excel(f""+config_data["city_name"]+'.xlsx', index=True)  # Save DataFrame to Excel without index

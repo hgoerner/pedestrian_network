@@ -1,10 +1,10 @@
 # config.yml
 
-openweatherapi_key : False
+openweatherapi_key : 9f548b05df513f03b9295e7abff9f41a
 
 #city to create the streetnet, poi ...
-city_name: "Aue"
-country_code: "DE"
+city_name: "Montréal"
+country_code: "CAN"
 # 6 for cities
 
 adminlevel_country : https://wiki.openstreetmap.org/wiki/DE:Grenze#Staatsgrenze_-_admin_level=2

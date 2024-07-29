@@ -56,14 +56,17 @@ def assign_distance_education(street_net_optimized_updated_gdf, pois_kita_gdf, p
         
         street_net_optimized_updated_gdf['Entfernung Hochschule'] = nearest_strassenbahn['dist_university'].astype(int)
 
-    save_gdf_as_gpkg(street_net_optimized_updated_gdf, f"street_net_" + config_data["city_name"], version = "1.2")
+    save_gdf_as_gpkg(street_net_optimized_updated_gdf, f"street_net_" + config_data["city_name"], version = "1.7")
     
 # Main function
 def main():  # sourcery skip: remove-redundant-fstring
     geo_packages = read_geo_packages()
     street_net_optimized_updated_gdf = geo_packages["street_net"]
     pois_gdf = geo_packages["pois"]
-
+    #only for canada
+    street_net_optimized_updated_gdf = street_net_optimized_updated_gdf.to_crs("EPSG:32188")
+    pois_gdf = pois_gdf.to_crs("EPSG:32188")
+    
     pois_kita_gdf, pois_school_gdf, pois_university_gdf = filter_pois(pois_gdf)
     
     assign_distance_education(street_net_optimized_updated_gdf, pois_kita_gdf, pois_school_gdf, pois_university_gdf)

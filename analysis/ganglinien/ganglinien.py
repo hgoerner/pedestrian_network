@@ -1,20 +1,38 @@
 import os
+from matplotlib.colors import ListedColormap
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter
 from matplotlib.lines import Line2D
 import numpy as np
 
+# min n to become part of the graph
+min_n = 1600
 
 # Define color maps
-reds = plt.cm.Reds
-blues = plt.cm.Blues
-Set2 = plt.cm.Set2
+#Set2 = plt.cm.Set2
+set3 = plt.cm.Set3
 CMRmap = plt.cm.CMRmap
+tab10 = plt.cm.tab10
+pastel1 = plt.cm.Pastel1
+
+# Combine the colors into one array
+combined_colors = np.vstack([tab10(np.linspace(0, 1, 10)),
+                             set3(np.linspace(0, 1, 12)),
+                             pastel1(np.linspace(0, 1, 9))])
+
+# Set the random seed for reproducibility
+np.random.seed(50)
+
+# Shuffle the array of combined colors
+np.random.shuffle(combined_colors)
+
+# Create a new colormap from the shuffled array
+shuffled_colors_cmap = ListedColormap(combined_colors)
 
 X_LABEL = "Beginn 15-min-Intervall"
 Y_LABEL = "Anteil je 15-min-Intervall"
-PLOTTITLE = 'Anteil Fußverkehr je Zeitscheibe'
+PLOTTITLE = 'Anteil Fußverkehr je Zeitscheibe\n RegioStarGem7-Typ zentrale Stadt'
 LEGENDTITLE = "Zählstelle"
 
 def read_and_process_file(filepath):
@@ -126,7 +144,7 @@ class PlotManager:
         plt.xticks(fontsize=10)
         plt.grid(True, alpha=0.5)
         plt.tight_layout(rect=[0, 0, 0.85, 1])  # Adjust layout to make space for legend       
-        plt.savefig(filename, dpi=100)
+        plt.savefig(filename, dpi=300)
         plt.show()
 
         
@@ -148,9 +166,10 @@ def return_and_process_dataframes(folderpath):
         if filename.endswith('.csv'):
             filepath = os.path.join(folderpath, filename)
             dataframe, basename, n = read_and_process_file(filepath)
-            dataframes_list.append(dataframe)
-            basename_list.append(basename+' n='+str(n))
-            
+            if n > min_n:
+                dataframes_list.append(dataframe)
+                basename_list.append(basename+' n='+str(n))
+                
             
     return dataframes_list, basename_list
 
@@ -160,7 +179,7 @@ def return_and_process_dataframes(folderpath):
 def main(): 
     
     #folder to catogorized csv-files
-    folderpath =r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Alle_Zählstellen"
+    folderpath =r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\00_RegioStarGem7_Typen\03_Zentrale_Stadt"
     
     # Example usage
     # Create an instance of the plot manager
@@ -169,9 +188,9 @@ def main():
     dataframes_list, basename_list= return_and_process_dataframes(folderpath)
     for dataframe, basename in zip(dataframes_list, basename_list):
         print(dataframe)
-        dataframe.to_excel(basename+".xlsx", float_format='%.4f')
+        #dataframe.to_excel(basename+".xlsx", float_format='%.4f')
     # Plot groups with respective color themes and headers
-    pm.plot_group(dataframes_list, basename_list, Set2, '-')
+    pm.plot_group(dataframes_list, basename_list, shuffled_colors_cmap, ' ')
     # Display the plot
     pm.show(dataframes_list, "test.png")
     

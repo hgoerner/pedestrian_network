@@ -74,8 +74,7 @@ def assign_distance_opnv(street_net_optimized_updated_gdf, pois_opnv_bus_gdf, po
         nearest_strassenbahn = nearest_strassenbahn.drop_duplicates(subset='geometry')
         
         street_net_optimized_updated_gdf['Entfernung Strassenbahnhaltestelle'] = nearest_strassenbahn['dist_strassenbahn'].astype(int)
-
-    save_gdf_as_gpkg(street_net_optimized_updated_gdf, f"street_net_" + config_data["city_name"], version = "1.1")
+    save_gdf_as_gpkg(street_net_optimized_updated_gdf, f"street_net_" + config_data["city_name"], version = "1.8")
     
 # Main function
 def main():  # sourcery skip: remove-redundant-fstring
@@ -83,7 +82,8 @@ def main():  # sourcery skip: remove-redundant-fstring
     print(geo_packages)
     street_net_optimized_updated_gdf = geo_packages["street_net"]
     pois_gdf = geo_packages["pois"]
-
+    street_net_optimized_updated_gdf = street_net_optimized_updated_gdf.to_crs("EPSG:32188")
+    pois_gdf = pois_gdf.to_crs("EPSG:32188")
     pois_opnv_bus_gdf, pois_opnv_spnv_gdf, pois_opnv_strassenbahn_gdf = filter_pois(pois_gdf)
     
     assign_distance_opnv(street_net_optimized_updated_gdf, pois_opnv_bus_gdf, pois_opnv_spnv_gdf, pois_opnv_strassenbahn_gdf)
