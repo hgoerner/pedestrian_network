@@ -2,7 +2,7 @@
 function Print-DirectoryStructure {
     param (
         [string]$path = ".",
-        [int]$indentLevel = 0,
+        [int]$indentLevel = 1,
         [string]$outputFile = "DirectoryStructure.txt"
     )
 
@@ -44,4 +44,4 @@ function Print-DirectoryStructure {
 }
 
 # Example usage with output to a file
-Print-DirectoryStructure -path "C:\Users\Goerner\Desktop\pedestrian_network" -outputFile "DirectoryStructureOutput.txt"
+Print-DirectoryStructure -path "C:\Users\Goerner\Desktop\code\pedestrian_network" -outputFile "DirectoryStructureOutput.txt"
