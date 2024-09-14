@@ -37,26 +37,41 @@ def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
         geometry=[merged_linestring], crs=gdf_osm_net.crs)
     gdf_street_net_optimized = street_net_gdf.explode(index_parts=False)
     gdf_street_net_optimized.reset_index(inplace=True, drop=True)
-    return assign_values_to_new_stret_net(gdf_osm_net,gdf_street_net_optimized)
+    return assign_values_to_new_street_net(gdf_osm_net,gdf_street_net_optimized)
     
     
 
-def assign_values_to_new_stret_net(gdf_osm_net: gpd.GeoDataFrame, gdf_street_net_optimized: gpd.GeoDataFrame):
+def assign_values_to_new_street_net(gdf_osm_net: gpd.GeoDataFrame, gdf_street_net_optimized: gpd.GeoDataFrame):
+    """
+    Assign values from an OpenStreetMap network to an optimized street network GeoDataFrame.
+
+    This function iterates through the optimized street network and assigns attributes from the OpenStreetMap network based on geometric intersections. It ensures that the optimized street network is enriched with relevant data, such as highway type and name, by finding the longest intersecting lines.
+
+    Args:
+        gdf_osm_net (gpd.GeoDataFrame): The GeoDataFrame containing the original OpenStreetMap street network.
+        gdf_street_net_optimized (gpd.GeoDataFrame): The GeoDataFrame representing the optimized street network to which values will be assigned.
+
+    Returns:
+        gpd.GeoDataFrame: The updated optimized street network GeoDataFrame with assigned values from the OpenStreetMap network.
+    """
+        
     # Iteriere über die kürzeren Linestrings und finde die entsprechenden Werte in df1
     
     
     for index, row in gdf_street_net_optimized.iterrows():
-        # Finde den Linestring in df1, der den aktuellen Linestring in df2 schneidet oder enthält
-        intersecting_row = gdf_osm_net[gdf_osm_net.intersects(row['geometry'])]
-        # Wenn ein Überschneidungslinestring gefunden wurde
-        if not intersecting_row.empty:  
+        # Find the lines that intersect
+        intersecting_rows = gdf_osm_net[gdf_osm_net.intersects(row['geometry'])]
+
+        if not intersecting_rows.empty:
+            # Calculate intersection lengths
+            intersecting_rows['intersection_length'] = intersecting_rows.apply(lambda x: row['geometry'].intersection(x['geometry']).length, axis=1)
             
-            # Finde den entsprechenden Wert in df1 und übertrage ihn auf df2
-            street_type = intersecting_row.iloc[0]['highway']
-            street_name = intersecting_row.iloc[0]['name']
-            # Setze den Wert in df2
-            gdf_street_net_optimized.at[index, 'highway'] = street_type
-            gdf_street_net_optimized.at[index, 'name'] = street_name
+            # Find the row with the maximum intersection length
+            longest_intersecting_row = intersecting_rows.loc[intersecting_rows['intersection_length'].idxmax()]
+            
+            # Set the values in gdf_street_net_optimized
+            gdf_street_net_optimized.at[index, 'highway'] = longest_intersecting_row['highway']
+            gdf_street_net_optimized.at[index, 'name'] = longest_intersecting_row['name']
             
             
     return gdf_street_net_optimized

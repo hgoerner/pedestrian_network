@@ -1,0 +1,41 @@
+                                  MNLogit Regression Results                                  
+==============================================================================================
+Dep. Variable:     ohne ausreißer
+cluster = 4 (0.179)   No. Observations:                   25
+Model:                                        MNLogit   Df Residuals:                        7
+Method:                                           MLE   Df Model:                           15
+Date:                                Fri, 06 Sep 2024   Pseudo R-squ.:                     nan
+Time:                                        15:13:56   Log-Likelihood:                    nan
+converged:                                       True   LL-Null:                       -31.040
+Covariance Type:                            nonrobust   LLR p-value:                       nan
+========================================================================================================
+ohne ausreißer
+cluster = 4 (0.179)=1       coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------------
+Regiostartyp                                nan        nan        nan        nan         nan         nan
+Lage im Stadtgebiet                         nan        nan        nan        nan         nan         nan
+Entfernung Kita ohne Hort                   nan        nan        nan        nan         nan         nan
+Entfernung Bushaltestelle                   nan        nan        nan        nan         nan         nan
+Entfernung Schule                           nan        nan        nan        nan         nan         nan
+Bedeutung je km                             nan        nan        nan        nan         nan         nan
+--------------------------------------------------------------------------------------------------------
+ohne ausreißer
+cluster = 4 (0.179)=2       coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------------
+Regiostartyp                                nan        nan        nan        nan         nan         nan
+Lage im Stadtgebiet                         nan        nan        nan        nan         nan         nan
+Entfernung Kita ohne Hort                   nan        nan        nan        nan         nan         nan
+Entfernung Bushaltestelle                   nan        nan        nan        nan         nan         nan
+Entfernung Schule                           nan        nan        nan        nan         nan         nan
+Bedeutung je km                             nan        nan        nan        nan         nan         nan
+--------------------------------------------------------------------------------------------------------
+ohne ausreißer
+cluster = 4 (0.179)=3       coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------------
+Regiostartyp                                nan        nan        nan        nan         nan         nan
+Lage im Stadtgebiet                         nan        nan        nan        nan         nan         nan
+Entfernung Kita ohne Hort                   nan        nan        nan        nan         nan         nan
+Entfernung Bushaltestelle                   nan        nan        nan        nan         nan         nan
+Entfernung Schule                           nan        nan        nan        nan         nan         nan
+Bedeutung je km                             nan        nan        nan        nan         nan         nan
+========================================================================================================

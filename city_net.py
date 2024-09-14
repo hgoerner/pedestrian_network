@@ -4,8 +4,8 @@ import sys
 current_directory = os.getcwd()
 print(current_directory)
 
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
+# sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+# sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 from data.download.osm_streets import create_osm_streets_gdf
 from modules.street_net_creation import \
@@ -17,6 +17,9 @@ from modules.street_net_creation import \
 
 # create_osm_area_gdf()
 def main():
+    
+    #update_true_street_name()
+    
 
     osm_street_net = create_osm_streets_gdf()
 

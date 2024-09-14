@@ -1,0 +1,157 @@
+0: Stadt
+1: Z‰hlstelle
+2: name
+3: highway
+4: Z‰hlstelle genutzt
+5: Link
+6: ohne ausreiﬂer
+cluster = 4 (0.179)
+7: mit ausreiﬂer standardisiert
+Cluster  =4 (0.174)
+8: mit ausreiﬂer
+cluster = 8  (0.155)
+9: ohne ausreiﬂer standardisiert
+cluster = 4  (0.150)
+10: Regiostartyp
+11: Regiostartyp Mittelstadt
+12: Regiostartyp zentrale Stadt
+13: Umfeldkategorie
+14: Umfeldkategorie (PH-PN)
+15: Umfeldkategorie (EH-EN)
+16: Lage im Stadtgebiet
+17: Lage im Stadtgebiet Stadtrand
+18: Entfernung Hochschule (ohne Volkshochschule)
+19: Entfernung Hochschule
+20: Entfernung Hochschule < 100m
+21: Entfernung Hochschule < 200m 
+22: Entfernung Hochschule > 300m 
+23: Entfernung Hochschule > 400m 
+24: Entfernung Hochschule < 400m 
+25: Entfernung Hochschule Viertel-Qantile
+26: Entfernung Hochschule Viertel-Qantile (Q4)
+27:  Entfernung Hochschule Drittel-Quantile
+28: Entfernung Hochschule Halbe-Quantile
+29: Entfernung Schule
+30: Entfernung Schule < 100m
+31: Entfernung Schule < 200m
+32: Entfernung Schule > 200m
+33: Entfernung Schule Viertel-Qantile
+34: Entfernung Schule Drittel-Quantile
+35: Entfernung Schule Halbe-Quantile
+36: Entfernung Kita ohne Hort
+37: Entfernung Kita
+38: Entfernung Kita < 100m
+39: Entfernung Kita < 200m
+40: Entfernung Lita > 200m
+41: Entfernung Kita Viertel-Qantile
+42: Entfernung Kita Drittel-Quantile
+43:  Entfernung Kita Halbe-Quantile
+44: Entfernung Bushaltestelle 
+45: Entfernung Bushaltestelle < 100 m
+46: Entfernung Bushaltestelle < 200m
+47: Entfernung Bushaltestelle < 300m
+48: Entfernung Bushaltestelle > 300m
+49: Entfernung Bushaltestelle  Viertel-Qantile
+50: Entfernung Bushaltestelle  Viertel-Qantile (Q1)
+51: Entfernung Bushaltestelle  Drittel-Quantile
+52: Entfernung Bushaltestelle  Halbe-Quantile
+53: Entfernung Straﬂenbahnhaltestelle
+54: Entfernung Straﬂenbahnhaltestelle < 100 m
+55: Entfernung Straﬂenbahnhaltestelle < 200m
+56: Entfernung Straﬂenbahnhaltestelle < 300m
+57: Entfernung Straﬂenbahnhaltestelle > 300m
+58: Entfernung Straﬂenbahnhaltestelle Viertel-Qantile
+59: Entfernung Straﬂenbahnhaltestelle Drittel-Quantile
+60: Entfernung Straﬂenbahnhaltestelle Halbe-Quantile
+61: Entfernung SPNV-Haltestelle
+62: Entfernung SPNV-Haltestelle < 100 m
+63: Entfernung SPNV-Haltestelle < 200m
+64: Entfernung SPNV-Haltestelle < 300m
+65: Entfernung SPNV-Haltestelle < 400m
+66: Entfernung SPNV-Haltestelle < 500m
+67: Entfernung SPNV-Haltestelle > 500m
+68: Entfernung SPNV-Haltestell Viertel-Qantile
+69: Entfernung SPNV-Haltestell Drittel-Quantile
+70: Entfernung SPNV-Haltestell Halbe-Quantile
+71: Druchschnittliche Distanz ÷PNV
+72: laenge [km]
+73: Dienstleistung, Einzelhandel, Gastronomie: Anzahl
+74: Dienstleistung, Einzelhandel, Gastronomie: Summe_Bedeutung
+75: Oeffentliche Gebaeude: Anzahl
+76: Oeffentliche Gebaeude: Summe_Bedeutung
+77: Bildungseinrichtungen: Anzahl
+78: Bildungseinrichtungen: Summe_Bedeutung
+79: Gesundheit: Anzahl
+80: Gesundheit: Summe_Bedeutung
+81: Wohnen: Anzahl
+82: Wohnen: Summe_Bedeutung
+83: Versammlungsstaetten, Sport- & Freizeit: Anzahl
+84: Versammlungsstaetten, Sport- & Freizeit: Summe_Bedeutung
+85: Haltestellen des OPNV: Anzahl
+86: Haltestellen des OPNV: Summe_Bedeutung
+87: Gruen-, Blau- & Platzflaechen: Anzahl
+88: Gruen-, Blau- & Platzflaechen: Summe_Bedeutung
+89: Gastronomie: Anzahl
+90: Gastronomie: Summe_Bedeutung
+91: Bibliotheken & Post: Anzahl
+92: Bibliotheken & Post: Summe_Bedeutung
+93: Oeffentliche Verwaltung & Buergeraemter: Anzahl
+94: Oeffentliche Verwaltung & Buergeraemter: Summe_Bedeutung
+95: Hochschulen: Anzahl
+96: Hochschulen: Summe_Bedeutung
+97: Kindergaerten: Anzahl
+98: Kindergaerten: Summe_Bedeutung
+99: weiterfuehrende Schulen: Anzahl
+100: weiterfuehrende Schulen: Summe_Bedeutung
+101: Geschaefte: Anzahl
+102: Geschaefte: Summe_Bedeutung
+103: Praxen, Gesundheitsbedarf, Sozialeinrichtungen: Anzahl
+104: Praxen, Gesundheitsbedarf, Sozialeinrichtungen: Summe_Bedeutung
+105: Krankenhaeuser: Anzahl
+106: Krankenhaeuser: Summe_Bedeutung
+107: Altenpflegeheime: Anzahl
+108: Altenpflegeheime: Summe_Bedeutung
+109: Museen, Gebaeude mit ueberoertlicher Bedeutung: Anzahl
+110: Museen, Gebaeude mit ueberoertlicher Bedeutung: Summe_Bedeutung
+111: Sportanlagen: Anzahl
+112: Sportanlagen: Summe_Bedeutung
+113: Polizei & Justiz: Anzahl
+114: Polizei & Justiz: Summe_Bedeutung
+115: Hotels, Pensionen: Anzahl
+116: Hotels, Pensionen: Summe_Bedeutung
+117: SPNV-Haltestelle: Anzahl
+118: SPNV-Haltestelle: Summe_Bedeutung
+119: grossflaechiger Einzelhandel: Anzahl
+120: grossflaechiger Einzelhandel: Summe_Bedeutung
+121: Spielplaetze: Anzahl
+122: Spielplaetze: Summe_Bedeutung
+123: Bushaltestelle: Anzahl
+124: Bushaltestelle: Summe_Bedeutung
+125: Strassenbahnhaltestelle: Anzahl
+126: Strassenbahnhaltestelle: Summe_Bedeutung
+127: Gewaesser: Anzahl
+128: Gewaesser: Summe_Bedeutung
+129: Kleingarten: Anzahl
+130: Kleingarten: Summe_Bedeutung
+131: Wald/Gehoelz: Anzahl
+132: Wald/Gehoelz: Summe_Bedeutung
+133: Park/gestaltetes Gruen: Anzahl
+134: Park/gestaltetes Gruen: Summe_Bedeutung
+135: Friedhof: Anzahl
+136: Friedhof: Summe_Bedeutung
+137: Summe POI*Bedeutung
+138: Summe AREA*Bedeutung
+139: Summe Einwohner
+140: Bedeutung je km
+141: Einwohner je km
+142: Einwohner-Faktor
+143: ÿ Temperatur 
+144: ÿ Luftfeuchtigkeit
+145: ÿ Niederschlag
+146: Datum
+147: Erhebungstag
+148: Quartal
+149: Kommentar
+150: Kommentar1
+151: Kommentar2
+152: Kommentar.1

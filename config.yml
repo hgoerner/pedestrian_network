@@ -3,15 +3,15 @@
 openweatherapi_key : 9f548b05df513f03b9295e7abff9f41a
 
 #city to create the streetnet, poi ...
-city_name: "Montréal"
-country_code: "CAN"
+city_name: "Pirna"
+country_code: "DE"
 # 6 for cities
 
 adminlevel_country : https://wiki.openstreetmap.org/wiki/DE:Grenze#Staatsgrenze_-_admin_level=2
 adminlevel_for_cities : https://www.openstreetmap.org/ 
 
 admin_level_country: 2
-admin_level_city: 9
+admin_level_city: 8
 
 #info zu admin_level
 # Leipzig = 6           check

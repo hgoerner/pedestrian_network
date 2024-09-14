@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Pirna_v0.0",
+    "creation_date": "2024-09-04T15:08:15.502936",
+    "version": "0.0",
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_osm_streets_gdf"
+}

@@ -71,7 +71,6 @@ if __name__ == "__main__":
     plt.subplots_adjust(top=0.9, bottom=0.3, right=1)  # Adjust 'bottom' to increase margin for x-axis labels
 
     plt.show()
-    plt.show()
     
    # sns.pairplot(data=dataframe)
     #lt.show()
