@@ -1,0 +1,1 @@
+Error with variable: Index(['Einwohner-Faktor'], dtype='object') - Pandas data cast to numpy dtype of object. Check input data with np.asarray(data).

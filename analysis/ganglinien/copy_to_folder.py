@@ -18,7 +18,7 @@ source_folder = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Z
 base_path = 'Zählstelle_Folders'
 os.makedirs(base_path, exist_ok=True)
 
-column_to_use = "Entfernung Bushaltestelle  Viertel-Qantile"
+column_to_use = "ohne ausreißer\ncluster = 4 (0.179)"
 
 # Load the Excel file and extract relevant sheet
 xls = pd.ExcelFile(file_path)
@@ -32,15 +32,17 @@ def create_folders_with_zs():
     for index, row in df_filtered.iterrows():
         zaehlstelle = row['Zählstelle']
         cluster_value = row[column_to_use]
+        foldername = "Basisganglinie"
         
         if cluster_value == 1:
-            foldername = "Q1"
+            foldername = "C1"
         if cluster_value == 2:
-            foldername = "Q2"            
+            foldername = "C2"            
         if cluster_value == 3:
-            foldername = "Q3"          
+            foldername = "C3"          
         if cluster_value == 4:
-            foldername = "Q4"             
+            foldername = "C4"
+           
 
         
         # Create a folder for the cluster value if it doesn't exist

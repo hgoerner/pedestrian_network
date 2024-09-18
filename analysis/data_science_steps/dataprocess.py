@@ -3,23 +3,9 @@
 import pandas as pd
 import os
 from IPython.display import display
+from regex import P
 
 
-
-def is_time_range_24_hours(df):
-    """Check if the time range between the start and end occurrence times spans 24 hours."""
-    start_time = pd.to_datetime(df.index.get_level_values('start occurrence time').min())
-    end_time = pd.to_datetime(df.index.get_level_values('start occurrence time').max())
-
-    time_difference = end_time - start_time
-    return time_difference < pd.Timedelta(hours=24)
-
-def fill_missing_rows(df):
-    """Fill missing rows in a DataFrame with MultiIndex and ensure they are within a 24-hour period."""
-    # Check if the time range is 24 hours
-    if not is_time_range_24_hours(df):
-        print("Time range is less than 24 hours.")
-        return df
 
 
 #%%
@@ -33,6 +19,7 @@ class DataProcessor:
         """
         self.final_outer_join_df = None
         self.count_dic = {}
+        self.pivot_data = pd.DataFrame()
 
     def load_data(self, folder_path):
         """Load CSV data files from a specified folder.
@@ -56,14 +43,14 @@ class DataProcessor:
                                  usecols=lambda column: column != 'Unnamed: 0')
                 
                 # Get the columns from the dataframe (these will be the sub-levels of the MultiIndex)
-                columns = list(df.columns)
+                #columns = list(df.columns)
 
                 # Create the MultiIndex
-                multi_index = pd.MultiIndex.from_product(
-                    [[basename], columns], names=["Zählstelle", "Zählinfo"])
+                # multi_index = pd.MultiIndex.from_product(
+                #     [[basename], columns], names=["Zählstelle", "Zählinfo"])
 
                 # Assign the MultiIndex to the dataframe columns
-                df.columns = multi_index
+                #df.columns = multi_index
                 # Store the dataframe in the count_dic dictionary
                 self.count_dic[basename] = df
                 
@@ -97,6 +84,7 @@ class DataProcessor:
             
         ]]
             self.count_dic[name]= self.count_dic[name].sort_index(level=['Weekday','start occurrence time'])      
+
                      
     def sort_readable(self):
         self.final_outer_join_df.sort_index(level=['Weekday','start occurrence time'], inplace=True)
@@ -113,27 +101,41 @@ class DataProcessor:
         self.assign_flow_markers()
         self.create_multiindex()
         #self.outer_join()
+    def pivoting_files(self):
+        """
+        Purpose: 
+        """
+        for name, _ in self.count_dic.items():
+            #print(self.count_dic[name])
+            print(name)
+            df = self.count_dic[name]
+            df = df[["start time(ohne Tag)", "gleitender_Stundenwert_aus_MW"]]
+            #df =df.drop(columns=["count","gleitender_MW_15min", "count_anteilig"])
+            df_pivot = df.set_index('start time(ohne Tag)').T
+            df_pivot.index = [name]
+            print(df_pivot)
+            self.pivot_data = pd.concat([self.pivot_data,df_pivot]) 
+        
+    # end def
 
 
-#%%B
+#%%
 
-# Example of how to use the class:
-# files = {"file_name_1": "path_to_file_1.csv", "file_name_2": "path_to_file_2.csv"}
-
-
-file_path = r"C:\Users\Goerner\Desktop\Testfiles"
+# concat and pivot dataframes
+file_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert\mit_außreiser"
 
 processor = DataProcessor()
-processor.process(file_path)
+processor.load_data(file_path)
 
-display(processor.count_dic.values()) 
+#print(processor.count_dic)
+processor.pivoting_files()
+
+print(processor.pivot_data.to_csv("Dategrundlage.csv"))
 
 # processor.count_dic["HD14_OTC17"].
 # processor.count_dic["HD14_OTC17"].to_csv("test2.csv", index=True)
 
 #processor.final_outer_join_df.to_csv("test.csv", index=True)
-
-
 # Load, assign flow markers, create multiindex, and perform outer join
 # filled_df = processor.fill_time_gaps(freq='15T')  # Fill time gaps
 

@@ -144,7 +144,7 @@ if __name__ == "__main__":
    # clusterlist = list(df[df.columns[dependent_col_index]].unique())
    #[10, 16, 36,44,29,140]
     list_of_testing_variables = [10,11,12,13,14,15,16,17,18,26,29,36,44,50,53,61,140]
-    list_of_testing_variables = [[29, 44,36]]
+    list_of_testing_variables = [[142]]
     with open('mle_fail.txt', 'w') as f1, open("variable_fail.txt", 'w') as f2:
         for independt_col_index in list_of_testing_variables:
             multinomiale_regression_model(dependent_col_index=6,df= df ,ref_category= 0, independent_col_index=independt_col_index, results_list=all_results)

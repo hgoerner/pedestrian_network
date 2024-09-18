@@ -253,7 +253,7 @@ def main():
     
     # "gleitender_Stundenwert_aus_MW" ohne außreiser
     # Silhouette Score for 3 clusters: 0.164106644497806
-    # Silhouette Score for 4 clusters: 0.17873007059765378
+    # Silhouette Score for 4 clusters: 0.17873007059765378 <-Auswahl
     # Silhouette Score for 5 clusters: 0.1500075939312791
     # Silhouette Score for 6 clusters: 0.14775480160065935
     # Silhouette Score for 7 clusters: 0.14236542113322068
