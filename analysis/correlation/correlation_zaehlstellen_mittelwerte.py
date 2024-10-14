@@ -92,6 +92,7 @@ def main():
     folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entferrnung_Straßenbahnhaltestelle\Quartile\Stundenmittelwerte'
     folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_2Infrastrukturmerkmale\EntfernungKita\Quartile\Stundenmittelwerte'
     folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_2Infrastrukturmerkmale\EntfernungHochschule\Stundenmittelwerte'
+    folderpath 0 r""
     df_dict = create_list_of_mittelwert_dataframes(folderpath)
     print(df_dict)
     

@@ -14,9 +14,13 @@ from plot_utils import apply_plot_settings
 # Define the main folder path
 main_folder_path = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1'
 main_folder_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\12_Basisganglinie\Bedeutung_je_km_vs_Basisganglinie\unteres_quantil"
+main_folder_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\05_Umfeldkategorie\Mittelwerte_Umfeldkategorie"
+main_folder_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entfernung_Bushaltestelle\Quartile\Stundenmittelwerte"
+main_folder_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entfernung_BusQ1"
+main_folder_path = r"C:\Users\Goerner\Desktop\pedestrian_network\Zählstelle_Folders"
 
 
-PLOTTITLE = "Ganglinien der Zählquerschnitte\nniedrige Bedeutung je km"
+PLOTTITLE = "Anteil Fußverkehr je Stunde\nStundenmittelwerte nach Entfernung zu Hochschulen in Quantile"
 
 # Define the colormap (Set1) for the subfolders
 colormap = get_cmap('Set1')
@@ -51,10 +55,10 @@ for i, csv_file in enumerate(os.listdir(main_folder_path)):
         # Read the CSV file
         df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
         
-        #n = df["n"].unique().tolist()[0]
-        #legend_with_n =legend+" n="+str(n)
+        n = df["n"].unique().tolist()[0]
+        legend_with_n =legend+" n="+str(n)
         # Plot the data
-        ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[j], label=legend)
+        ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[j], label=legend_with_n)
         j += 1
         
 # Apply the plot settings using the utility function
@@ -68,9 +72,9 @@ ax.set_xticklabels([x_values[i] for i in x_ticks], rotation=90)
 ax.set_xlim(0, len(x_values) - 1)
 
 # Set y-axis labels and limits
-ax.set_ylim(0, 0.15)
+ax.set_ylim(0, 0.12)
 ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y * 100:.0f}%'))
-ax.yaxis.set_major_locator(FixedLocator([0.01 * i for i in range(0, 16)]))
+ax.yaxis.set_major_locator(FixedLocator([0.01 * i for i in range(0, 13)]))
 
 # Move the legend outside the plot
 #ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)

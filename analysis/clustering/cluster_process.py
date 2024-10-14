@@ -123,11 +123,13 @@ def plot_dendrogramm_single_linkage(combined_df, undertitle=None):
                orientation='top',
                distance_sort='descending',
                show_leaf_counts=True)
-    plt.title('Dendrogram der Zählstellen\n Typiserung Single-linkage\n'+undertitle)
-    plt.xlabel('Zählstelle')
-    plt.ylabel('euklidische Distanz')
-    plt.show()  
+    plt.title('Dendrogram der Zählstellen\n Typiserung Single-linkage', fontsize=18, pad=20)
+    plt.xlabel('Zählstelle', fontsize=16, labelpad=10)
+    plt.ylabel('euklidische Distanz', fontsize=16, labelpad=15)
+    plt.show()   
 
+
+    
 def plot_dendrogramm_ward(combined_df, undertitle=None, color_threshold=0.2):
     linked = linkage(combined_df.T, method='ward')
 
@@ -169,7 +171,7 @@ def hist_boxplot(combined_df, ncols=5):
 
 def main():
     # ohne außreiser
-    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert'
+    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert\mit_außreiser'
     
     # mit ausreißer
     #folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert\mit_außreiser'
@@ -199,8 +201,8 @@ def main():
     #hist_boxplot(scaled_df)
     
     #merging process of clusters
-    plot_dendrogramm_ward(combined_df, "ohne Ausreißer")
-    #plot_dendrogramm_single_linkage(combined_df, "ohne Ausreißer")
+    #plot_dendrogramm_ward(combined_df, "ohne Ausreißer")
+    plot_dendrogramm_single_linkage(combined_df)
     
     #merging process of clusters
     #plot_dendrogramm_ward(scaled_df, "ohne Ausreißer und standardisiert", 5.5)

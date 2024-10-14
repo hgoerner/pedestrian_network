@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter
 from matplotlib.cm import get_cmap
 # Define the main folder path
-main_folder_path = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\06_Umfeld_Kategorie_Mittelwerte'
+main_folder_path = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\05_Umfeldkategorie\Mittelwerte_Umfeldkategorie'
 
 # Define the colormap (Set1) for the subfolders
 colormap = get_cmap('Set1')
@@ -13,8 +13,8 @@ color_map = {}
 
 LEGENDTITLE = 'Legende'
 
-X_LABEL = "Beginn Stundenintervall"
-Y_LABEL = "Anteil je Stundenintervall am Gesamtaufkommen"
+X_LABEL = "Mitte Stundenintervall"
+Y_LABEL = "Anteil je Stundenintervall"
 PLOTTITLE = 'Anteil Fußverkehr je Stunde\nStundenmittelwerte der Zählstellen je Umfeldkategorie'
 
 # Define the colormap (Set1) for the subfolders
@@ -57,9 +57,9 @@ ax.set_xticks(x_ticks)
 ax.set_xticklabels([x_values[i] for i in x_ticks], rotation=90)
 ax.set_xlim(0, len(x_values) - 1) 
 # Set y-axis labels to percentage and limits from 0% to 8%
-ax.set_ylim(0, 0.20)
+ax.set_ylim(0, 0.12)
 ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f'{y * 100:.0f}%'))
-ax.yaxis.set_major_locator(FixedLocator([0.01 * i for i in range(0, 21)]))
+ax.yaxis.set_major_locator(FixedLocator([0.01 * i for i in range(0, 13)]))
 # Add labels and title
 
 plt.title(PLOTTITLE, fontsize=18, pad=20)
