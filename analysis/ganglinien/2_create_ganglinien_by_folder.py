@@ -16,8 +16,8 @@ main_folder_path = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\1
 main_folder_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1\Cluster_ohne_ausreißer\C2"
 main_folder_path2 = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1\Cluster_ohne_ausreißer\C3"
 main_folder_path3 = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1\Cluster_ohne_ausreißer\C1"
-main_folder_path4 =  r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1\Cluster_ohne_ausreißer\C0"
-PLOTTITLE = 'Ganglinien der Zählquerschnitte'
+main_folder_path4 = r"C:\Users\Goerner\Desktop\pedestrian_network\Zählstelle_Folders\Cluster 1"
+PLOTTITLE = 'Ganglinien der Zählquerschnitte des Clusters 5'
 
 # Define the colormap (Set1) for the subfolders
 colormap = get_cmap('Set1')
@@ -43,7 +43,7 @@ j = 0
 #addon =[" Entfernung < 30m", " Entfernung 30m bis 100m"," Entfernung 100m bis 250m", " Entfernung > 250m" ]
 addon =""
 
-legend = ["Cluster 0 n=11", "Cluster 1 n=7", "Cluster 2 n=2", "Cluster 3 n=5"]
+legend = ["Cluster 5 n=14", "Cluster 1 n=7", "Cluster 2 n=2", "Cluster 3 n=5"]
 
 first_plot = True
 for i, csv_file in enumerate(os.listdir(main_folder_path4)):
@@ -61,69 +61,69 @@ for i, csv_file in enumerate(os.listdir(main_folder_path4)):
         #n = df["n"].unique().tolist()[0]
         #legend_with_n =legend+" n="+str(n)
         # Plot the data
-        ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[0], label=legend_handle)
+        ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[7], label=legend_handle)
         first_plot = False
         j += 1
 first_plot = True
 
-for i, csv_file in enumerate(os.listdir(main_folder_path3)):
+# for i, csv_file in enumerate(os.listdir(main_folder_path3)):
     
-    print(i)
-    if csv_file.endswith('.csv'):
-        #legend = csv_file.split("_")[0]
-        color_map[csv_file] = colors[j % len(colors)]
-        csv_file_path = os.path.join(main_folder_path3, csv_file)
+#     print(i)
+#     if csv_file.endswith('.csv'):
+#         #legend = csv_file.split("_")[0]
+#         color_map[csv_file] = colors[j % len(colors)]
+#         csv_file_path = os.path.join(main_folder_path3, csv_file)
 
-        # Read the CSV file
-        df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
+#         # Read the CSV file
+#         df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
 
-        legend_handle = legend[1] if first_plot else None
-        #n = df["n"].unique().tolist()[0]
-        #legend_with_n =legend+" n="+str(n)
-        # Plot the data
-        ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[1], label=legend_handle)
-        first_plot = False
-        j += 1
+#         legend_handle = legend[1] if first_plot else None
+#         #n = df["n"].unique().tolist()[0]
+#         #legend_with_n =legend+" n="+str(n)
+#         # Plot the data
+#         ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[1], label=legend_handle)
+#         first_plot = False
+#         j += 1
 
-first_plot = True
-for i, csv_file in enumerate(os.listdir(main_folder_path)):
+# first_plot = True
+# for i, csv_file in enumerate(os.listdir(main_folder_path)):
     
-    print(i)
-    if csv_file.endswith('.csv'):
-        #legend = csv_file.split("_")[0]
-        color_map[csv_file] = colors[j % len(colors)]
-        csv_file_path = os.path.join(main_folder_path, csv_file)
+#     print(i)
+#     if csv_file.endswith('.csv'):
+#         #legend = csv_file.split("_")[0]
+#         color_map[csv_file] = colors[j % len(colors)]
+#         csv_file_path = os.path.join(main_folder_path, csv_file)
 
-        # Read the CSV file
-        df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
+#         # Read the CSV file
+#         df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
 
-        legend_handle = legend[2] if first_plot else None
-        #n = df["n"].unique().tolist()[0]
-        #legend_with_n =legend+" n="+str(n)
-        # Plot the data
-        ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[2], label=legend_handle)
-        first_plot = False
-        j += 1
+#         legend_handle = legend[2] if first_plot else None
+#         #n = df["n"].unique().tolist()[0]
+#         #legend_with_n =legend+" n="+str(n)
+#         # Plot the data
+#         ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[2], label=legend_handle)
+#         first_plot = False
+#         j += 1
 
-first_plot = True
-for i, csv_file in enumerate(os.listdir(main_folder_path2)):
+# first_plot = True
+# for i, csv_file in enumerate(os.listdir(main_folder_path2)):
     
-    print(i)
-    if csv_file.endswith('.csv'):
-        #legend = csv_file.split("_")[0]
-        color_map[csv_file] = colors[j % len(colors)]
-        csv_file_path = os.path.join(main_folder_path2, csv_file)
+#     print(i)
+#     if csv_file.endswith('.csv'):
+#         #legend = csv_file.split("_")[0]
+#         color_map[csv_file] = colors[j % len(colors)]
+#         csv_file_path = os.path.join(main_folder_path2, csv_file)
 
-        # Read the CSV file
-        df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
+#         # Read the CSV file
+#         df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
 
-        legend_handle = legend[3] if first_plot else None
-        #n = df["n"].unique().tolist()[0]
-        #legend_with_n =legend+" n="+str(n)
-        # Plot the data
-        ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[3], label=legend_handle)
-        first_plot = False
-        j += 1
+#         legend_handle = legend[3] if first_plot else None
+#         #n = df["n"].unique().tolist()[0]
+#         #legend_with_n =legend+" n="+str(n)
+#         # Plot the data
+#         ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'], color=colors[3], label=legend_handle)
+#         first_plot = False
+#         j += 1
 
 # Apply the plot settings using the utility function
 apply_plot_settings(ax, "Mitte Stundenintervall", "Anteil der gleitenden Stunde", PLOTTITLE, 'Legende')
