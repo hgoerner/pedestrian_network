@@ -1,0 +1,8 @@
+{
+    "filename": "buffer_points_Leipzig",
+    "creation_date": "2024-05-31T11:04:29.434901",
+    "version": null,
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
+}

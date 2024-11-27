@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Pirna",
+    "creation_date": "2024-10-15T16:00:48.555432",
+    "version": null,
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
+}

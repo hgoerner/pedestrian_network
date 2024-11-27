@@ -1,0 +1,8 @@
+{
+    "filename": "osm_pois_Leverkusen_v1.0",
+    "creation_date": "2024-05-31T14:28:58.956712",
+    "version": "1.0",
+    "stage": "draft",
+    "description": "Description of the contents",
+    "used in function:": "create_osm_poi_gdf"
+}

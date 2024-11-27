@@ -1,0 +1,8 @@
+{
+    "filename": "osm_pois_Halle (Saale)_v1.0",
+    "creation_date": "2024-05-31T13:01:06.553761",
+    "version": "1.0",
+    "stage": "draft",
+    "description": "Description of the contents",
+    "used in function:": "create_osm_poi_gdf"
+}

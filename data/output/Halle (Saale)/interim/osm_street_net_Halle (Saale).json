@@ -1,8 +1,0 @@
-{
-    "filename": "osm_street_net_Halle (Saale)",
-    "creation_date": "2024-05-31T12:50:13.157589",
-    "version": null,
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_street_net_and_intersection_gpkg"
-}

@@ -1,8 +1,0 @@
-{
-    "filename": "support_points_F\u00fcrstenfeldbruck",
-    "creation_date": "2024-06-03T17:57:29.381765",
-    "version": null,
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_street_net_and_intersection_gpkg"
-}

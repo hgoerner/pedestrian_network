@@ -1,8 +1,0 @@
-{
-    "filename": "buffer_points_Aue",
-    "creation_date": "2024-06-21T15:50:27.677637",
-    "version": null,
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_street_net_and_intersection_gpkg"
-}

@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Leverkusen",
+    "creation_date": "2024-05-31T14:15:21.821844",
+    "version": null,
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
+}
