@@ -1,8 +1,0 @@
-{
-    "filename": "support_points_Montr\u00e9al",
-    "creation_date": "2024-05-25T03:28:17.487758",
-    "version": null,
-    "stage": "interim",
-    "description": "Description of the contents",
-    "used in function:": "create_street_net_and_intersection_gpkg"
-}
