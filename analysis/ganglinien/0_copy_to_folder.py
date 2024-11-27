@@ -14,18 +14,19 @@ from analysis.data_science_steps.data_manipulation import arithmethischer_mittel
 # Path to your Excel file
 file_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\01_Datengrundlage_gesamt.xlsx"
 # Path to the existing CSV files
-source_folder = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert\mit_außreiser'
+source_folder = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\13_Wochenanalyse\Cluster'
 
 # Base path where new folders will be created
 base_path = 'Zählstelle_Folders'
 os.makedirs(base_path, exist_ok=True)
 
-column_to_use = 'ohne Außreißer Cluster = 2\n(manuelle Zusammenfassung) '
+column_to_use = r'Wochengang-Cluster'
 
 # Load the Excel file and extract relevant sheet
 xls = pd.ExcelFile(file_path)
+print(xls)
 df = pd.read_excel(xls, sheet_name='Tabelle1')
-print(df.columns)
+print(df[column_to_use])
 # Extract relevant columns
 df_filtered = df[['Zählstelle', column_to_use]].dropna()
 
@@ -42,6 +43,10 @@ def create_folders_with_zs():
             foldername = "Cluster 0"
         if cluster_value == 1:
             foldername = "Cluster 1"
+        if cluster_value == 2:
+            foldername = "Cluster 2"
+        if cluster_value == 3:
+            foldername = "Cluster 3"
 
         # Create a folder for the cluster value if it doesn't exist
         #folder_path = os.path.join(base_path, f"Cluster {int(cluster_value)}")

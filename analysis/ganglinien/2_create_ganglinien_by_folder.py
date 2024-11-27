@@ -16,8 +16,8 @@ main_folder_path = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\1
 main_folder_path = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1\Cluster_ohne_ausreißer\C2"
 main_folder_path2 = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1\Cluster_ohne_ausreißer\C3"
 main_folder_path3 = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\10_Typisierung\Clusterung1\Cluster_ohne_ausreißer\C1"
-main_folder_path4 = r"C:\Users\Goerner\Desktop\pedestrian_network\Zählstelle_Folders\Cluster 1"
-PLOTTITLE = 'Ganglinien der Zählquerschnitte des Clusters 5'
+main_folder_path4 = r"C:\Users\Goerner\Desktop\pedestrian_network\Zählstelle_Folders"
+PLOTTITLE = 'Ganglinie aller Zählquerschnitte'
 
 # Define the colormap (Set1) for the subfolders
 colormap = get_cmap('Set1')

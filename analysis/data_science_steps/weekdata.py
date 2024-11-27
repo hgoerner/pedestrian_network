@@ -163,6 +163,9 @@ for group in grouped_data:
     
     all_data = pd.concat([all_data, df_pivot])   
     print(df1["count_anteilig"].sum())
+
+
+
     
 #all_data.to_csv("wochenzählung_mo_fr.csv", index=True)
 # %%

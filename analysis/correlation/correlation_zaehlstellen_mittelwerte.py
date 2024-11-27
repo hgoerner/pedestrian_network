@@ -9,6 +9,7 @@ def create_list_of_mittelwert_dataframes(folderpath, subfolder_split_icon="_"):
 
     # Dictionary to store dataframes with their subfolder names as keys
     dataframe_dict = {}
+    print(folderpath)
     for subfolder in os.listdir(folderpath):
         subfolder_path = os.path.join(folderpath, subfolder)
 
@@ -87,12 +88,12 @@ def main():
     folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\03_RegioStarGem7_Typen_Mittelwerte'
     folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\06_Umfeld_Kategorie_Mittelwerte'
     folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\08_Lage_im_Stadtgebiet_Mittelwerte'
-    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entfernung_Bushaltestelle\Quartile\Stundenmittelwerte'
-    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entfernung_SPNV_Haltestelle\Quartile\Stundenmittelwerte'
-    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entferrnung_Straßenbahnhaltestelle\Quartile\Stundenmittelwerte'
-    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_2Infrastrukturmerkmale\EntfernungKita\Quartile\Stundenmittelwerte'
-    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_2Infrastrukturmerkmale\EntfernungHochschule\Stundenmittelwerte'
-    folderpath 0 r""
+    folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entfernung_Bushaltestelle\Stundenmittelwerte'
+    # folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entfernung_SPNV_Haltestelle\Quartile\Stundenmittelwerte'
+    # folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_Distanz_OPNV\Entferrnung_Straßenbahnhaltestelle\Quartile\Stundenmittelwerte'
+    # folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_2Infrastrukturmerkmale\EntfernungKita\Quartile\Stundenmittelwerte'
+    #folderpath = #r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\09_2Infrastrukturmerkmale\EntfernungHochschule\Stundenmittelwerte'
+
     df_dict = create_list_of_mittelwert_dataframes(folderpath)
     print(df_dict)
     
@@ -103,7 +104,7 @@ def main():
 
     # Calculate the correlation matrix
     correlation_matrix = combined_df.corr()
-    plot_correlation_matrix(correlation_matrix, "Korrelationsmatrix")
+    plot_correlation_matrix(correlation_matrix, "Korrelationsmatrix der gemittelten Ganglinien\nEntfernung zu Bushaltestellen in Quantile")
 
 
 # Entry point of the scrip

@@ -6,8 +6,8 @@ from matplotlib.ticker import FixedLocator, FuncFormatter
 from matplotlib.cm import get_cmap
 import sys
 
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
+# sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
+# sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 
 from plot_utils import apply_plot_settings
@@ -22,7 +22,7 @@ from plot_utils import apply_plot_settings
 main_folder_path = r"C:\Users\Goerner\Desktop\pedestrian_network\Zählstelle_Folders"
 
 
-PLOTTITLE = "Anteil Fußverkehr je Stunde\nStundenmittelwerte nach Cluster"
+PLOTTITLE = "Anteil Fußverkehr je Stunde\nStundenmittelwerte Zählstellen mit n < 1000 FG"
 
 # Define the colormap (Set1) for the subfolders
 colormap = get_cmap('Set1')
@@ -48,7 +48,7 @@ j = 0
 
 index_list = [0,7]
 
-addon = ["Cluster 0", "Cluster 1"]
+addon = ["Cluster 0"]
 #addon = ""
 for i, csv_file in enumerate(os.listdir(main_folder_path)):
     first_plot = True
@@ -62,10 +62,10 @@ for i, csv_file in enumerate(os.listdir(main_folder_path)):
         df = pd.read_csv(csv_file_path, usecols=lambda column: column != 'Unnamed: 0')
 
         n = df["n"].unique().tolist()[0]
-        legend_with_n = legend+" n="+str(n)
+        legend_with_n = "Ganglinie"+" n="+str(n)
         # Plot the data
         ax.plot(df['start time(ohne Tag)'], df['gleitender_Stundenwert_aus_MW'],
-                color=colors[index_list[j]], label=legend_with_n)
+                color=colors[0], label=legend_with_n)
         j += 1
 
 # Apply the plot settings using the utility function

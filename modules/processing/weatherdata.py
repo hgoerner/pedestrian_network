@@ -171,7 +171,7 @@ def recieve_weather_data(df, api_key):
         print("Invalid Api_key, go to config.yaml and insert personal api_key from openweathermap") 
 def main():
     
-    filepath = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Matrix_Zählstellen_kategorisiert.xlsx"
+    filepath = r"Z:_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\Matrix_Zählstellen_kategorisiert_geclustered_Auswahl_unskaliert.xlsx"
     df = pd.read_excel(filepath)
     print(df.info())
     print(df["Datum"])
