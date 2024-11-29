@@ -39,7 +39,7 @@ def save_metadata(file_path, version=None, stage=None, description="Description 
         json.dump(metadata, metadata_file, indent=4)
     print(f"Metadata saved at {metadata_path}")
 
-def save_gdf_as_gpkg(gdf: gpd.GeoDataFrame, filename: str,   final: bool = False, version: str = None,interimresult: bool = False):
+def save_gdf_as_gpkg(gdf, filename: str,   final: bool = False, version: str = None, interimresult: bool = False):
     """
     Saves a GeoDataFrame to a GeoPackage file, automatically setting the stage to 'draft' unless it is None,
     and handling different versions and interim results.
@@ -75,7 +75,7 @@ def save_gdf_as_gpkg(gdf: gpd.GeoDataFrame, filename: str,   final: bool = False
     filename_with_version = f"{filename}_v{version}.gpkg" if version else f"{filename}.gpkg"
 
     # Determine the directory path
-    directory = f"data/output/{city}"
+    directory = f"src/data/output/{city}"
     
     
     if stage:

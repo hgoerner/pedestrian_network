@@ -1,31 +1,20 @@
 import logging
-import os
-import sys
-
-from data.download.osm_retry import fetch_osm_data
-
-current_directory = os.getcwd()
-print(current_directory)
-
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 import geopandas as gpd
 import overpy
-from overpy.exception import OverpassBadRequest
 from shapely.geometry import Point
 from tqdm import tqdm
 
-from data.download.queries.create_queries import osm_poi_queries
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
 from utils.save_data import save_gdf_as_gpkg
 
-# Configure logging
-# logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
-logging.basicConfig(filename='Result__poi_insights.txt',
-                    level=logging.INFO, filemode='w')
+from .osm_retry import fetch_osm_data
+from .queries.create_queries import osm_poi_queries
 
+# Configure logging
+logging.basicConfig(filename='Result_poi_insights.txt',
+                    level=logging.INFO, filemode='w')
 
 def _query_overpass(query: str):
     """
@@ -45,7 +34,7 @@ def _query_overpass(query: str):
         >>> query = siehe queryservice
         >>> result = _query_overpass(api, query)
     """
-      
+         
     try:
         return fetch_osm_data(query)
         # Process the result as needed
@@ -53,7 +42,7 @@ def _query_overpass(query: str):
         print(f"Error fetching OSM data: {e}")      
 
 
-def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str, **kwargs):
+def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str):
     """
     Parses the result of a query to a GeoDataFrame.
 
@@ -70,10 +59,9 @@ def _parse_osm_poi_result(result: overpy.Result, osm_key: str, osm_value: str, *
         data['osm_key'].append(osm_key)
         data['osm_value'].append(osm_value)
         data['geometry'].append(Point(node.lon, node.lat))
-    
-
+           
     # create a GeoDataFrame from the dictionary
-    return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
+    return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468") # type: ignore
 
 
 def create_osm_poi_gdf():

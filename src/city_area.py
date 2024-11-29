@@ -1,7 +1,6 @@
 from data.download.osm_area import create_osm_area_gdf
 from modules.area_processing import assign_group_categorie_to_area
 
-# create_osm_area_gdf()
 def main():
     """
     Executes the main functionality of the script by creating an OSM area GeoDataFrame and assigning group categories to the areas.
@@ -9,8 +8,6 @@ def main():
     """
     osm_area_gdf = create_osm_area_gdf()
     assign_group_categorie_to_area(osm_area_gdf)
-    
-    
 
 
 if __name__ == "__main__":

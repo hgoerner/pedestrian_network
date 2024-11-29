@@ -1,22 +1,14 @@
 from urllib.parse import quote
-from utils.load_data import (area_key_value_dic,
-                                              poi_key_value_dic)
+from utils.load_data import (area_key_value_dic, poi_key_value_dic)
 from utils.config_loader import config_data
 
 city = config_data["city_name"]
-# Encode special characters in city name
-
 country_code = config_data["country_code"]
 admin_level_city = config_data["admin_level_city"]
 admin_level_country = config_data["admin_level_country"]
+nameconvention = "name:en" if config_data["english_city_name"] else "name"
 
 print(city)
-if config_data["english_city_name"]:
-    nameconvention = "name:en"
-else:
-    nameconvention = "name"
-
-
 
 def list_of_street_queries():
     """
@@ -99,10 +91,9 @@ def list_of_area_queries():
         # Extend poi_queries with the generated queries
         area_queries.append(query_info)
 
-
     return area_queries
 
-#creates lists of queres for overpass api   
+#creates lists of queres for overpass api
 osm_street_queries = list_of_street_queries()
 osm_poi_queries = list_of_poi_queries()
 osm_area_queries = list_of_area_queries()

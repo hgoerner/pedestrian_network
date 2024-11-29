@@ -1,30 +1,23 @@
 import logging
-import os
-import sys
-
-current_directory = os.getcwd()
-
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 import geopandas as gpd
 import overpy
-from shapely.geometry import Polygon, LineString
-from tqdm import tqdm
+from shapely.geometry import LineString, Polygon
 from shapely.ops import polygonize
-from queries.create_queries import osm_area_queries
-from osm_retry import fetch_osm_data
+from tqdm import tqdm
+
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
 from utils.save_data import save_gdf_as_gpkg
 
+from .osm_retry import fetch_osm_data
+from .queries.create_queries import osm_area_queries
+
 # Configure logging
-# logging.basicConfig(filename='missing_queries.txt', level=logging.WARNING)
 logging.basicConfig(filename='Result_area_insights.txt',
                     level=logging.INFO, filemode='w')
 
 api = overpy.Overpass()
-
 
 def _query_overpass(query):
     """
@@ -121,7 +114,7 @@ def _parse_osm_area_result(result: overpy.Result, osm_key: str, osm_value: str, 
         data['geometry'].append(polygon)
 
     # create a GeoDataFrame from the dictionary
-    return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468")
+    return gpd.GeoDataFrame(data, crs="EPSG:4326").to_crs("EPSG:31468") # type: ignore
 
 
 
@@ -157,7 +150,7 @@ def create_osm_area_gdf():
     if list_of_gdf is not None:
 
         osm_area_gdf = concatenate_geodataframes(list_of_gdf)
-              
+       
         save_gdf_as_gpkg(osm_area_gdf, "osm_area"+config_data["city_name"],  version="1.0")
         
         return osm_area_gdf

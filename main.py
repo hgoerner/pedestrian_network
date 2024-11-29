@@ -72,6 +72,7 @@ list_of_class.extend(area_key_value_df["Klasse"].unique())
 
 # create columnsheader
 list_of_header = []
+
 for group in list_of_group:
     group_Anzahl_header = group + ": Anzahl"
     group_Summe_bedeutung_header = group + ": Summe_Bedeutung"
@@ -98,7 +99,7 @@ street_net_optimized_gdf['Summe AREA*Bedeutung'] = 0
     
 
 # Create a spatial index for the census GeoDataFrame
-#census_sindex = census_gdf.sindex
+# census_sindex = census_gdf.sindex
 
 # Calculate Zensusdensity   
 # for idx, buffered_line in tqdm(street_net_optimized_buffered_gdf.iterrows()):
