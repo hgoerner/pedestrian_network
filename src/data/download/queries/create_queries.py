@@ -1,6 +1,7 @@
 from urllib.parse import quote
-from utils.load_data import (area_key_value_dic, poi_key_value_dic)
+
 from utils.config_loader import config_data
+from utils.load_data import area_key_value_dic, poi_key_value_dic
 
 city = config_data["city_name"]
 country_code = config_data["country_code"]

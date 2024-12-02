@@ -1,5 +1,6 @@
 import os
 
+
 def delete_downloaded_zensusfile():
 # Directory path
     directory_path = "data/input/zensusfile"

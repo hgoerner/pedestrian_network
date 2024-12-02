@@ -1,15 +1,17 @@
-import requests
-import openmeteo_requests
-import requests_cache
-import pandas as pd
-from retry_requests import retry
-import time
 import sys
+import time
+
+import openmeteo_requests
+import pandas as pd
+import requests
+import requests_cache
+from retry_requests import retry
 
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
 
 from utils.config_loader import config_data
+
 
 # Function to get latitude and longitude by city name using OpenWeatherMap API
 def get_coordinates(city_name, api_key):

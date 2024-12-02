@@ -1,5 +1,6 @@
 import os
 import sys
+
 import geopandas as gpd
 import pandas as pd
 
@@ -10,9 +11,9 @@ sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
 from data.download.osm_area import create_osm_area_gdf
-from utils.save_data import save_gdf_as_gpkg
 from utils.config_loader import config_data
 from utils.load_data import area_key_value_df
+from utils.save_data import save_gdf_as_gpkg
 
 # assign group, categorie and einflussbereich
 

@@ -1,9 +1,10 @@
-from typing import List
 import os
+import sys
+from typing import List
+
 import geopandas as gpd
 import pandas as pd
 from shapely.geometry import LineString, Point
-import sys
 
 current_directory = os.getcwd()
 

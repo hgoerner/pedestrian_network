@@ -1,9 +1,8 @@
-from modules.street_net_creation import assign_values_to_new_street_net
 import os
+
 import geopandas as gpd
 
-
-
+from modules.street_net_creation import assign_values_to_new_street_net
 
 
 def update_true_street_name():

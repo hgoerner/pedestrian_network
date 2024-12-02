@@ -1,5 +1,6 @@
 import os
 import sys
+
 import pandas as pd
 
 current_directory = os.getcwd()
@@ -8,9 +9,11 @@ print(current_directory)
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
-from utils.config_loader import config_data
 import os
 import re
+
+from utils.config_loader import config_data
+
 
 def find_geo_packages(city_name=config_data["city_name"], output_folder="data/output"):
     """

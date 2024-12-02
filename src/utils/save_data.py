@@ -1,9 +1,12 @@
-from utils.config_loader import config_data
-import geopandas as gpd
-import os
 import inspect
 import json
+import os
 from datetime import datetime
+
+import geopandas as gpd
+
+from utils.config_loader import config_data
+
 
 def save_metadata(file_path, version=None, stage=None, description="Description of the contents", function_name=None):
     """

@@ -1,17 +1,19 @@
 import os
 import sys
+
 import geopandas as gpd
-from tqdm import tqdm
 from geopandas.tools import sjoin_nearest
+from tqdm import tqdm
 
 current_directory = os.getcwd()
 
 sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\Code2\\pedestrian_network')
 sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
 
-from utils.save_data import save_gdf_as_gpkg
-from utils.load_data import find_geo_packages
 from utils.config_loader import config_data
+from utils.load_data import find_geo_packages
+from utils.save_data import save_gdf_as_gpkg
+
 
 # Read geometric packages
 def read_geo_packages():

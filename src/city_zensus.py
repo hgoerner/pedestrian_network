@@ -2,7 +2,6 @@ from data.download.zensus_100x100 import download_zensus_data
 from utils.helper import file_exists
 
 
-
 def main():
     
     if not file_exists("data\output\zensus_100x100.gpkg"):

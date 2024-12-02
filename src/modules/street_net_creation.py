@@ -1,9 +1,9 @@
-from shapely.ops import linemerge
-import numpy as np
-import geopandas as gpd
-import sys
 import os
 import sys
+
+import geopandas as gpd
+import numpy as np
+from shapely.ops import linemerge
 
 # current_directory = os.getcwd()
 print(os.getcwd())
@@ -12,6 +12,7 @@ sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
 
 import geopandas as gpd
 from shapely.ops import linemerge
+
 from data.download.osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
 from utils.helper import start_end_points

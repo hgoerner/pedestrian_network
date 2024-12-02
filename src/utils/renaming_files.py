@@ -1,5 +1,6 @@
 import os
 
+
 def umbenennen_ordner_dateien(ordner_pfad, muster_liste, neuer_muster):
     """
     Umbenennt alle Dateien im angegebenen Ordner entsprechend einem der Muster in der Liste.

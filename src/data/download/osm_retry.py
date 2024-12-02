@@ -1,4 +1,7 @@
+import time
+
 import overpy
+
 
 def fetch_osm_data(query, retries=5, delay=10):
     """
@@ -23,4 +26,4 @@ def fetch_osm_data(query, retries=5, delay=10):
             print(f"Overpass API timeout. Retrying {attempt}/{retries} in {delay} seconds...")
             time.sleep(delay)
 
-    raise Exception("Failed to fetch OSM data after multiple retries due to Overpass API timeout.")
+    raise ValueError("Failed to fetch OSM data after multiple retries due to Overpass API timeout.")
