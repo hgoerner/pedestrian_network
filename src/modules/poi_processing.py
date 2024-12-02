@@ -1,21 +1,9 @@
-import os
-import sys
-
 import geopandas as gpd
 import pandas as pd
 
 from utils.config_loader import config_data
 from utils.load_data import poi_key_value_df
 from utils.save_data import save_gdf_as_gpkg
-
-current_directory = os.getcwd()
-print(current_directory)
-
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
-
-
-# assign group, categorie and einflussbereich
 
 def assign_group_categorie_poi(osm_poi_gdf: gpd.GeoDataFrame):
     """
@@ -32,8 +20,7 @@ def assign_group_categorie_poi(osm_poi_gdf: gpd.GeoDataFrame):
     # merge group and categorie
     # updates and overwrites the osm_poi_gdf
     osm_poi_gdf = pd.merge(osm_poi_gdf, poi_key_value_df, left_on=[
-                           'osm_key', 'osm_value'], right_on=['Key', 'value'], how='left')
-    
+                           'osm_key', 'osm_value'], right_on=['Key', 'value'], how='left') # type: ignore   
     save_gdf_as_gpkg(osm_poi_gdf, "osm_pois_"+config_data["city_name"], version="1.1")  
 
     return osm_poi_gdf

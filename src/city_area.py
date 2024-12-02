@@ -8,7 +8,7 @@ def main():
 
     """
     osm_area_gdf = create_osm_area_gdf()
-    assign_group_categorie_to_area(osm_area_gdf)
+    assign_group_categorie_to_area(osm_area_gdf) # type: ignore
 
 
 if __name__ == "__main__":

@@ -1,38 +1,28 @@
-import os
-import sys
-
 import geopandas as gpd
 import pandas as pd
 from tqdm import tqdm
 
-current_directory = os.getcwd()
-
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\Code2\\pedestrian_network')
-sys.path.append('C:\\Users\\Goerner\\Desktop\\pedestrian_network')
-
-from utils.config_loader import config_data
-from utils.load_data import find_geo_packages
-from utils.save_data import save_gdf_as_gpkg
+from src.utils.config_loader import config_data
+from src.utils.load_data import find_geo_packages
+from src.utils.save_data import save_gdf_as_gpkg
 
 #buffer in meter
 buffersize = config_data["street_buffer_size"]
 
-
 counts_csv_filepath = r""
-#census = r"data\input\Sonstiges\98-401-X2021020_English_CSV_data.csv"
 
-#census_data = pd.read_csv(census, encoding='latin-1',sep=",")
+census = r"src\data\output\zensus_100x100.gpkg"
 
-#print(census_data)
+census_data = pd.read_csv(census, encoding='latin-1',sep=",")
 
 geo_packages = find_geo_packages()
-print(geo_packages)
+
 #filepaths to files using
 street_net_optimized_filepath = geo_packages["streets"]
 area_filepath = geo_packages["areas"]
 pois_filepath = geo_packages["pois"]
 nodes_filepath = geo_packages["nodes"]
-#census_filepath = r"data\output\zensus_100x100.gpkg"
+census_filepath = r"src\data\output\zensus_100x100.gpkg"
 
 #read geopackages
 street_net_optimized_gdf = gpd.read_file(street_net_optimized_filepath)

@@ -1,19 +1,5 @@
-import os
-import sys
-
-import geopandas as gpd
-import numpy as np
-from shapely.ops import linemerge
-
-# current_directory = os.getcwd()
-print(os.getcwd())
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
-
 import geopandas as gpd
 from shapely.ops import linemerge
-
-from data.download.osm_streets import create_osm_streets_gdf
 from utils.config_loader import config_data
 from utils.helper import start_end_points
 from utils.save_data import save_gdf_as_gpkg
@@ -35,10 +21,10 @@ def optimize_street_network(gdf_osm_net: gpd.GeoDataFrame):
     merged_linestring = linemerge(merged_multilinestring)
 
     street_net_gdf = gpd.GeoDataFrame(
-        geometry=[merged_linestring], crs=gdf_osm_net.crs)
+        geometry=[merged_linestring], crs=gdf_osm_net.crs) # type: ignore
     gdf_street_net_optimized = street_net_gdf.explode(index_parts=False)
     gdf_street_net_optimized.reset_index(inplace=True, drop=True)
-    return assign_values_to_new_street_net(gdf_osm_net,gdf_street_net_optimized)
+    return assign_values_to_new_street_net(gdf_osm_net, gdf_street_net_optimized)  # type: ignore
     
     
 
@@ -79,6 +65,22 @@ def assign_values_to_new_street_net(gdf_osm_net: gpd.GeoDataFrame, gdf_street_ne
 
 
 def create_support_points(gdf):
+    """
+    Generate support points from the geometries in a GeoDataFrame.
+
+    This function extracts the first and last points from each line geometry in the provided GeoDataFrame, 
+    creating a new GeoDataFrame that contains these support points. The resulting GeoDataFrame is reset and 
+    exploded to handle any multipoint geometries.
+
+    Args:
+        gdf: A GeoDataFrame containing line geometries from which support points will be extracted.
+
+    Returns:
+        A GeoDataFrame containing the support points with the same coordinate reference system as the input.
+
+    Raises:
+        Exception: If the input GeoDataFrame does not contain valid geometries.
+    """
 
     # extract support points as first and last point of an line
     result_list = gdf['geometry'].apply(start_end_points).to_list()
@@ -88,17 +90,34 @@ def create_support_points(gdf):
         point for tuple_points in result_list for point in tuple_points]
 
     # Create a new GeoDataFrame from the result list
-    support_points_gdf = gpd.GeoDataFrame(geometry=points_list, crs=gdf.crs)
+    support_points_gdf = gpd.GeoDataFrame(geometry=points_list, crs=gdf.crs) # type: ignore
 
     # Reset the index abd explode possible multipoints
-    return support_points_gdf.reset_index(drop=True).explode(index_parts=False)
+    return support_points_gdf.reset_index(drop=True).explode(index_parts=False) # type: ignore
 
 
 def buffer_points(support_points_gdf):
+    """
+    Create buffered geometries around support points in a GeoDataFrame.
+
+    This function takes a GeoDataFrame of support points, explodes any multipoint geometries, and generates 
+    a new GeoDataFrame containing buffered geometries around each support point. The buffer distance is set to 
+    0.5 units, allowing for spatial analysis of the surrounding area.
+
+    Args:
+        support_points_gdf: A GeoDataFrame containing support points to be buffered.
+
+    Returns:
+        A GeoDataFrame containing the buffered geometries of the support points.
+
+    Raises:
+        Exception: If the input GeoDataFrame does not contain valid geometries or if the buffering process fails.
+    """
+
     support_points_gdf = support_points_gdf.explode(index_parts=False)
 
     buffered_points_gdf = gpd.GeoDataFrame(
-        geometry=support_points_gdf['geometry'].buffer(0.5), crs=support_points_gdf.crs)
+        geometry=support_points_gdf['geometry'].buffer(0.5), crs=support_points_gdf.crs) # type: ignore
     buffered_points_gdf.reset_index(drop=True, inplace=True)
 
     return buffered_points_gdf
@@ -184,6 +203,7 @@ def create_street_net_and_intersection_gpkg(osm_street_net: gpd.GeoDataFrame):
 
 
 def main():
+    
     print("test")
     # osm_street_net = create_osm_streets_gdf()
 

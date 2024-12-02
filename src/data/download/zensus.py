@@ -51,6 +51,3 @@ def download_zensus_data():
                 ).to_crs("EPSG:31468") # type: ignore
         else:
             print("Error: Unable to determine the CSV filename or multiple CSV files found.")
-
-
-

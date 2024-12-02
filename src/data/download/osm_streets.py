@@ -6,7 +6,6 @@ from tqdm import tqdm
 from utils.config_loader import config_data
 from utils.helper import concatenate_geodataframes
 from utils.save_data import save_gdf_as_gpkg
-
 from .queries.create_queries import osm_street_queries
 
 api_overpass = overpy.Overpass()

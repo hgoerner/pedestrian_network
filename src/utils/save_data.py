@@ -1,11 +1,9 @@
 import inspect
 import json
 import os
+
 from datetime import datetime
-
-import geopandas as gpd
-
-from utils.config_loader import config_data
+from .config_loader import config_data
 
 
 def save_metadata(file_path, version=None, stage=None, description="Description of the contents", function_name=None):
@@ -42,7 +40,7 @@ def save_metadata(file_path, version=None, stage=None, description="Description 
         json.dump(metadata, metadata_file, indent=4)
     print(f"Metadata saved at {metadata_path}")
 
-def save_gdf_as_gpkg(gdf, filename: str,   final: bool = False, version: str = None, interimresult: bool = False):
+def save_gdf_as_gpkg(gdf, filename: str,   final: bool = False, version: str = "", interimresult: bool = False): # 
     """
     Saves a GeoDataFrame to a GeoPackage file, automatically setting the stage to 'draft' unless it is None,
     and handling different versions and interim results.
