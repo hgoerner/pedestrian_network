@@ -8,7 +8,7 @@ admin_level_city = config_data["admin_level_city"]
 admin_level_country = config_data["admin_level_country"]
 nameconvention = "name:en" if config_data["english_city_name"] else "name"
 
-print(city)
+print("Fetch data for "+city+".")
 
 def list_of_street_queries():
     """

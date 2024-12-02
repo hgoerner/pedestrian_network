@@ -1,5 +1,4 @@
 import overpy
-import time
 
 def fetch_osm_data(query, retries=5, delay=10):
     """
