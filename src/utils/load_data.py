@@ -15,7 +15,7 @@ from .config_loader import config_data
 
 
 
-def find_geo_packages(city_name=config_data["city_name"], output_folder="data/output"):
+def find_geo_packages(city_name=config_data["city_name"], output_folder="src/data/output"):
     """
     Find GeoPackage files in the specified draft! output folder that match the given city name and have the highest version.
 
@@ -57,9 +57,10 @@ def find_geo_packages(city_name=config_data["city_name"], output_folder="data/ou
 
     # Add fixed path for zensus file
     zensus_file_path = os.path.join(output_folder, "zensus_100x100.gpkg")
+    print(zensus_file_path)
     if os.path.exists(zensus_file_path):
         gpkg_files["census"] = zensus_file_path
-
+        print(zensus_file_path)
     for file in os.listdir(draft_folder):
         if file.endswith(".gpkg") and city_name in file:
             file_path = os.path.join(draft_folder, file)
@@ -84,7 +85,7 @@ def find_geo_packages(city_name=config_data["city_name"], output_folder="data/ou
                     current_version = gpkg_files[file_key][1]
                     if compare_versions(current_version, version) < 0:
                         gpkg_files[file_key] = (file_path, version)
-    
+
     # Extract paths from the dictionary
     gpkg_files = {k: v[0] for k, v in gpkg_files.items()}
     print(gpkg_files)

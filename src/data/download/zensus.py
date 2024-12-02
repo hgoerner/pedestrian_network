@@ -1,3 +1,11 @@
+"""
+Dieses Modul enthält Funktionen zur Verarbeitung von Geodaten.
+Es bietet Funktionen zum Erstellen von Unterstützungs-Punkten, 
+zum Puffern dieser Punkte und zur Identifizierung von 
+intersektierenden Linien. Die Funktionen sind darauf ausgelegt, 
+mit GeoDataFrames aus der Geopandas-Bibliothek zu arbeiten.
+"""
+
 import urllib.request
 from io import BytesIO
 from zipfile import ZipFile
@@ -22,8 +30,6 @@ def download_zensus_data():
     Examples:
         gdf = download_zensus_data()
     """
-    
-    config_data["zensus_url"]
     # Download the zip file using urllib
     response = urllib.request.urlopen(config_data["zensus_url"])
     zip_content = BytesIO(response.read())
