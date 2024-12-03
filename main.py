@@ -178,7 +178,7 @@ street_net_optimized_gdf["Zaehlstelle"] = ""
 def create_variante1(street_net_optimized_gdf):
 
     save_gdf_as_gpkg(street_net_optimized_gdf, f"street_net_"+config_data["city_name"], final=True, version="1.9")
-    save_gdf_as_gpkg(pois_buffered_gdf, f"buffered_pois_check"+config_data["city_name"], final=True, version="1.1")
+    save_gdf_as_gpkg(pois_buffered_gdf, f"buffered_pois_"+config_data["city_name"], final=True, version="1.1")
 
 
 create_variante1(street_net_optimized_gdf)

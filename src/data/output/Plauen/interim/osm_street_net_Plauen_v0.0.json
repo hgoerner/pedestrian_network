@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Plauen_v0.0",
+    "creation_date": "2024-12-03T15:02:34.303389",
+    "version": "0.0",
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_osm_streets_gdf"
+}

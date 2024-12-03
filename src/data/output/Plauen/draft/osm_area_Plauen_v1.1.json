@@ -1,0 +1,8 @@
+{
+    "filename": "osm_area_Plauen_v1.1",
+    "creation_date": "2024-12-03T15:06:33.590413",
+    "version": "1.1",
+    "stage": "draft",
+    "description": "Description of the contents",
+    "used in function:": "assign_group_categorie_to_area"
+}

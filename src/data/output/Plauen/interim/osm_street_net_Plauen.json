@@ -1,0 +1,8 @@
+{
+    "filename": "osm_street_net_Plauen",
+    "creation_date": "2024-12-03T15:03:06.140351",
+    "version": "",
+    "stage": "interim",
+    "description": "Description of the contents",
+    "used in function:": "create_street_net_and_intersection_gpkg"
+}
