@@ -10,13 +10,7 @@ INFO:root:osmKey: amenity OsmValue: library Anzahl_pois 0
 INFO:root:osmKey: amenity OsmValue: archive Anzahl_pois 0
 INFO:root:osmKey: amenity OsmValue: college Anzahl_pois 2
 INFO:root:osmKey: amenity OsmValue: kindergarten Anzahl_pois 5
-WARNING:root:Missing result for query: amenity - school in 
-            area["ISO3166-1"=DE][admin_level=2]->.country;
-            area["name"="Plauen"][admin_level=8]->.city;
-            node[amenity=school](area.city)(area.country);
-            (._;>;);
-            out body;
-            
+INFO:root:osmKey: amenity OsmValue: school Anzahl_pois 3
 INFO:root:osmKey: amenity OsmValue: music_school Anzahl_pois 1
 INFO:root:osmKey: amenity OsmValue: university Anzahl_pois 0
 INFO:root:osmKey: amenity OsmValue: bicycle_rental Anzahl_pois 1
@@ -597,7 +591,7 @@ INFO:root:osmKey: amenity OsmValue: town_hall Anzahl_pois 0
 INFO:root:osmKey: shop OsmValue: video_shop Anzahl_pois 0
 INFO:root:osmKey: amenity OsmValue: doctor Anzahl_pois 0
 INFO:root:osmKey: healthcare OsmValue: centre Anzahl_pois 1
-INFO:root:osmKey: highway OsmValue: bus_stop Anzahl_pois 231
+INFO:root:osmKey: highway OsmValue: bus_stop Anzahl_pois 232
 INFO:root:osmKey: railway OsmValue: tram_stop Anzahl_pois 84
 WARNING:root:Missing result for query: railway - subway_entrance%20 in 
             area["ISO3166-1"=DE][admin_level=2]->.country;

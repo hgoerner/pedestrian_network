@@ -6,6 +6,21 @@ from modules.street_net_creation import assign_values_to_new_street_net
 
 
 def update_true_street_name():
+    """
+    Updates the true street names by processing GeoPackage files located in a specified directory. 
+    It filters the data based on specific criteria and saves the results to an Excel file.
+
+    This function scans through subfolders in a main directory to locate GeoPackage files. 
+    It filters the data by ensuring that the "Zaehlstelle" column contains non-null and non-empty values, 
+    then matches it with interim data to assign true street names, ultimately saving the output to an Excel file.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     main_folder_path =r"C:\Users\Goerner\Desktop\pedestrian_network\data\output"
 
     for subfolder in os.listdir(main_folder_path):
@@ -39,8 +54,3 @@ def update_true_street_name():
                     else:
                         print(f"No 'interim' folder found in {subfolder_path}")
             
-                    
-
-
-if __name__ == "__main__":
-    main()

@@ -1,4 +1,3 @@
-import sys
 import time
 
 import openmeteo_requests
@@ -6,10 +5,6 @@ import pandas as pd
 import requests
 import requests_cache
 from retry_requests import retry
-
-sys.path.append('C:\\Users\\Hendr\\OneDrive\\Desktop\\pedestrian_network')
-sys.path.append('C:\\Users\Goerner\\Desktop\pedestrian_network')
-
 from utils.config_loader import config_data
 
 
@@ -93,13 +88,13 @@ def get_weather_data(latitude, longitude, date, timezone="Europe/Berlin"):
         response = responses[0]
         
         hourly = response.Hourly()
-        hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
-        hourly_relative_humidity_2m = hourly.Variables(1).ValuesAsNumpy()
-        hourly_precipitation = hourly.Variables(2).ValuesAsNumpy()
+        hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy() # type: ignore
+        hourly_relative_humidity_2m = hourly.Variables(1).ValuesAsNumpy() # type: ignore
+        hourly_precipitation = hourly.Variables(2).ValuesAsNumpy()  # type: ignore
         
-        average_temperature = hourly_temperature_2m.mean()
-        average_humidity = hourly_relative_humidity_2m.mean()
-        average_precipitation = hourly_precipitation.mean()
+        average_temperature = hourly_temperature_2m.mean() # type: ignore
+        average_humidity = hourly_relative_humidity_2m.mean() # type: ignore
+        average_precipitation = hourly_precipitation.mean()  # type: ignore
         
         return average_temperature, average_humidity, average_precipitation
     
