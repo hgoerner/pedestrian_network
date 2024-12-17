@@ -31,9 +31,7 @@ def filter_geopackages_by_non_empty_zahstelle(list_of_geopackage_filepath: str):
  
 
 def concat_geopackages(list_of_filtered_geodataframes):
-    return gpd.GeoDataFrame(
-        pd.concat(list_of_filtered_geodataframes, ignore_index=True)
-    )
+    return  pd.concat(list_of_filtered_geodataframes, ignore_index=True)
     
 
 def buffer_left_right(line, buffer_distance=20):

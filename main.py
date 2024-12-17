@@ -48,7 +48,7 @@ area_buffered_gdf = area_gdf.copy()
 area_buffered_gdf['geometry'] = area_gdf.apply(lambda row: row['geometry'].buffer(row['Einflussbereich']), axis=1)
 
 
-# read key-value csvs to get klassen und gruppen
+# read key-value csv to get klassen und gruppen
 poi_key_value_df = pd.read_csv(r"src\data\input\poi_key_value.CSV", sep=";")
 list_of_group = list(poi_key_value_df["Gruppe"].unique())
 list_of_class = list(poi_key_value_df["Klasse"].unique())
