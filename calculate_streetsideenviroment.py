@@ -16,7 +16,6 @@ def load_all_poi_gdf():
     for geopackage in os.listdir(mainfolder):
         filepath = os.path.join(mainfolder, geopackage)
         poi_gdf = gpd.read_file(filepath)
-        print(poi_gdf)
         list_of_poi_gdf.append(poi_gdf)
     return list_of_poi_gdf
 
@@ -54,16 +53,68 @@ def create_columnhead(streetside_polygon_gdf):
     return streetside_polygon_gdf
 
 def iterate_through_polygon(streetside_polygon_gdf, list_of_poi_gdf):
-    for idx, polygon in tqdm(streetside_polygon_gdf.iterrows()):
+    # iterate through polygons
+    i = 0
+    for idx_p, polygon in tqdm(streetside_polygon_gdf.iterrows()):       
         for poi_gdf in list_of_poi_gdf:
-            print(idx, polygon, poi_gdf)
+            intersected_pois_gdf = poi_gdf[poi_gdf['geometry'].intersects(polygon['geometry'])]
+            if not intersected_pois_gdf.empty:
+                
+                # count unique groups of intersected_pois dataframe
+                group_counts = intersected_pois_gdf['Gruppe'].value_counts()
+                klasse_counts = intersected_pois_gdf['Klasse'].value_counts()
+
+                for group, count in group_counts.items():
+                #     # assign counts
+ 
+                    streetside_polygon_gdf.at[idx_p, group+": Anzahl"] = count
+                #   filter intesected pois by group
+                    intersected_pois_gdf_filtered = intersected_pois_gdf[intersected_pois_gdf["Gruppe"] == group]
+                    #print(intersected_pois_gdf)
+                #     # get sum of Bedeutung in filtered intersected pois
+                    
+                    group_summe_bedeutung = intersected_pois_gdf_filtered['Bedeutung'].sum()
+
+                #    assign Sum of bedeutung to group
+                    streetside_polygon_gdf.at[idx_p, group+": Summe_Bedeutung"] = group_summe_bedeutung
+
+                for klasse, count in klasse_counts.items():
+                #     # assign counts
+                    streetside_polygon_gdf.at[idx_p, klasse+": Anzahl"] = count
+                #     # filter intesected pois by klasse
+                #     intersected_pois_gdf = intersected_pois_gdf[intersected_pois_gdf["Klasse"] == klasse]
+
+                #     # get sum of Bedeutung in filtered intersected pois
+                    intersected_pois_gdf_filtered = intersected_pois_gdf[intersected_pois_gdf["Klasse"] == klasse]
+                    klasse_summe_bedeutung = intersected_pois_gdf_filtered['Bedeutung'].sum()
+                    print(intersected_pois_gdf['Bedeutung'])
+                    print(klasse_summe_bedeutung)
+                    streetside_polygon_gdf.at[idx_p, klasse+": Summe_Bedeutung"] = klasse_summe_bedeutung
+                    
+    #print(streetside_polygon_gdf)
+
+    # Save as Excel file
+    streetside_polygon_gdf.to_excel("output.xlsx", index=False)
+    
+    
+def iterate_through_polygon2(polygon_gdf, points_gdf):
+    # Perform a spatial join between the points and polygons
+    joined = gpd.sjoin(points_gdf, polygon_gdf, how="inner", predicate="within")
+
+    # Count points in each polygon
+    counts = joined.groupby('index_right').size()
+
+    # Add the counts back to the original polygon GeoDataFrame
+    polygon_gdf['point_count'] = polygon_gdf.index.map(counts).fillna(0).astype(int)
+    print(polygon_gdf)
+
 
 
 def main():
     streetside_polygon_gdf = load_geopackage()
     streetside_polygon_gdf = create_columnhead(streetside_polygon_gdf)
     list_of_pois_gdf = load_all_poi_gdf()
-
+           
     iterate_through_polygon(streetside_polygon_gdf, list_of_pois_gdf)
 
 
