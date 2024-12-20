@@ -175,10 +175,10 @@ def main():
     # ohne außreiser
     folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert\mit_außreiser'
 
-    folderpath = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert"
+    folderpath = r"Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellenseiten_zusammengefasst\unskaliert"
 
     # mit ausreißer
-    #folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellen_Seiten_zusammengefasst\unskaliert\mit_außreiser'
+    #folderpath = r'Z:\_Public\Projekte\IVST\058_FoPS_Fuss\02_Bearbeitung\AP5\01_Zählstellenseiten_Korrelation\01_Zählstellenseiten_zusammengefasst\unskaliert\mit_außreiser'
     dataframe_dict = create_dataframe_with_all_zaehlstellen(folderpath)
 
     # Combine all dataframes into one
@@ -205,9 +205,9 @@ def main():
     # hist_boxplot(scaled_df)
 
     # merging process of clusters
-    #plot_dendrogramm_ward(combined_df, "ohne Ausreißer")
-    # plot_dendrogramm_single_linkage(combined_df)
-
+    
+    plot_dendrogramm_single_linkage(combined_df)
+    plot_dendrogramm_ward(combined_df, "ohne Ausreißer")
     # merging process of clusters
     #plot_dendrogramm_ward(scaled_df, "ohne Ausreißer und standardisiert", 5.5)
     #plot_dendrogramm_single_linkage(scaled_df, "ohne Ausreißer und standardisiert")
