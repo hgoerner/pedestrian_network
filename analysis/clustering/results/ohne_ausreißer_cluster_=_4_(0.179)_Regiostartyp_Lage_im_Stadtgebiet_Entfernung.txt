@@ -1,6 +1,6 @@
                                   MNLogit Regression Results                                  
 ==============================================================================================
-Dep. Variable:     ohne ausreißer
+Dep. Variable:     ohne ausreiÃŸer
 cluster = 4 (0.179)   No. Observations:                   25
 Model:                                        MNLogit   Df Residuals:                        7
 Method:                                           MLE   Df Model:                           15
@@ -9,7 +9,7 @@ Time:                                        15:13:56   Log-Likelihood:         
 converged:                                       True   LL-Null:                       -31.040
 Covariance Type:                            nonrobust   LLR p-value:                       nan
 ========================================================================================================
-ohne ausreißer
+ohne ausreiÃŸer
 cluster = 4 (0.179)=1       coef    std err          z      P>|z|      [0.025      0.975]
 --------------------------------------------------------------------------------------------------------
 Regiostartyp                                nan        nan        nan        nan         nan         nan
@@ -19,7 +19,7 @@ Entfernung Bushaltestelle                   nan        nan        nan        nan
 Entfernung Schule                           nan        nan        nan        nan         nan         nan
 Bedeutung je km                             nan        nan        nan        nan         nan         nan
 --------------------------------------------------------------------------------------------------------
-ohne ausreißer
+ohne ausreiÃŸer
 cluster = 4 (0.179)=2       coef    std err          z      P>|z|      [0.025      0.975]
 --------------------------------------------------------------------------------------------------------
 Regiostartyp                                nan        nan        nan        nan         nan         nan
@@ -29,7 +29,7 @@ Entfernung Bushaltestelle                   nan        nan        nan        nan
 Entfernung Schule                           nan        nan        nan        nan         nan         nan
 Bedeutung je km                             nan        nan        nan        nan         nan         nan
 --------------------------------------------------------------------------------------------------------
-ohne ausreißer
+ohne ausreiÃŸer
 cluster = 4 (0.179)=3       coef    std err          z      P>|z|      [0.025      0.975]
 --------------------------------------------------------------------------------------------------------
 Regiostartyp                                nan        nan        nan        nan         nan         nan
